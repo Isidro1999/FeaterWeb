@@ -7,19 +7,19 @@ export function Testimonials() {
 
   const testimonials = [
     {
-      quote: "Working with this team transformed our entire digital infrastructure. Their expertise and dedication to our success were evident from day one. We've seen a 40% increase in operational efficiency.",
+      quote: "Trabajar con este equipo transformó toda nuestra infraestructura digital. Su experiencia y dedicación a nuestro éxito fueron evidentes desde el primer día. Vimos un aumento del 40% en eficiencia operativa.",
       author: "Sarah Johnson",
       role: "CEO, TechCorp",
     },
     {
-      quote: "The strategic insights and innovative solutions provided have positioned us ahead of our competition. Their consultative approach made all the difference in our transformation journey.",
+      quote: "Las perspectivas estratégicas y soluciones innovadoras proporcionadas nos han posicionado por delante de nuestra competencia. Su enfoque consultivo marcó toda la diferencia en nuestro viaje de transformación.",
       author: "Michael Chen",
       role: "CTO, InnovateX",
     },
     {
-      quote: "Exceptional service and results beyond our expectations. The team's deep industry knowledge and commitment to excellence make them an invaluable partner for any organization.",
+      quote: "Servicio excepcional y resultados más allá de nuestras expectativas. El profundo conocimiento de la industria del equipo y su compromiso con la excelencia los convierten en un socio invaluable para cualquier organización.",
       author: "Emma Williams",
-      role: "Director of Operations, GlobalTech",
+      role: "Directora de Operaciones, GlobalTech",
     },
   ];
 
@@ -38,14 +38,14 @@ export function Testimonials() {
             className="text-4xl sm:text-5xl font-bold text-white mb-6"
             data-testid="text-testimonials-title"
           >
-            What Our Clients Say
+            Lo Que Dicen Nuestros Clientes
           </h2>
           
           <p 
             className="text-xl text-gray-300 max-w-3xl mx-auto"
             data-testid="text-testimonials-subtitle"
           >
-            Real stories from real clients who've achieved remarkable results
+            Historias reales de clientes reales que han logrado resultados extraordinarios
           </p>
         </div>
 

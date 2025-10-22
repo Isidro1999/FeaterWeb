@@ -9,23 +9,23 @@ export default function Platform() {
 
   const features = [
     {
-      title: "Cloud Infrastructure",
-      description: "Scalable, reliable cloud solutions built for enterprise performance and security.",
+      title: "Infraestructura en la Nube",
+      description: "Soluciones en la nube escalables y confiables construidas para el rendimiento y seguridad empresarial.",
       icon: Cloud,
     },
     {
-      title: "Data Management",
-      description: "Advanced data warehousing and real-time processing capabilities for critical business insights.",
+      title: "Gestión de Datos",
+      description: "Capacidades avanzadas de almacenamiento de datos y procesamiento en tiempo real para insights empresariales críticos.",
       icon: Database,
     },
     {
-      title: "Security First",
-      description: "Enterprise-grade security with end-to-end encryption and compliance certifications.",
+      title: "Seguridad Primero",
+      description: "Seguridad de nivel empresarial con encriptación de extremo a extremo y certificaciones de cumplimiento.",
       icon: Lock,
     },
     {
-      title: "Mobile Ready",
-      description: "Native mobile applications and responsive experiences across all devices.",
+      title: "Listo para Móviles",
+      description: "Aplicaciones móviles nativas y experiencias responsivas en todos los dispositivos.",
       icon: Smartphone,
     },
   ];
@@ -38,10 +38,10 @@ export default function Platform() {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl sm:text-6xl font-bold text-white mb-6">
-            Our Platform
+            Nuestra Plataforma
           </h1>
           <p className="text-xl text-gray-300 leading-relaxed">
-            A comprehensive technology platform designed to power digital transformation and drive innovation at scale.
+            Una plataforma tecnológica integral diseñada para impulsar la transformación digital y la innovación a gran escala.
           </p>
         </div>
       </section>

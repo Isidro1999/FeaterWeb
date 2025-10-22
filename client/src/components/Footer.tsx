@@ -17,15 +17,15 @@ export function Footer() {
     },
     onSuccess: () => {
       toast({
-        title: "Success!",
-        description: "You've been subscribed to our newsletter",
+        title: "¡Éxito!",
+        description: "Te has suscrito a nuestro boletín",
       });
       setEmail("");
     },
     onError: (error: any) => {
       toast({
-        title: "Subscription Failed",
-        description: error.message || "Please try again later",
+        title: "Suscripción Fallida",
+        description: error.message || "Por favor, intentá de nuevo más tarde",
         variant: "destructive",
       });
     },
@@ -36,8 +36,8 @@ export function Footer() {
     
     if (!email) {
       toast({
-        title: "Email required",
-        description: "Please enter your email address",
+        title: "Correo electrónico requerido",
+        description: "Por favor, ingresá tu dirección de correo electrónico",
         variant: "destructive",
       });
       return;
@@ -48,19 +48,19 @@ export function Footer() {
 
   const footerLinks = {
     company: [
-      { label: "About Us", href: "/platform" },
-      { label: "Careers", href: "/contact" },
-      { label: "Press", href: "/contact" },
+      { label: "Sobre Nosotros", href: "/platform" },
+      { label: "Carreras", href: "/contact" },
+      { label: "Prensa", href: "/contact" },
     ],
     services: [
-      { label: "Consulting", href: "/methodology" },
-      { label: "Solutions", href: "/value" },
-      { label: "Case Studies", href: "/cases" },
+      { label: "Consultoría", href: "/methodology" },
+      { label: "Soluciones", href: "/value" },
+      { label: "Casos de Estudio", href: "/cases" },
     ],
     resources: [
       { label: "Blog", href: "/" },
       { label: "Insights", href: "/" },
-      { label: "Contact", href: "/contact" },
+      { label: "Contacto", href: "/contact" },
     ],
   };
 
@@ -108,7 +108,7 @@ export function Footer() {
               PENH
             </Link>
             <p className="text-gray-400 mb-6 leading-relaxed">
-              Transforming businesses through innovative technology solutions and strategic consulting excellence.
+              Transformando empresas a través de soluciones tecnológicas innovadoras y excelencia en consultoría estratégica.
             </p>
             <div className="flex space-x-4">
               {socialLinks.map((social) => (
@@ -129,7 +129,7 @@ export function Footer() {
 
           {/* Links Columns */}
           <div>
-            <h3 className="text-white font-semibold mb-4">Company</h3>
+            <h3 className="text-white font-semibold mb-4">Empresa</h3>
             <ul className="space-y-2">
               {footerLinks.company.map((link) => (
                 <li key={link.label}>
@@ -145,7 +145,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-white font-semibold mb-4">Services</h3>
+            <h3 className="text-white font-semibold mb-4">Servicios</h3>
             <ul className="space-y-2">
               {footerLinks.services.map((link) => (
                 <li key={link.label}>
@@ -161,7 +161,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-white font-semibold mb-4">Resources</h3>
+            <h3 className="text-white font-semibold mb-4">Recursos</h3>
             <ul className="space-y-2">
               {footerLinks.resources.map((link) => (
                 <li key={link.label}>
@@ -181,16 +181,16 @@ export function Footer() {
         <div className="border-t border-gray-800 pt-12 mb-12">
           <div className="max-w-md mx-auto text-center">
             <h3 className="text-2xl font-bold text-white mb-2">
-              Subscribe to Our Newsletter
+              Suscribite a Nuestro Boletín
             </h3>
             <p className="text-gray-400 mb-6">
-              Get the latest insights and updates delivered to your inbox
+              Recibí las últimas novedades y actualizaciones en tu bandeja de entrada
             </p>
             
             <form onSubmit={handleSubmit} className="flex gap-2">
               <Input
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Ingresá tu correo electrónico"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={subscribeNewsletterMutation.isPending}
@@ -203,7 +203,7 @@ export function Footer() {
                 className="bg-bordeaux hover:bg-bordeaux-hover text-white transition-all duration-300 disabled:opacity-50"
                 data-testid="button-newsletter-submit"
               >
-                {subscribeNewsletterMutation.isPending ? "Subscribing..." : "Subscribe"}
+                {subscribeNewsletterMutation.isPending ? "Suscribiendo..." : "Suscribirse"}
               </Button>
             </form>
           </div>
@@ -212,7 +212,7 @@ export function Footer() {
         {/* Bottom Section */}
         <div className="border-t border-gray-800 pt-8 text-center">
           <p className="text-gray-400 text-sm">
-            © {new Date().getFullYear()} PENH. All rights reserved.
+            © {new Date().getFullYear()} PENH. Todos los derechos reservados.
           </p>
         </div>
       </div>

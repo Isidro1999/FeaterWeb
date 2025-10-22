@@ -6,12 +6,12 @@ export function Industries() {
   const { ref, isVisible } = useScrollReveal();
 
   const industries = [
-    { name: "Financial Services", icon: Landmark },
-    { name: "Technology", icon: Cpu },
-    { name: "Manufacturing", icon: Factory },
-    { name: "Healthcare", icon: HeartPulse },
-    { name: "Retail", icon: ShoppingCart },
-    { name: "Real Estate", icon: Building2 },
+    { name: "Servicios Financieros", icon: Landmark },
+    { name: "Tecnología", icon: Cpu },
+    { name: "Manufactura", icon: Factory },
+    { name: "Salud", icon: HeartPulse },
+    { name: "Comercio Minorista", icon: ShoppingCart },
+    { name: "Bienes Raíces", icon: Building2 },
   ];
 
   return (
@@ -31,14 +31,14 @@ export function Industries() {
               className="text-4xl sm:text-5xl font-bold text-white"
               data-testid="text-industries-title"
             >
-              Industries We Serve
+              Industrias
             </h2>
             
             <p 
               className="text-lg text-gray-300 leading-relaxed"
               data-testid="text-industries-description"
             >
-              Our expertise spans across multiple industries, delivering tailored solutions that address unique sector challenges and opportunities.
+              Nuestra experiencia abarca múltiples industrias, brindando soluciones personalizadas que abordan desafíos y oportunidades únicas de cada sector.
             </p>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

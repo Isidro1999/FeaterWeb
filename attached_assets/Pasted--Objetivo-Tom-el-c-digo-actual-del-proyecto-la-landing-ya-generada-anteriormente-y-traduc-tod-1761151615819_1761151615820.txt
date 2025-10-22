@@ -1,0 +1,74 @@
+⚙️ Objetivo:
+Tomá el código actual del proyecto (la landing ya generada anteriormente) y traducí todo el contenido visible al español, sin modificar la estructura del código, las clases Tailwind, ni la jerarquía de componentes o secciones.
+
+🚫 No cambies nombres de archivos, props, funciones, ni imports.
+🚫 No modifiques estilos, rutas (/platform, /methodology, etc.) ni el diseño responsive.
+✅ Solo reemplazá los textos visibles por el usuario (títulos, subtítulos, párrafos, botones, placeholders, etc.) por sus equivalentes en español.
+✅ Mantené los mismos espacios, saltos de línea y formato JSX.
+
+🗣️ Traducciones a aplicar:
+
+“Your Dedicated Partner in Business Transformation” → “Tu aliado estratégico en la transformación empresarial”
+
+“Guiding You Towards Unprecedented Success with Proven Strategies” → “Te guiamos hacia el éxito con estrategias comprobadas”
+
+“Contact Us” → “Contactanos”
+
+“Who We Are” → “Quiénes somos”
+
+“Meet The Team” → “Conocer al equipo”
+
+“Industries” → “Industrias”
+
+“Financial Services and Banking” → “Servicios financieros y banca”
+
+“Technology and Software” → “Tecnología y software”
+
+“Manufacturing” → “Manufactura”
+
+“Healthcare” → “Salud”
+
+“Energy” → “Energía”
+
+“Explore Our Solutions” → “Explorá nuestras soluciones”
+
+“Risk Management” → “Gestión de riesgos”
+
+“Market Analysis” → “Análisis de mercado”
+
+“Business Strategy” → “Estrategia empresarial”
+
+“Financial Advisory” → “Asesoramiento financiero”
+
+“Stay Ahead With Expert Knowledge” → “Mantenete a la vanguardia con conocimiento experto”
+
+“Our Clients” → “Nuestros clientes”
+
+“The Perfect Customer Experience” → “La experiencia perfecta de nuestros clientes”
+
+“Stay Updated with the Latest” → “Mantenete actualizado con nuestras novedades”
+
+“Yes, subscribe me to your newsletter” → “Sí, suscribirme al boletín”
+
+“Submit” → “Enviar”
+
+“Email” → “Correo electrónico”
+
+“Read More” → “Leer más”
+
+📜 Instrucciones adicionales:
+
+No traduzcas variables, componentes ni tags JSX (<Section>, <Hero>, etc.).
+
+Conservá el mismo formato JSX (no reemplaces <h1> por <p>, etc.).
+
+Verificá que los acentos (á, é, í, ó, ú) y caracteres especiales (ñ) se rendericen correctamente en UTF-8.
+
+Si hay placeholders o tooltips, traducilos también.
+
+Verificá que los botones con flechas (“→”) mantengan su símbolo.
+
+Al finalizar, el sitio debe verse exactamente igual visualmente, solo que en idioma español.
+
+✨ Resultado esperado:
+Una landing igual a la actual (misma estructura, colores, animaciones y distribución) pero totalmente en español, lista para exportar a VS Code sin romper nada.

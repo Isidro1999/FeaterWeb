@@ -8,26 +8,26 @@ export default function Value() {
 
   const values = [
     {
-      title: "Increased Revenue",
-      description: "Our solutions drive measurable business growth with an average 35% increase in revenue for our clients within the first year.",
+      title: "Aumento de Ingresos",
+      description: "Nuestras soluciones impulsan un crecimiento empresarial medible con un aumento promedio del 35% en los ingresos de nuestros clientes en el primer año.",
       icon: TrendingUp,
       metric: "35%",
     },
     {
-      title: "Time Savings",
-      description: "Streamline operations and reduce manual processes, saving your team hundreds of hours each month.",
+      title: "Ahorro de Tiempo",
+      description: "Optimizá operaciones y reducí procesos manuales, ahorrando a tu equipo cientos de horas cada mes.",
       icon: Clock,
       metric: "60%",
     },
     {
-      title: "Risk Mitigation",
-      description: "Protect your business with enterprise-grade security and compliance frameworks that minimize vulnerabilities.",
+      title: "Mitigación de Riesgos",
+      description: "Protegé tu negocio con seguridad de nivel empresarial y marcos de cumplimiento que minimizan vulnerabilidades.",
       icon: Shield,
       metric: "99.9%",
     },
     {
-      title: "Quality Assurance",
-      description: "Deliver exceptional experiences with our rigorous quality standards and continuous improvement processes.",
+      title: "Garantía de Calidad",
+      description: "Ofrecé experiencias excepcionales con nuestros rigurosos estándares de calidad y procesos de mejora continua.",
       icon: Award,
       metric: "4.9/5",
     },
@@ -41,10 +41,10 @@ export default function Value() {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl sm:text-6xl font-bold text-white mb-6">
-            The Value We Deliver
+            El Valor Que Entregamos
           </h1>
           <p className="text-xl text-gray-300 leading-relaxed">
-            Tangible results that transform your business and position you for long-term success in a competitive marketplace.
+            Resultados tangibles que transforman tu negocio y te posicionan para el éxito a largo plazo en un mercado competitivo.
           </p>
         </div>
       </section>

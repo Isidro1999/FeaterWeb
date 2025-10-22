@@ -10,15 +10,15 @@ export function Knowledge() {
   const articles = [
     {
       image: analyticsImage,
-      category: "Industry Insights",
-      title: "The Future of Business Analytics in 2025",
-      description: "Discover how AI and machine learning are reshaping data-driven decision-making across industries.",
+      category: "Tendencias de la Industria",
+      title: "El Futuro del Análisis Empresarial en 2025",
+      description: "Descubrí cómo la IA y el aprendizaje automático están redefiniendo la toma de decisiones basada en datos en todas las industrias.",
     },
     {
       image: consultationImage,
-      category: "Best Practices",
-      title: "Strategic Planning for Digital Transformation",
-      description: "Learn the key steps to successfully navigate your organization's digital evolution journey.",
+      category: "Mejores Prácticas",
+      title: "Planificación Estratégica para la Transformación Digital",
+      description: "Aprendé los pasos clave para navegar exitosamente el viaje de evolución digital de tu organización.",
     },
   ];
 
@@ -37,14 +37,14 @@ export function Knowledge() {
             className="text-4xl sm:text-5xl font-bold text-white mb-6"
             data-testid="text-knowledge-title"
           >
-            Stay Ahead With Expert Knowledge
+            Mantenete a la Vanguardia con Conocimiento Experto
           </h2>
           
           <p 
             className="text-xl text-gray-300 max-w-3xl mx-auto"
             data-testid="text-knowledge-subtitle"
           >
-            Insights, trends, and practical strategies from industry leaders to keep you informed and competitive
+            Perspectivas, tendencias y estrategias prácticas de líderes de la industria para mantenerte informado y competitivo
           </p>
         </div>
 
@@ -81,7 +81,7 @@ export function Knowledge() {
                   {article.description}
                 </p>
                 <div className="flex items-center text-bordeaux-hover font-medium group-hover:translate-x-2 transition-transform duration-300">
-                  Read More
+                  Leer Más
                   <ArrowRight className="ml-2 w-4 h-4" />
                 </div>
               </CardContent>

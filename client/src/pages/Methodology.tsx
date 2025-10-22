@@ -8,23 +8,23 @@ export default function Methodology() {
 
   const steps = [
     {
-      title: "Discovery & Analysis",
-      description: "We begin by understanding your unique challenges, objectives, and organizational context through comprehensive analysis.",
+      title: "Descubrimiento y Análisis",
+      description: "Comenzamos comprendiendo tus desafíos únicos, objetivos y contexto organizacional a través de un análisis integral.",
       icon: Target,
     },
     {
-      title: "Collaborative Planning",
-      description: "Working closely with your team, we develop a tailored strategy that aligns with your business goals and resources.",
+      title: "Planificación Colaborativa",
+      description: "Trabajando en estrecha colaboración con tu equipo, desarrollamos una estrategia personalizada que se alinea con tus objetivos y recursos empresariales.",
       icon: Users,
     },
     {
-      title: "Implementation",
-      description: "Our experts execute the plan with precision, leveraging best practices and proven methodologies for successful delivery.",
+      title: "Implementación",
+      description: "Nuestros expertos ejecutan el plan con precisión, aprovechando las mejores prácticas y metodologías probadas para una entrega exitosa.",
       icon: Rocket,
     },
     {
-      title: "Continuous Improvement",
-      description: "We monitor outcomes, gather feedback, and iterate to ensure sustained success and ongoing optimization.",
+      title: "Mejora Continua",
+      description: "Monitoreamos resultados, recopilamos comentarios e iteramos para garantizar el éxito sostenido y la optimización continua.",
       icon: RefreshCw,
     },
   ];
@@ -37,10 +37,10 @@ export default function Methodology() {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl sm:text-6xl font-bold text-white mb-6">
-            Our Methodology
+            Nuestra Metodología
           </h1>
           <p className="text-xl text-gray-300 leading-relaxed">
-            A proven approach that combines strategic thinking, collaborative execution, and continuous improvement to deliver exceptional results.
+            Un enfoque comprobado que combina pensamiento estratégico, ejecución colaborativa y mejora continua para ofrecer resultados excepcionales.
           </p>
         </div>
       </section>

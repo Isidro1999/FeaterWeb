@@ -12,28 +12,28 @@ export default function Cases() {
 
   const caseStudies = [
     {
-      title: "Global Financial Services Transformation",
+      title: "Transformación de Servicios Financieros Globales",
       client: "TechCorp Financial",
       image: analyticsImage,
-      challenge: "Legacy systems preventing digital innovation",
-      solution: "Implemented cloud-native architecture with AI-powered analytics",
-      results: "40% increase in operational efficiency, $2M cost savings annually",
+      challenge: "Sistemas heredados que impiden la innovación digital",
+      solution: "Arquitectura nativa en la nube implementada con análisis impulsados por IA",
+      results: "40% de aumento en eficiencia operativa, $2M de ahorro de costos anuales",
     },
     {
-      title: "Manufacturing Digital Overhaul",
+      title: "Renovación Digital de Manufactura",
       client: "InnovateX Manufacturing",
       image: consultationImage,
-      challenge: "Disconnected systems and manual processes",
-      solution: "Integrated IoT platform with real-time monitoring and automation",
-      results: "60% reduction in downtime, 35% productivity improvement",
+      challenge: "Sistemas desconectados y procesos manuales",
+      solution: "Plataforma IoT integrada con monitoreo en tiempo real y automatización",
+      results: "60% de reducción en tiempo de inactividad, 35% de mejora en productividad",
     },
     {
-      title: "Healthcare Data Platform",
+      title: "Plataforma de Datos de Salud",
       client: "GlobalTech Health",
       image: teamImage,
-      challenge: "Data silos limiting patient care coordination",
-      solution: "Built unified data platform with advanced security and compliance",
-      results: "99.9% uptime, 50% faster patient processing times",
+      challenge: "Silos de datos que limitan la coordinación del cuidado del paciente",
+      solution: "Plataforma de datos unificada construida con seguridad avanzada y cumplimiento",
+      results: "99.9% de tiempo de actividad, 50% más rápido en tiempos de procesamiento de pacientes",
     },
   ];
 
@@ -45,10 +45,10 @@ export default function Cases() {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl sm:text-6xl font-bold text-white mb-6">
-            Case Studies
+            Casos de Estudio
           </h1>
           <p className="text-xl text-gray-300 leading-relaxed">
-            Real-world success stories showcasing how we've helped organizations achieve transformative results.
+            Historias de éxito del mundo real que muestran cómo hemos ayudado a organizaciones a lograr resultados transformadores.
           </p>
         </div>
       </section>
@@ -94,7 +94,7 @@ export default function Cases() {
                     <div className="space-y-4 mb-6">
                       <div>
                         <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-1">
-                          Challenge
+                          Desafío
                         </h4>
                         <p className="text-gray-300">
                           {caseStudy.challenge}
@@ -103,7 +103,7 @@ export default function Cases() {
                       
                       <div>
                         <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-1">
-                          Solution
+                          Solución
                         </h4>
                         <p className="text-gray-300">
                           {caseStudy.solution}
@@ -112,7 +112,7 @@ export default function Cases() {
                       
                       <div>
                         <h4 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-1">
-                          Results
+                          Resultados
                         </h4>
                         <p className="text-white font-semibold">
                           {caseStudy.results}
@@ -121,7 +121,7 @@ export default function Cases() {
                     </div>
                     
                     <div className="flex items-center text-bordeaux-hover font-medium group-hover:translate-x-2 transition-transform duration-300">
-                      View Full Case Study
+                      Ver Caso Completo
                       <ArrowRight className="ml-2 w-4 h-4" />
                     </div>
                   </CardContent>

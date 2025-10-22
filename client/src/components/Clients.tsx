@@ -27,14 +27,14 @@ export function Clients() {
             className="text-4xl sm:text-5xl font-bold text-white mb-6"
             data-testid="text-clients-title"
           >
-            Our Clients
+            Nuestros Clientes
           </h2>
           
           <p 
             className="text-xl text-gray-300 max-w-3xl mx-auto"
             data-testid="text-clients-subtitle"
           >
-            Trusted by industry leaders worldwide
+            Confianza de líderes de la industria en todo el mundo
           </p>
         </div>
 

@@ -31,9 +31,9 @@ export function Hero() {
           className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
           data-testid="text-hero-title"
         >
-          Transform Your Business
+          Transformá Tu Negocio
           <span className="block text-transparent bg-clip-text bg-gradient-to-r from-white via-bordeaux-hover to-bordeaux mt-2">
-            With Premium Solutions
+            Con Soluciones Premium
           </span>
         </h1>
         
@@ -41,7 +41,7 @@ export function Hero() {
           className="text-xl sm:text-2xl text-gray-300 mb-10 max-w-2xl mx-auto"
           data-testid="text-hero-subtitle"
         >
-          Innovative strategies and cutting-edge technology to drive your success in the digital age
+          Estrategias innovadoras y tecnología de vanguardia para impulsar tu éxito en la era digital
         </p>
         
         <Button
@@ -50,7 +50,7 @@ export function Hero() {
           className="border-2 border-white text-white hover:bg-white/10 hover:border-bordeaux-hover transition-all duration-500 text-lg px-8 py-6 group"
           data-testid="button-hero-cta"
         >
-          Get Started
+          Comenzar
           <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
         </Button>
       </div>

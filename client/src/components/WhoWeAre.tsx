@@ -34,18 +34,18 @@ export function WhoWeAre() {
               className="text-4xl sm:text-5xl font-bold text-white"
               data-testid="text-who-we-are-title"
             >
-              Who We Are
+              Quiénes Somos
             </h2>
             
             <p 
               className="text-lg text-gray-300 leading-relaxed"
               data-testid="text-who-we-are-description"
             >
-              We are a team of passionate innovators and industry experts dedicated to transforming businesses through cutting-edge technology and strategic insights. With decades of combined experience, we deliver solutions that drive measurable results.
+              Somos un equipo de innovadores apasionados y expertos de la industria dedicados a transformar empresas a través de tecnología de vanguardia y conocimientos estratégicos. Con décadas de experiencia combinada, ofrecemos soluciones que generan resultados medibles.
             </p>
             
             <p className="text-lg text-gray-400 leading-relaxed">
-              Our approach combines deep industry knowledge with agile methodologies, ensuring that every solution is tailored to your unique challenges and objectives. We don't just consult—we partner with you for long-term success.
+              Nuestro enfoque combina un profundo conocimiento de la industria con metodologías ágiles, asegurando que cada solución esté adaptada a tus desafíos y objetivos únicos. No solo consultamos, nos asociamos contigo para el éxito a largo plazo.
             </p>
             
             <Button
@@ -54,7 +54,7 @@ export function WhoWeAre() {
               className="border-2 border-white text-white hover:bg-white/10 hover:border-bordeaux-hover transition-all duration-500 mt-4 group"
               data-testid="button-learn-more"
             >
-              Learn More
+              Conocer Más
               <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
             </Button>
           </div>

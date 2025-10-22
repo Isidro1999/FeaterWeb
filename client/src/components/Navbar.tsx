@@ -18,12 +18,12 @@ export function Navbar() {
   }, []);
 
   const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/platform", label: "Platform" },
-    { href: "/methodology", label: "Methodology" },
-    { href: "/value", label: "Value" },
-    { href: "/cases", label: "Cases" },
-    { href: "/contact", label: "Contact" },
+    { href: "/", label: "Inicio" },
+    { href: "/platform", label: "Plataforma" },
+    { href: "/methodology", label: "Metodología" },
+    { href: "/value", label: "Valor" },
+    { href: "/cases", label: "Casos" },
+    { href: "/contact", label: "Contacto" },
   ];
 
   const socialLinks = [

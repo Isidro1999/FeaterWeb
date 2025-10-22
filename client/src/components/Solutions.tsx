@@ -7,23 +7,23 @@ export function Solutions() {
 
   const solutions = [
     {
-      title: "Digital Transformation",
-      description: "Modernize your operations with cutting-edge digital solutions that streamline processes and enhance customer experiences.",
+      title: "Transformación Digital",
+      description: "Modernizá tus operaciones con soluciones digitales de vanguardia que optimizan procesos y mejoran la experiencia del cliente.",
       icon: Zap,
     },
     {
-      title: "Data Analytics",
-      description: "Unlock the power of your data with advanced analytics and AI-driven insights for smarter decision-making.",
+      title: "Análisis de Datos",
+      description: "Desbloqueá el poder de tus datos con análisis avanzados e insights impulsados por IA para una toma de decisiones más inteligente.",
       icon: LineChart,
     },
     {
-      title: "Strategic Consulting",
-      description: "Navigate complex challenges with expert guidance and customized strategies aligned with your business goals.",
+      title: "Consultoría Estratégica",
+      description: "Navegá desafíos complejos con orientación experta y estrategias personalizadas alineadas con tus objetivos empresariales.",
       icon: Lightbulb,
     },
     {
-      title: "Cybersecurity",
-      description: "Protect your digital assets with comprehensive security solutions and proactive threat management.",
+      title: "Ciberseguridad",
+      description: "Protegé tus activos digitales con soluciones de seguridad integrales y gestión proactiva de amenazas.",
       icon: Shield,
     },
   ];
@@ -43,14 +43,14 @@ export function Solutions() {
             className="text-4xl sm:text-5xl font-bold text-white mb-6"
             data-testid="text-solutions-title"
           >
-            Explore Our Solutions
+            Explorá Nuestras Soluciones
           </h2>
           
           <p 
             className="text-xl text-gray-300 max-w-3xl mx-auto"
             data-testid="text-solutions-subtitle"
           >
-            Comprehensive services designed to accelerate your growth and transform your business landscape
+            Servicios integrales diseñados para acelerar tu crecimiento y transformar tu panorama empresarial
           </p>
         </div>
 

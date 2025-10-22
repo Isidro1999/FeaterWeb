@@ -22,16 +22,16 @@ export default function Contact() {
     
     if (!formData.name || !formData.email || !formData.message) {
       toast({
-        title: "Missing Information",
-        description: "Please fill in all required fields",
+        title: "Información Faltante",
+        description: "Por favor, completá todos los campos requeridos",
         variant: "destructive",
       });
       return;
     }
 
     toast({
-      title: "Message Sent!",
-      description: "We'll get back to you as soon as possible",
+      title: "¡Mensaje Enviado!",
+      description: "Te responderemos lo antes posible",
     });
     
     setFormData({ name: "", email: "", company: "", message: "" });
@@ -47,19 +47,19 @@ export default function Contact() {
   const contactInfo = [
     {
       icon: Mail,
-      title: "Email",
+      title: "Correo Electrónico",
       value: "contact@penh.com",
       link: "mailto:contact@penh.com",
     },
     {
       icon: Phone,
-      title: "Phone",
+      title: "Teléfono",
       value: "+1 (555) 123-4567",
       link: "tel:+15551234567",
     },
     {
       icon: MapPin,
-      title: "Location",
+      title: "Ubicación",
       value: "San Francisco, CA",
       link: null,
     },
@@ -73,10 +73,10 @@ export default function Contact() {
       <section className="pt-32 pb-20 px-4 sm:px-6 lg:px-8">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl sm:text-6xl font-bold text-white mb-6">
-            Get In Touch
+            Ponete en Contacto
           </h1>
           <p className="text-xl text-gray-300 leading-relaxed">
-            Let's discuss how we can help transform your business. Reach out to our team today.
+            Hablemos sobre cómo podemos ayudar a transformar tu negocio. Contactá a nuestro equipo hoy.
           </p>
         </div>
       </section>
@@ -89,14 +89,14 @@ export default function Contact() {
             <Card className="bg-black/40 border-2 border-gray-700">
               <CardHeader>
                 <CardTitle className="text-2xl text-white">
-                  Send Us a Message
+                  Envianos un Mensaje
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div>
                     <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-                      Name *
+                      Nombre *
                     </label>
                     <Input
                       id="name"
@@ -105,14 +105,14 @@ export default function Contact() {
                       value={formData.name}
                       onChange={handleChange}
                       className="bg-black/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-bordeaux-hover"
-                      placeholder="Your name"
+                      placeholder="Tu nombre"
                       data-testid="input-contact-name"
                     />
                   </div>
                   
                   <div>
                     <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                      Email *
+                      Correo Electrónico *
                     </label>
                     <Input
                       id="email"
@@ -121,14 +121,14 @@ export default function Contact() {
                       value={formData.email}
                       onChange={handleChange}
                       className="bg-black/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-bordeaux-hover"
-                      placeholder="your@email.com"
+                      placeholder="tu@email.com"
                       data-testid="input-contact-email"
                     />
                   </div>
                   
                   <div>
                     <label htmlFor="company" className="block text-sm font-medium text-gray-300 mb-2">
-                      Company
+                      Empresa
                     </label>
                     <Input
                       id="company"
@@ -137,14 +137,14 @@ export default function Contact() {
                       value={formData.company}
                       onChange={handleChange}
                       className="bg-black/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-bordeaux-hover"
-                      placeholder="Your company"
+                      placeholder="Tu empresa"
                       data-testid="input-contact-company"
                     />
                   </div>
                   
                   <div>
                     <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
-                      Message *
+                      Mensaje *
                     </label>
                     <Textarea
                       id="message"
@@ -153,7 +153,7 @@ export default function Contact() {
                       onChange={handleChange}
                       rows={5}
                       className="bg-black/50 border-gray-700 text-white placeholder:text-gray-500 focus:border-bordeaux-hover resize-none"
-                      placeholder="Tell us about your project..."
+                      placeholder="Contanos sobre tu proyecto..."
                       data-testid="input-contact-message"
                     />
                   </div>
@@ -163,7 +163,7 @@ export default function Contact() {
                     className="w-full bg-bordeaux hover:bg-bordeaux-hover text-white transition-all duration-300"
                     data-testid="button-contact-submit"
                   >
-                    Send Message
+                    Enviar Mensaje
                   </Button>
                 </form>
               </CardContent>
@@ -173,10 +173,10 @@ export default function Contact() {
             <div className="space-y-8">
               <div>
                 <h2 className="text-3xl font-bold text-white mb-4">
-                  Contact Information
+                  Información de Contacto
                 </h2>
                 <p className="text-gray-300 leading-relaxed mb-8">
-                  Have questions? We're here to help. Reach out through any of these channels.
+                  ¿Tenés preguntas? Estamos aquí para ayudarte. Contactanos por cualquiera de estos canales.
                 </p>
               </div>
 
