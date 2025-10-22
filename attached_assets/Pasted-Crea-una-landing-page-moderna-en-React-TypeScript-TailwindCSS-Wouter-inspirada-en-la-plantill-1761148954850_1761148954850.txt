@@ -1,0 +1,61 @@
+Crea una landing page moderna en React + TypeScript + TailwindCSS + Wouter, inspirada en la plantilla “Penh” de Wix Studio, con un tema oscuro degradado de negro a bordeaux (#000 → #730028).
+
+La estructura debe incluir las siguientes secciones:
+
+Navbar fijo con logo centrado, links (About, Solutions, Insights, Contact) y redes sociales a la derecha. Fondo con transparencia y blur.
+
+Hero section con fondo de video o imagen (placeholder), overlay oscuro y texto centrado: título, subtítulo y botón con borde blanco.
+
+Who We Are: layout dos columnas (imagen izquierda, texto + botón derecha).
+
+Industries: texto a la izquierda, imagen circular a la derecha, lista con ítems (Financial, Tech, Manufacturing, etc.).
+
+Explore Our Solutions: título centrado, subtítulo y una cuadrícula 2x2 de cards con borde blanco y hover suave.
+
+Stay Ahead With Expert Knowledge: título, subtítulo y una grilla 2 columnas con imagen + texto.
+
+Our Clients: logos centrados horizontalmente, fondo más claro.
+
+Testimonials: tres tarjetas centradas con borde y texto en itálica.
+
+Footer: fondo negro, logo grande, links, redes y formulario de suscripción.
+
+🔧 Configuración:
+
+Usa Wouter para las rutas (/, /platform, /methodology, /value, /cases, /contact).
+
+Implementa transiciones suaves (transition-all, duration-500, ease-in-out).
+
+Usa scroll reveal simple (fade-in) al entrar cada sección.
+
+Las fuentes deben ser sans-serif, limpias y elegantes (por ejemplo, “Inter” o “Work Sans”).
+
+Implementa diseño responsive (mobile-first).
+
+No uses librerías externas de animación, solo Tailwind y React.
+
+El código debe estar organizado en carpetas /components y /pages.
+
+🎨 Paleta base:
+
+Fondo: from-black via-[#1a0008] to-[#730028]
+
+Texto principal: text-white
+
+Secundario: text-gray-400
+
+Borde: border-gray-700
+
+Hover: text-bordeaux-400 o text-[#ff3d6f]
+
+⚡️ Extras:
+
+Implementa “smooth scrolling”.
+
+Hero con animación fade-in inicial.
+
+Cards con hover:-translate-y-1 y hover:border-[#ff3d6f].
+
+Footer con input y botón tipo “newsletter”.
+
+El resultado debe ser elegante, profesional, limpio y coherente con un branding de tecnología premium.
