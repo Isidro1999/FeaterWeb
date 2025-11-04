@@ -68,7 +68,9 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(import.meta.dirname, "public");
+  // In production, look for dist/public relative to the project root
+  // When running from dist/index.js, go up one level to find dist/public
+  const distPath = path.resolve(import.meta.dirname, "..", "public");
 
   if (!fs.existsSync(distPath)) {
     throw new Error(
