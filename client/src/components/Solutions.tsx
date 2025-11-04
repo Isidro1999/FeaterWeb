@@ -1,29 +1,29 @@
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Lightbulb, LineChart, Shield, Zap } from "lucide-react";
 
 export function Solutions() {
-  const { ref, isVisible } = useScrollReveal();
+  const { ref, isVisible } = useScrollAnimation();
 
   const solutions = [
     {
-      title: "Transformación Digital",
-      description: "Modernizá tus operaciones con soluciones digitales de vanguardia que optimizan procesos y mejoran la experiencia del cliente.",
+      title: "Desarrollo de Plataformas",
+      description: "Creamos soluciones digitales personalizadas para la gestión, organización y distribución de contenido audiovisual. Integraciones seguras, interfaces modernas y experiencias centradas en el usuario.",
       icon: Zap,
     },
     {
-      title: "Análisis de Datos",
-      description: "Desbloqueá el poder de tus datos con análisis avanzados e insights impulsados por IA para una toma de decisiones más inteligente.",
+      title: "Gestión de Contenido",
+      description: "Diseñamos sistemas que simplifican la administración de materiales multimedia: carga, etiquetado, búsqueda avanzada y descarga. Todo desde un entorno colaborativo y fácil de usar.",
       icon: LineChart,
     },
     {
-      title: "Consultoría Estratégica",
-      description: "Navegá desafíos complejos con orientación experta y estrategias personalizadas alineadas con tus objetivos empresariales.",
+      title: "Optimización y Análisis",
+      description: "Incorporamos herramientas de analítica y seguimiento para entender cómo se usa el contenido y tomar decisiones basadas en datos. Desde estadísticas de descarga hasta métricas de engagement.",
       icon: Lightbulb,
     },
     {
-      title: "Ciberseguridad",
-      description: "Protegé tus activos digitales con soluciones de seguridad integrales y gestión proactiva de amenazas.",
+      title: "Implementación y Soporte",
+      description: "Acompañamos a cada cliente en todo el proceso: desde la puesta en marcha y capacitación, hasta la evolución continua de la plataforma. Soporte técnico, actualizaciones y asesoramiento permanente.",
       icon: Shield,
     },
   ];
@@ -35,8 +35,8 @@ export function Solutions() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div 
-          className={`text-center mb-16 transition-all duration-1000 ease-out ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+          className={`text-center mb-16 transition-all duration-700 ease-out ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
           <h2 
@@ -55,8 +55,8 @@ export function Solutions() {
         </div>
 
         <div 
-          className={`grid md:grid-cols-2 gap-8 transition-all duration-1000 delay-200 ease-out ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+          className={`grid md:grid-cols-2 gap-8 transition-all duration-700 delay-200 ease-out ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
           {solutions.map((solution, index) => {

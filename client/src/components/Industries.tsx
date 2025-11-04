@@ -1,17 +1,16 @@
-import { useScrollReveal } from "@/hooks/useScrollReveal";
-import industryImage from "@assets/generated_images/Advanced_manufacturing_technology_5545e766.png";
-import { Building2, Cpu, Factory, HeartPulse, Landmark, ShoppingCart } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+import { Building2, Cpu, Factory, HeartPulse, Landmark, ShoppingCart, Tv2 } from "lucide-react";
 
 export function Industries() {
-  const { ref, isVisible } = useScrollReveal();
+  const { ref, isVisible } = useScrollAnimation();
 
   const industries = [
-    { name: "Servicios Financieros", icon: Landmark },
+    { name: "Medios y Entretenimiento", icon: Tv2 },
     { name: "Tecnología", icon: Cpu },
-    { name: "Manufactura", icon: Factory },
-    { name: "Salud", icon: HeartPulse },
-    { name: "Comercio Minorista", icon: ShoppingCart },
-    { name: "Bienes Raíces", icon: Building2 },
+    { name: "Gobierno y Sector Público", icon: Factory },
+    { name: "Real Estate y Construcción", icon: HeartPulse },
+    { name: "Deportes", icon: ShoppingCart },
+    { name: "Educación y Cultura", icon: Building2 },
   ];
 
   return (
@@ -21,8 +20,8 @@ export function Industries() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div 
-          className={`grid md:grid-cols-2 gap-16 items-center transition-all duration-1000 ease-out ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+          className={`grid md:grid-cols-2 gap-16 items-center transition-all duration-700 ease-out ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
           {/* Content */}
@@ -58,16 +57,13 @@ export function Industries() {
             </div>
           </div>
 
-          {/* Circular Image */}
+          {/* Circular Visual */}
           <div className="relative flex items-center justify-center">
             <div className="w-80 h-80 rounded-full overflow-hidden border-4 border-bordeaux-hover/30 shadow-2xl relative group">
-              <div className="absolute inset-0 bg-bordeaux-hover/10 group-hover:bg-bordeaux-hover/20 transition-colors duration-500" />
-              <img
-                src={industryImage}
-                alt="Advanced manufacturing technology"
-                className="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110"
-                data-testid="img-industries"
-              />
+              <div className="absolute inset-0 bg-gradient-to-br from-bordeaux-dark via-bordeaux to-black group-hover:scale-110 transition-transform duration-500" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Factory className="w-40 h-40 text-white/20 group-hover:text-white/30 transition-colors duration-500" data-testid="img-industries" />
+              </div>
             </div>
           </div>
         </div>

@@ -48,8 +48,8 @@ export default function Contact() {
     {
       icon: Mail,
       title: "Correo Electrónico",
-      value: "contact@penh.com",
-      link: "mailto:contact@penh.com",
+      value: "contacto@feater.com",
+      link: "mailto:contacto@feater.com",
     },
     {
       icon: Phone,
@@ -60,7 +60,7 @@ export default function Contact() {
     {
       icon: MapPin,
       title: "Ubicación",
-      value: "San Francisco, CA",
+      value: "Buenos Aires, Argentina",
       link: null,
     },
   ];

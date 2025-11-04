@@ -1,9 +1,9 @@
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Quote } from "lucide-react";
 
 export function Testimonials() {
-  const { ref, isVisible } = useScrollReveal();
+  const { ref, isVisible } = useScrollAnimation();
 
   const testimonials = [
     {
@@ -30,8 +30,8 @@ export function Testimonials() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div 
-          className={`text-center mb-16 transition-all duration-1000 ease-out ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+          className={`text-center mb-16 transition-all duration-700 ease-out ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
           <h2 
@@ -50,8 +50,8 @@ export function Testimonials() {
         </div>
 
         <div 
-          className={`grid md:grid-cols-3 gap-8 transition-all duration-1000 delay-200 ease-out ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+          className={`grid md:grid-cols-3 gap-8 transition-all duration-700 delay-200 ease-out ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
           {testimonials.map((testimonial, index) => (

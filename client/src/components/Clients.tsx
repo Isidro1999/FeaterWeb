@@ -1,15 +1,54 @@
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 export function Clients() {
-  const { ref, isVisible } = useScrollReveal();
+  const { ref, isVisible } = useScrollAnimation();
 
   const clients = [
-    { name: "TechCorp", logo: "TC" },
-    { name: "InnovateX", logo: "IX" },
-    { name: "GlobalTech", logo: "GT" },
-    { name: "DataSystems", logo: "DS" },
-    { name: "FutureNet", logo: "FN" },
-    { name: "SmartSolutions", logo: "SS" },
+    { 
+      name: "Boca Juniors", 
+      logo: "/client-logos/Boca.png",
+      description: "Club de Fútbol"
+    },
+    { 
+      name: "Luigi Bosca", 
+      logo: "/client-logos/Luigi-bosca.png",
+      description: "Bodega Premium"
+    },
+    { 
+      name: "RE/MAX", 
+      logo: "/client-logos/Remax.png",
+      description: "Inmobiliaria"
+    },
+    { 
+      name: "KOLAPSE", 
+      logo: "/client-logos/Kolapse.png",
+      description: "Tecnología"
+    },
+    { 
+      name: "El Hilodariadna", 
+      logo: "/client-logos/ElHiloDariadna.png",
+      description: "Cultura"
+    },
+    { 
+      name: "Buenos Aires Ciudad", 
+      logo: "/client-logos/BuenosAiresCiudad.png",
+      description: "Gobierno"
+    },
+    { 
+      name: "MALBA", 
+      logo: "/client-logos/Malba.png",
+      description: "Museo"
+    },
+    { 
+      name: "Pública", 
+      logo: "/client-logos/Pública.png",
+      description: "Medios"
+    },
+    { 
+      name: "River Plate", 
+      logo: "/client-logos/River.png",
+      description: "Club de Fútbol"
+    },
   ];
 
   return (
@@ -19,8 +58,8 @@ export function Clients() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div 
-          className={`text-center mb-16 transition-all duration-1000 ease-out ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+          className={`text-center mb-16 transition-all duration-700 ease-out ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
           <h2 
@@ -39,23 +78,22 @@ export function Clients() {
         </div>
 
         <div 
-          className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8 transition-all duration-1000 delay-200 ease-out ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+          className={`flex flex-wrap justify-center items-center gap-12 transition-all duration-700 delay-200 ease-out ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
           {clients.map((client, index) => (
             <div
               key={client.name}
-              className="flex items-center justify-center p-6 rounded-md border border-gray-700 hover:border-bordeaux-hover transition-all duration-500 hover:-translate-y-1 bg-black/20 group"
+              className="flex items-center justify-center group"
               data-testid={`item-client-${index}`}
             >
-              <div className="text-center">
-                <div className="w-16 h-16 mx-auto mb-2 rounded-md bg-gradient-to-br from-bordeaux to-bordeaux-dark flex items-center justify-center text-white font-bold text-xl group-hover:scale-110 transition-transform duration-300">
-                  {client.logo}
-                </div>
-                <span className="text-sm text-gray-400 group-hover:text-white transition-colors duration-300">
-                  {client.name}
-                </span>
+              <div className="w-40 h-40 rounded-full bg-white flex items-center justify-center hover:scale-105 transition-all duration-500 hover:shadow-2xl hover:shadow-bordeaux-hover/30 p-4 border-2 border-transparent hover:border-bordeaux-hover overflow-hidden">
+                <img 
+                  src={client.logo} 
+                  alt={`Logo de ${client.name}`}
+                  className="w-full h-full object-contain scale-110"
+                />
               </div>
             </div>
           ))}

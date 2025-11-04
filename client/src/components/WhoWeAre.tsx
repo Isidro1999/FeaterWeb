@@ -1,10 +1,9 @@
-import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Button } from "@/components/ui/button";
-import teamImage from "@assets/generated_images/Professional_team_collaboration_image_8419cb3a.png";
 import { ArrowRight } from "lucide-react";
 
 export function WhoWeAre() {
-  const { ref, isVisible } = useScrollReveal();
+  const { ref, isVisible } = useScrollAnimation();
 
   return (
     <section
@@ -13,19 +12,25 @@ export function WhoWeAre() {
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div 
-          className={`grid md:grid-cols-2 gap-12 items-center transition-all duration-1000 ease-out ${
-            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
+          className={`grid md:grid-cols-2 gap-12 items-center transition-all duration-700 ease-out ${
+            isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
           }`}
         >
-          {/* Image */}
+          {/* Video */}
           <div className="relative group">
-            <div className="absolute inset-0 bg-bordeaux-hover/20 rounded-md transform transition-transform duration-500 group-hover:scale-105" />
-            <img
-              src={teamImage}
-              alt="Professional team collaboration"
+          <div className="absolute inset-0 bg-transparent rounded-md transform transition-transform duration-500 group-hover:scale-105 pointer-events-none z-10" />
+
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
               className="relative rounded-md w-full h-auto shadow-2xl transform transition-transform duration-500 group-hover:scale-[1.02]"
-              data-testid="img-who-we-are"
-            />
+              data-testid="video-who-we-are"
+            >
+              <source src="/video-web-feater.mp4" type="video/mp4" />
+              Tu navegador no soporta videos HTML5.
+            </video>
           </div>
 
           {/* Content */}
@@ -41,13 +46,15 @@ export function WhoWeAre() {
               className="text-lg text-gray-300 leading-relaxed"
               data-testid="text-who-we-are-description"
             >
-              Somos un equipo de innovadores apasionados y expertos de la industria dedicados a transformar empresas a través de tecnología de vanguardia y conocimientos estratégicos. Con décadas de experiencia combinada, ofrecemos soluciones que generan resultados medibles.
+              En Feater creemos que el contenido es el activo más poderoso de una marca. Diseñamos y desarrollamos plataformas inteligentes que permiten a los equipos centralizar, organizar y compartir todo su material audiovisual de forma simple y colaborativa.
             </p>
             
             <p className="text-lg text-gray-400 leading-relaxed">
-              Nuestro enfoque combina un profundo conocimiento de la industria con metodologías ágiles, asegurando que cada solución esté adaptada a tus desafíos y objetivos únicos. No solo consultamos, nos asociamos contigo para el éxito a largo plazo.
+
             </p>
-            
+            <p className="text-lg text-gray-300 leading-relaxed">
+            Trabajamos junto a empresas, productoras y organizaciones para que puedan enfocarse en crear, mientras la tecnología se encarga del resto. Somos la conexión entre las ideas, los equipos y los contenidos que las hacen posibles.
+            </p>
             <Button
               size="lg"
               variant="outline"
