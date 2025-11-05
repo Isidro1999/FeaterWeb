@@ -1,10 +1,11 @@
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import { useLocation } from "wouter"; // importo la funcion para navegar
 
 export function Hero() {
   const { ref, isVisible } = useScrollAnimation();
-
+  const [, setLocation] = useLocation(); // hago la funcion para navegar
   return (
     <section 
       ref={ref as React.RefObject<HTMLElement>}
@@ -47,6 +48,7 @@ export function Hero() {
           variant="outline"
           className="border-2 border-white text-white hover:bg-white/10 hover:border-bordeaux-hover transition-all duration-500 text-lg px-8 py-6 group"
           data-testid="button-hero-cta"
+          onClick={() => setLocation("/contact")} // hago click y navego a la pagina de contacto
         >
           CONTACTANOS
           <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
