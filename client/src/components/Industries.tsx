@@ -60,10 +60,16 @@ export function Industries() {
           {/* Circular Visual */}
           <div className="relative flex items-center justify-center">
             <div className="w-80 h-80 rounded-full overflow-hidden border-4 border-bordeaux-hover/30 shadow-2xl relative group">
-              <div className="absolute inset-0 bg-gradient-to-br from-bordeaux-dark via-bordeaux to-black group-hover:scale-110 transition-transform duration-500" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Factory className="w-40 h-40 text-white/20 group-hover:text-white/30 transition-colors duration-500" data-testid="img-industries" />
-              </div>
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                data-testid="video-industries"
+              >
+                <source src="/video2.mp4" type="video/mp4" />
+              </video>
             </div>
           </div>
         </div>
