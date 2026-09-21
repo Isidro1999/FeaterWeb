@@ -211,7 +211,9 @@
     padding:15px 24px;font-family:var(--font-label);font-weight:800;font-size:15px;cursor:pointer;
   }
   .submit-btn:hover{background:var(--orange);}
+  .submit-btn:disabled{opacity:.6;cursor:not-allowed;}
   .form-msg{font-size:13px;color:var(--orange);display:none;font-weight:700;}
+  .form-msg.error{color:#B42318;}
 
   /* ---------- Footer ---------- */
   footer{background:var(--ink);color:#fff;padding-block:0;}
@@ -392,13 +394,16 @@
       <h2 style="margin-top:14px;">Diseñemos tu FEATER.</h2>
       <p>Contanos sobre tu organización y tu volumen de contenido. Te mostramos cómo Feater puede ordenar tus archivos y ponerlos a trabajar.</p>
     </div>
-    <form onsubmit="event.preventDefault();document.getElementById('fmsg1').style.display='block';this.reset();">
-      <div class="field"><label for="f1-name">Nombre</label><input id="f1-name" required></div>
-      <div class="field"><label for="f1-company">Empresa</label><input id="f1-company"></div>
-      <div class="field"><label for="f1-email">Email</label><input id="f1-email" type="email" required></div>
-      <div class="field"><label for="f1-msg">Mensaje</label><textarea id="f1-msg"></textarea></div>
+    <form id="contact-form" action="https://formspree.io/f/mvkgaron" method="POST">
+      <input type="hidden" name="_subject" value="Nuevo contacto desde feater.me">
+      <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;height:0;width:0;opacity:0;">
+      <div class="field"><label for="f1-name">Nombre</label><input id="f1-name" name="name" required></div>
+      <div class="field"><label for="f1-company">Empresa</label><input id="f1-company" name="company"></div>
+      <div class="field"><label for="f1-email">Email</label><input id="f1-email" name="email" type="email" required></div>
+      <div class="field"><label for="f1-msg">Mensaje</label><textarea id="f1-msg" name="message"></textarea></div>
       <button class="submit-btn" type="submit">Solicitar una demo</button>
       <span class="form-msg" id="fmsg1">¡Gracias! Te contactamos a la brevedad.</span>
+      <span class="form-msg error" id="fmsg-error">No se pudo enviar. Probá de nuevo en un momento.</span>
     </form>
   </div>
 </section>
@@ -418,6 +423,35 @@
   </div>
 </footer>
 
+<script>
+  (function () {
+    var form = document.getElementById('contact-form');
+    if (!form) return;
+    var ok = document.getElementById('fmsg1');
+    var err = document.getElementById('fmsg-error');
+    var btn = form.querySelector('[type="submit"]');
 
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      ok.style.display = 'none';
+      err.style.display = 'none';
+      btn.disabled = true;
+
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { Accept: 'application/json' }
+      }).then(function (res) {
+        if (!res.ok) throw new Error('send-failed');
+        ok.style.display = 'block';
+        form.reset();
+      }).catch(function () {
+        err.style.display = 'block';
+      }).then(function () {
+        btn.disabled = false;
+      });
+    });
+  })();
+</script>
 </body>
 </html>
