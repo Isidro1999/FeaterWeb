@@ -1,0 +1,514 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feater — Seguridad</title>
+<style>
+  :root{
+    --orange:#F54C16;
+    --orange-bright:#FF5100;
+    --ink:#171717;
+    --ink-soft:#3A3634;
+    --paper:#FFFFFF;
+    --paper-warm:#FFF4EE;
+    --line:#EAD9CD;
+    --font-display:'Archivo', 'Arial Black', sans-serif;
+    --font-body:'Public Sans', 'Helvetica Neue', Arial, sans-serif;
+    --font-label:'Archivo', sans-serif;
+    --font-mono:'JetBrains Mono', 'Courier New', monospace;
+
+    /* Paleta oscura específica de esta página (infraestructura / sistema) */
+    --bg:#0B0B0A;
+    --bg-elevated:#131211;
+    --bg-elevated-2:#1C1A17;
+    --dline:rgba(255,255,255,.14);
+    --dline-soft:rgba(255,255,255,.07);
+    --dtext:#F3EEE8;
+    --dtext-soft:#9A948C;
+    --dtext-dim:#635E58;
+  }
+  /* Feater es una identidad de marca fija (naranja/negro/blanco/crema): esta página no cambia con el modo claro/oscuro del visitante. */
+
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-body);-webkit-font-smoothing:antialiased;}
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+  .wrap{max-width:1180px;margin:0 auto;padding-inline:24px;}
+  h1,h2,h3{font-family:var(--font-display);line-height:1.02;margin:0;text-wrap:balance;letter-spacing:-0.01em;}
+  p{line-height:1.6;color:var(--ink-soft);margin:0;}
+  .eyebrow{font-family:var(--font-label);font-weight:800;font-size:13px;letter-spacing:.14em;text-transform:uppercase;}
+  section{padding-block:88px;}
+  @media (max-width:640px){ section{padding-block:56px;} }
+  .sys-index{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.12em;color:var(--dtext-dim);}
+  .sys-index-light{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.12em;color:var(--ink-soft);opacity:.65;}
+  .section-lead{margin-top:16px;font-size:16px;max-width:520px;}
+
+  /* ---------- Header (idéntico al resto del sitio) ---------- */
+  header{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:var(--paper);border-bottom:1px solid var(--line);}
+  .nav{display:flex;align-items:center;justify-content:space-between;padding-block:16px;}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .logo svg{width:30px;height:22px;}
+  .logo span{font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--ink);}
+  .logo span em{color:var(--orange);font-style:italic;}
+  .navlinks{display:flex;align-items:center;gap:34px;}
+  .navlinks a{font-family:var(--font-label);font-weight:700;font-size:14px;text-decoration:none;color:var(--ink);}
+  .navlinks a.active, .mnav a.active{color:var(--orange);}
+  .btn{display:inline-block;font-family:var(--font-label);font-weight:800;font-size:14px;letter-spacing:.02em;text-decoration:none;padding:13px 26px;border-radius:2px;border:2px solid var(--ink);}
+  .btn-solid{background:var(--ink);color:var(--paper);}
+  .btn-solid:hover{background:var(--orange);border-color:var(--orange);color:#fff;}
+  .navcta{display:flex;align-items:center;gap:20px;}
+  .menu-toggle{display:none;background:none;border:none;cursor:pointer;padding:6px;}
+  .menu-toggle span{display:block;width:24px;height:2px;background:var(--ink);margin:5px 0;}
+  @media (max-width:860px){ .navlinks{display:none;} .menu-toggle{display:block;} }
+  .mnav{display:none;flex-direction:column;gap:14px;padding:14px 24px 20px;border-top:1px solid var(--line);}
+  .mnav:not([hidden]){display:flex;}
+  .mnav a{font-family:var(--font-label);font-weight:700;text-decoration:none;color:var(--ink);}
+
+  /* ---------- Hero ---------- */
+  .hero{background:var(--bg);color:var(--dtext);padding-block:56px 84px;}
+  .back-link{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-label);font-weight:800;font-size:13px;letter-spacing:.02em;text-decoration:none;color:var(--dtext-soft);margin-bottom:24px;}
+  .back-link:hover{color:var(--dtext);}
+  .hero h1{color:#fff;font-size:clamp(38px,5vw,56px);font-weight:900;margin-top:16px;}
+  .hero .lead{color:var(--dtext-soft);margin-top:22px;font-size:16.5px;max-width:440px;}
+  .hero-ctas{display:flex;gap:14px;margin-top:32px;flex-wrap:wrap;}
+  .btn-outline{background:transparent;border-color:var(--dline);color:var(--dtext);}
+  .btn-outline:hover{border-color:var(--dtext);background:rgba(255,255,255,.05);}
+  .btn-outline-dark{background:transparent;border-color:var(--ink);color:var(--ink);}
+  .btn-outline-dark:hover{background:var(--ink);color:#fff;}
+
+  .hero-grid{display:grid;grid-template-columns:minmax(0,440px) 1fr;gap:64px;align-items:center;}
+  @media (max-width:980px){ .hero-grid{grid-template-columns:1fr;gap:52px;} }
+  .hero-diagram{display:flex;justify-content:center;}
+
+  /* Diagrama de capas concéntricas */
+  .orbit{position:relative;width:100%;max-width:420px;aspect-ratio:1;overflow:visible;}
+  .orbit-sweep{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg, rgba(245,76,22,.22), transparent 26%);animation:sweep 16s linear infinite;}
+  @keyframes sweep{to{transform:rotate(360deg);}}
+  @media (prefers-reduced-motion:reduce){ .orbit-sweep{animation:none;opacity:.5;} }
+  .orbit-rings{position:absolute;inset:0;width:100%;height:100%;}
+  .orbit-rings circle{fill:none;stroke:var(--dline-soft);stroke-width:.4;}
+  .orbit-rings line{stroke:var(--dline-soft);stroke-width:.35;}
+  .orbit-core{
+    position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+    width:92px;height:92px;border-radius:50%;background:var(--bg-elevated);border:1px solid var(--dline);
+    display:flex;align-items:center;justify-content:center;text-align:center;
+  }
+  .orbit-core::before{content:"";position:absolute;inset:-14px;border-radius:50%;border:1px solid rgba(245,76,22,.3);animation:corePulse 3.4s ease-in-out infinite;}
+  @keyframes corePulse{0%,100%{transform:scale(1);opacity:.55;}50%{transform:scale(1.14);opacity:0;}}
+  @media (prefers-reduced-motion:reduce){ .orbit-core::before{animation:none;opacity:0;} }
+  .orbit-core span{font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;color:var(--dtext);}
+  .orbit-node{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px;padding:4px;}
+  .orbit-node .dot{width:9px;height:9px;border-radius:50%;background:var(--bg-elevated-2);border:1px solid var(--dline);animation:nodeActivate 12s ease-in-out infinite;}
+  .orbit-node.n1 .dot{animation-delay:0s;} .orbit-node.n2 .dot{animation-delay:2s;}
+  .orbit-node.n3 .dot{animation-delay:4s;} .orbit-node.n4 .dot{animation-delay:6s;}
+  .orbit-node.n5 .dot{animation-delay:8s;} .orbit-node.n6 .dot{animation-delay:10s;}
+  @keyframes nodeActivate{
+    0%,16%,100%{background:var(--bg-elevated-2);border-color:var(--dline);box-shadow:none;}
+    3%,10%{background:var(--orange);border-color:var(--orange);box-shadow:0 0 0 5px rgba(245,76,22,.18);}
+  }
+  @media (prefers-reduced-motion:reduce){ .orbit-node .dot{animation:none;} }
+  .node-label{font-family:var(--font-label);font-weight:700;font-size:11px;color:var(--dtext-soft);text-align:center;white-space:nowrap;}
+  .node-label em{display:none;}
+  .orbit-node:hover .node-label, .orbit-node:focus-within .node-label{color:#fff;}
+  .orbit-node:hover .node-label em, .orbit-node:focus-within .node-label em{display:block;font-style:normal;font-family:var(--font-mono);font-size:9px;color:var(--dtext-dim);margin-top:2px;white-space:normal;max-width:120px;}
+
+  /* ---------- Capas (sticky scroll) ---------- */
+  .capas{background:var(--bg);border-top:1px solid var(--dline-soft);}
+  .capas-head{max-width:620px;margin-bottom:60px;}
+  .capas-head h2{color:#fff;font-size:clamp(28px,3.6vw,40px);font-weight:900;margin-top:14px;}
+  .capas-head .section-lead{color:var(--dtext-soft);}
+  .capas-grid{display:grid;grid-template-columns:380px 1fr;gap:72px;align-items:start;}
+  @media (max-width:900px){ .capas-grid{grid-template-columns:1fr;gap:8px;} }
+  .capas-visual{position:sticky;top:100px;}
+  @media (max-width:900px){ .capas-visual{position:static;margin-bottom:36px;} }
+  .stack{display:flex;flex-direction:column;gap:10px;background:var(--bg-elevated);border:1px solid var(--dline-soft);border-radius:12px;padding:18px;}
+  .stack-band{display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:8px;background:var(--bg-elevated-2);border:1px solid var(--dline-soft);transition:background .4s ease, border-color .4s ease, transform .4s ease;}
+  .stack-band .band-num{font-family:var(--font-mono);font-size:11px;color:var(--dtext-dim);transition:color .4s ease;}
+  .stack-band .band-name{font-family:var(--font-label);font-weight:700;font-size:13px;color:var(--dtext-soft);transition:color .4s ease;}
+  .stack-band .band-icon{width:16px;height:16px;margin-left:auto;flex:none;opacity:.55;transition:opacity .4s ease;}
+  .stack-band .band-icon *{stroke:var(--dtext-soft);}
+  .stack-band.active{background:rgba(245,76,22,.10);border-color:rgba(245,76,22,.4);transform:translateX(4px);}
+  .stack-band.active .band-num{color:var(--orange-bright);}
+  .stack-band.active .band-name{color:#fff;}
+  .stack-band.active .band-icon{opacity:1;}
+  .stack-band.active .band-icon *{stroke:var(--orange);}
+  .capas-list{display:flex;flex-direction:column;}
+  .capa-item{padding-block:44px;border-top:1px solid var(--dline-soft);}
+  .capa-item:first-child{border-top:none;padding-top:4px;}
+  .capa-num{font-family:var(--font-mono);font-size:11.5px;color:var(--orange);letter-spacing:.06em;}
+  .capa-item h3{color:#fff;font-size:22px;font-weight:800;margin-top:10px;}
+  .capa-item p{color:var(--dtext-soft);margin-top:10px;font-size:15px;max-width:420px;}
+
+  /* ---------- Control en cada acceso (única sección clara) ---------- */
+  .control-section{background:var(--paper-warm);border-block:1px solid var(--line);}
+  .control-grid{display:grid;grid-template-columns:1fr .82fr;gap:60px;align-items:center;}
+  @media (max-width:900px){ .control-grid{grid-template-columns:1fr;gap:40px;} }
+  .control-copy h2{font-size:clamp(26px,3.4vw,36px);font-weight:900;margin-top:14px;color:var(--ink);}
+  .control-copy p{margin-top:16px;font-size:16px;max-width:420px;}
+  .control-tags{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .ctag{font-family:var(--font-label);font-weight:700;font-size:12.5px;color:var(--ink-soft);border:1.5px solid var(--line);border-radius:100px;padding:8px 16px;background:var(--paper);}
+
+  .dark-mock{background:var(--bg-elevated);border-radius:12px;overflow:hidden;box-shadow:0 30px 60px -24px rgba(20,18,16,.4);}
+  .mock-chrome-dark{display:flex;align-items:center;gap:8px;padding:13px 16px;border-bottom:1px solid var(--dline-soft);}
+  .mock-chrome-dark i{width:9px;height:9px;border-radius:50%;background:#39352F;flex:none;}
+  .mock-chrome-dark span{font-family:var(--font-mono);font-size:10.5px;color:var(--dtext-dim);margin-left:6px;}
+
+  .perm-table{padding:6px 6px 16px;overflow-x:auto;}
+  @media (max-width:560px){
+    .perm-table{-webkit-mask-image:linear-gradient(to right, #000 90%, transparent 100%);mask-image:linear-gradient(to right, #000 90%, transparent 100%);}
+  }
+  .perm-row{display:grid;grid-template-columns:1.6fr repeat(5,.72fr);align-items:center;gap:4px;padding:11px 10px;border-radius:6px;min-width:460px;}
+  .perm-row.perm-head span{font-family:var(--font-mono);font-size:9px;letter-spacing:.05em;color:var(--dtext-dim);text-transform:uppercase;text-align:center;}
+  .perm-row.perm-head .perm-user{text-align:left;}
+  .perm-row:not(.perm-head):hover{background:var(--bg-elevated-2);}
+  .perm-user{display:flex;flex-direction:column;gap:2px;}
+  .perm-user b{font-family:var(--font-label);font-weight:700;font-size:12.5px;color:var(--dtext);}
+  .perm-user em{font-style:normal;font-family:var(--font-mono);font-size:9px;color:var(--dtext-dim);}
+  .perm-yes,.perm-no{text-align:center;font-size:13px;}
+  .perm-yes{color:var(--orange);}
+  .perm-no{color:var(--dtext-dim);}
+
+  /* ---------- Continuidad (redundancia) ---------- */
+  .redundancy{background:var(--bg-elevated);border-top:1px solid var(--dline-soft);}
+  .section-head-dark{max-width:620px;margin-bottom:64px;}
+  .section-head-dark h2{color:#fff;font-size:clamp(28px,3.6vw,40px);font-weight:900;margin-top:14px;}
+  .section-head-dark .section-lead{color:var(--dtext-soft);}
+  .section-head-dark.center{margin-inline:auto;text-align:center;}
+
+  .flow-diagram{display:flex;flex-direction:column;align-items:center;max-width:400px;margin-inline:auto;}
+  .fd-node{font-family:var(--font-label);font-weight:800;font-size:14px;color:var(--dtext);background:var(--bg-elevated-2);border:1px solid var(--dline);border-radius:8px;padding:14px 30px;}
+  .fd-node.main{min-width:180px;text-align:center;}
+  .fd-line{width:1px;height:30px;background:var(--dline);}
+  .fd-connector{display:flex;flex-direction:column;align-items:center;width:100%;max-width:340px;}
+  .fd-stub{width:1px;height:22px;background:var(--dline);}
+  .fd-bar{position:relative;width:100%;height:1px;background:var(--dline);}
+  .fd-drop{position:absolute;top:0;width:1px;height:22px;background:var(--dline);transform:translateX(-50%);}
+  .fd-leaves{display:flex;justify-content:space-between;width:100%;max-width:340px;margin-top:22px;gap:8px;}
+  .fd-node.leaf{display:flex;align-items:center;gap:7px;font-size:12px;padding:9px 14px;border-color:rgba(245,76,22,.35);white-space:nowrap;}
+  .fd-node.leaf .dot{width:6px;height:6px;border-radius:50%;background:var(--orange);flex:none;}
+  @media (max-width:560px){ .fd-leaves{flex-direction:column;align-items:center;max-width:none;} .fd-connector{display:none;} }
+
+  /* ---------- Seguridad sin fricción ---------- */
+  .friction-section{background:var(--bg-elevated);border-top:1px solid var(--dline-soft);}
+  .friction-compare{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+  @media (max-width:820px){ .friction-compare{grid-template-columns:1fr;gap:56px;} }
+  .fc-side{display:flex;flex-direction:column;align-items:center;}
+  .fc-label{font-family:var(--font-label);font-weight:800;font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--dtext-soft);margin-bottom:26px;}
+  .fc-cloud, .fc-hub{position:relative;width:100%;max-width:320px;aspect-ratio:4/3;}
+  .fc-cloud .fc-chip{position:absolute;transform:translate(-50%,-50%);font-family:var(--font-mono);font-size:10px;color:var(--dtext-dim);border:1px dashed var(--dline);border-radius:100px;padding:7px 13px;white-space:nowrap;}
+  .fc-hub{display:flex;align-items:center;justify-content:center;}
+  .fc-hub::before{content:"";position:absolute;inset:16%;border:1px solid rgba(245,76,22,.25);border-radius:16px;}
+  .fc-core{font-family:var(--font-label);font-weight:800;font-size:13px;color:#fff;background:var(--orange);border-radius:8px;padding:12px 20px;position:relative;z-index:1;}
+  .fc-hub .fc-chip{position:absolute;transform:translate(-50%,-50%);font-family:var(--font-mono);font-size:10px;color:var(--dtext);border:1px solid rgba(245,76,22,.4);border-radius:100px;padding:7px 13px;white-space:nowrap;background:var(--bg-elevated-2);}
+  @media (max-width:460px){ .fc-cloud, .fc-hub{max-width:260px;} }
+
+  /* ---------- CTA final (naranja) ---------- */
+  .cta-strip{background:var(--ink);color:#fff;}
+  .cta-strip .wrap{text-align:center;}
+  .cta-strip h2{color:#fff;font-size:clamp(28px,3.8vw,40px);font-weight:900;}
+  .cta-strip p{color:#D8CFC7;margin-top:14px;max-width:520px;margin-inline:auto;font-size:16px;}
+  .cta-strip .btn{margin-top:0;}
+  .cta-orange{background:var(--orange);color:var(--ink);}
+  .cta-orange .eyebrow{color:rgba(23,23,23,.6);}
+  .cta-orange h2{color:var(--ink);}
+  .cta-orange p{color:rgba(23,23,23,.78);}
+  .cta-orange .btn-solid{background:var(--ink);border-color:var(--ink);color:#fff;}
+  .cta-orange .btn-solid:hover{background:#000;border-color:#000;}
+
+  /* ---------- Footer (idéntico al resto del sitio) ---------- */
+  footer{background:var(--ink);color:#fff;padding-block:0;}
+  .foot-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;padding-block:22px;border-bottom:1px solid #34302C;}
+  .foot-top b{font-family:var(--font-label);font-size:16px;}
+  .foot-tag{font-family:var(--font-label);font-weight:800;font-size:13px;letter-spacing:.12em;color:#B8ACA3;}
+  .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-block:20px;font-size:13px;color:#8A8078;}
+  .foot-social{display:flex;gap:16px;}
+  .foot-social a{text-decoration:none;color:#B8ACA3;font-family:var(--font-label);font-weight:700;font-size:13px;}
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500;600&family=Fraunces:ital,wght@0,600;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="/">
+      <svg viewBox="0 0 60 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M0 4 L14 22 L0 40 L8 40 L22 22 L8 4 Z" fill="var(--ink)"/>
+        <path d="M17 4 L31 22 L17 40 L25 40 L39 22 L25 4 Z" fill="var(--ink)"/>
+        <path d="M34 4 L48 22 L34 40 L42 40 L56 22 L42 4 Z" fill="var(--orange)"/>
+      </svg>
+      <span>Feat<em>er</em></span>
+    </a>
+    <nav class="navlinks">
+      <a href="/smart-search-ai">Smart Search AI</a>
+      <a href="/seguridad" class="active">Seguridad</a>
+      <a href="/plataforma">Plataforma</a>
+    </nav>
+    <div class="navcta">
+      <a class="btn btn-solid" href="/#contacto">Contactanos</a>
+    </div>
+    <button class="menu-toggle" aria-label="Abrir menú" onclick="document.getElementById('mnav').hidden = !document.getElementById('mnav').hidden">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div id="mnav" class="mnav" hidden>
+    <a href="/smart-search-ai">Smart Search AI</a>
+    <a href="/seguridad" class="active">Seguridad</a>
+    <a href="/plataforma">Plataforma</a>
+    <a class="btn btn-solid" style="text-align:center;" href="/#contacto">Contactanos</a>
+  </div>
+</header>
+
+<div id="top"></div>
+
+<!-- ===== 1. HERO ===== -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <a class="back-link" href="/">&larr; Volver a Feater</a>
+      <div class="sys-index">SISTEMA · 01</div>
+      <div class="eyebrow" style="color:var(--orange);margin-top:10px;">Seguridad &amp; Infraestructura</div>
+      <h1>Tu contenido,<br>protegido en<br>cada capa.</h1>
+      <p class="lead">FEATER combina infraestructura, control de acceso y protección continua para mantener tus activos disponibles, seguros y bajo control.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-solid" href="/#contacto">Hablar con nuestro equipo</a>
+        <a class="btn btn-outline" href="#capas">Ver cómo protegemos tu contenido</a>
+      </div>
+    </div>
+    <div class="hero-diagram">
+      <div class="orbit" aria-hidden="true">
+        <div class="orbit-sweep"></div>
+        <svg class="orbit-rings" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="46"/><circle cx="50" cy="50" r="38"/>
+          <line x1="50" y1="50" x2="50" y2="12"/><line x1="50" y1="50" x2="82.9" y2="31"/>
+          <line x1="50" y1="50" x2="82.9" y2="69"/><line x1="50" y1="50" x2="50" y2="88"/>
+          <line x1="50" y1="50" x2="17.1" y2="69"/><line x1="50" y1="50" x2="17.1" y2="31"/>
+        </svg>
+        <div class="orbit-core"><span>CONTENIDO</span></div>
+        <div class="orbit-node n1" style="left:50%;top:12%;"><span class="dot"></span><span class="node-label">Acceso<em>Quién puede ingresar</em></span></div>
+        <div class="orbit-node n2" style="left:82.9%;top:31%;"><span class="dot"></span><span class="node-label">Permisos<em>Qué puede hacer</em></span></div>
+        <div class="orbit-node n3" style="left:82.9%;top:69%;"><span class="dot"></span><span class="node-label">Infraestructura<em>Dónde vive tu contenido</em></span></div>
+        <div class="orbit-node n4" style="left:50%;top:88%;"><span class="dot"></span><span class="node-label">Backups<em>Copias de resguardo</em></span></div>
+        <div class="orbit-node n5" style="left:17.1%;top:69%;"><span class="dot"></span><span class="node-label">Monitoreo<em>Seguimiento continuo</em></span></div>
+        <div class="orbit-node n6" style="left:17.1%;top:31%;"><span class="dot"></span><span class="node-label">Distribución<em>Entrega segura</em></span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. SEGURIDAD EN CAPAS ===== -->
+<section class="capas" id="capas">
+  <div class="wrap capas-head">
+    <div class="sys-index">SISTEMA · 02</div>
+    <div class="eyebrow" style="color:var(--orange);margin-top:10px;">Seguridad en capas</div>
+    <h2>La seguridad no depende de una sola medida</h2>
+    <p class="section-lead">FEATER combina múltiples capas de protección que trabajan juntas, no una detrás de otra.</p>
+  </div>
+  <div class="wrap capas-grid">
+    <div class="capas-visual">
+      <div class="stack">
+        <div class="stack-band active" data-layer="1">
+          <span class="band-num">01</span><span class="band-name">Acceso controlado</span>
+          <svg class="band-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7" stroke-width="1.6"/><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none" style="fill:var(--dtext-soft)"/></svg>
+        </div>
+        <div class="stack-band" data-layer="2">
+          <span class="band-num">02</span><span class="band-name">Roles y permisos</span>
+          <svg class="band-icon" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="10" r="3.4" stroke-width="1.6"/><circle cx="16" cy="12.5" r="2.6" stroke-width="1.6"/></svg>
+        </div>
+        <div class="stack-band" data-layer="3">
+          <span class="band-num">03</span><span class="band-name">Infraestructura protegida</span>
+          <svg class="band-icon" viewBox="0 0 24 24" fill="none"><rect x="5" y="3.5" width="14" height="5" rx="1" stroke-width="1.6"/><rect x="5" y="10" width="14" height="5" rx="1" stroke-width="1.6"/><rect x="5" y="16.5" width="14" height="4" rx="1" stroke-width="1.6"/></svg>
+        </div>
+        <div class="stack-band" data-layer="4">
+          <span class="band-num">04</span><span class="band-name">Backups y continuidad</span>
+          <svg class="band-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="7" width="11" height="11" rx="2" stroke-width="1.6"/><rect x="9.5" y="3" width="11" height="11" rx="2" stroke-width="1.6" opacity=".6"/></svg>
+        </div>
+        <div class="stack-band" data-layer="5">
+          <span class="band-num">05</span><span class="band-name">Monitoreo</span>
+          <svg class="band-icon" viewBox="0 0 24 24" fill="none"><path d="M2 12h4l2-6 3 12 2-9 2 6h5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+      </div>
+    </div>
+    <div class="capas-list">
+      <div class="capa-item" data-layer="1">
+        <span class="capa-num">CAPA 01</span>
+        <h3>Acceso controlado</h3>
+        <p>Definí quién puede ingresar, qué puede ver y qué puede hacer dentro de la plataforma.</p>
+      </div>
+      <div class="capa-item" data-layer="2">
+        <span class="capa-num">CAPA 02</span>
+        <h3>Roles y permisos</h3>
+        <p>Administrá accesos según equipos, responsabilidades y necesidades de cada organización.</p>
+      </div>
+      <div class="capa-item" data-layer="3">
+        <span class="capa-num">CAPA 03</span>
+        <h3>Infraestructura protegida</h3>
+        <p>Tus activos viven sobre una arquitectura diseñada para operar de forma estable y segura.</p>
+      </div>
+      <div class="capa-item" data-layer="4">
+        <span class="capa-num">CAPA 04</span>
+        <h3>Backups y continuidad</h3>
+        <p>Protección ante errores, pérdidas o interrupciones para preservar el acceso al contenido.</p>
+      </div>
+      <div class="capa-item" data-layer="5">
+        <span class="capa-num">CAPA 05</span>
+        <h3>Monitoreo</h3>
+        <p>Seguimiento continuo de la plataforma y su funcionamiento.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. CONTROL EN CADA ACCESO ===== -->
+<section class="control-section">
+  <div class="wrap control-grid">
+    <div class="dark-mock">
+      <div class="mock-chrome-dark"><i></i><i></i><i></i><span>feater / usuarios &amp; permisos</span></div>
+      <div class="perm-table">
+        <div class="perm-row perm-head">
+          <span class="perm-user">Usuario</span>
+          <span>Ver</span><span>Editar</span><span>Descargar</span><span>Compartir</span><span>Administrar</span>
+        </div>
+        <div class="perm-row">
+          <span class="perm-user"><b>M. Alonso</b><em>Admin</em></span>
+          <span class="perm-yes">●</span><span class="perm-yes">●</span><span class="perm-yes">●</span><span class="perm-yes">●</span><span class="perm-yes">●</span>
+        </div>
+        <div class="perm-row">
+          <span class="perm-user"><b>J. Torres</b><em>Editor</em></span>
+          <span class="perm-yes">●</span><span class="perm-yes">●</span><span class="perm-yes">●</span><span class="perm-yes">●</span><span class="perm-no">–</span>
+        </div>
+        <div class="perm-row">
+          <span class="perm-user"><b>R. Paz</b><em>Visualizador</em></span>
+          <span class="perm-yes">●</span><span class="perm-no">–</span><span class="perm-no">–</span><span class="perm-no">–</span><span class="perm-no">–</span>
+        </div>
+        <div class="perm-row">
+          <span class="perm-user"><b>Invitado</b><em>Acceso temporal</em></span>
+          <span class="perm-yes">●</span><span class="perm-no">–</span><span class="perm-no">–</span><span class="perm-no">–</span><span class="perm-no">–</span>
+        </div>
+      </div>
+    </div>
+    <div class="control-copy">
+      <div class="sys-index-light">SISTEMA · 03</div>
+      <div class="eyebrow" style="color:var(--orange);margin-top:10px;">Control en cada acceso</div>
+      <h2>El contenido correcto, para la persona correcta.</h2>
+      <p>Definí niveles de acceso y asegurate de que cada usuario trabaje únicamente con los contenidos y herramientas que necesita.</p>
+      <div class="control-tags">
+        <span class="ctag">Roles</span><span class="ctag">Permisos</span><span class="ctag">Accesos personalizados</span><span class="ctag">Administración centralizada</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. CONTINUIDAD / REDUNDANCIA ===== -->
+<section class="redundancy">
+  <div class="wrap">
+    <div class="section-head-dark">
+      <div class="sys-index">SISTEMA · 04</div>
+      <div class="eyebrow" style="color:var(--orange);margin-top:10px;">Continuidad</div>
+      <h2>Preparados para que tu contenido siga disponible.</h2>
+      <p class="section-lead">Una arquitectura preparada para reducir puntos únicos de falla y preservar el acceso a tus activos.</p>
+    </div>
+    <div class="flow-diagram">
+      <div class="fd-node main">Contenido</div>
+      <div class="fd-line"></div>
+      <div class="fd-node main">FEATER</div>
+      <div class="fd-line"></div>
+      <div class="fd-node main">Infraestructura</div>
+      <div class="fd-connector">
+        <div class="fd-stub"></div>
+        <div class="fd-bar"><span class="fd-drop" style="left:0%;"></span><span class="fd-drop" style="left:50%;"></span><span class="fd-drop" style="left:100%;"></span></div>
+      </div>
+      <div class="fd-leaves">
+        <div class="fd-node leaf"><span class="dot"></span>Copia</div>
+        <div class="fd-node leaf"><span class="dot"></span>Respaldo</div>
+        <div class="fd-node leaf"><span class="dot"></span>Distribución</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. SEGURIDAD SIN FRICCIÓN ===== -->
+<section class="friction-section">
+  <div class="wrap">
+    <div class="section-head-dark center">
+      <div class="sys-index">SISTEMA · 05</div>
+      <div class="eyebrow" style="color:var(--orange);margin-top:10px;">Seguridad sin fricción</div>
+      <h2>Protección para tu contenido.<br>Simplicidad para tu equipo.</h2>
+      <p class="section-lead" style="margin-inline:auto;">FEATER integra seguridad y control dentro del flujo de trabajo para que proteger tus activos no signifique complicar la operación.</p>
+    </div>
+    <div class="friction-compare">
+      <div class="fc-side">
+        <span class="fc-label">Seguridad aislada</span>
+        <div class="fc-cloud">
+          <span class="fc-chip" style="top:8%;left:14%;">Herramienta A</span>
+          <span class="fc-chip" style="top:36%;left:56%;">Proceso externo</span>
+          <span class="fc-chip" style="top:68%;left:10%;">Permisos dispersos</span>
+          <span class="fc-chip" style="top:14%;left:70%;">Herramienta B</span>
+          <span class="fc-chip" style="top:78%;left:58%;">Acceso manual</span>
+        </div>
+      </div>
+      <div class="fc-side">
+        <span class="fc-label">Con FEATER</span>
+        <div class="fc-hub">
+          <div class="fc-core">FEATER</div>
+          <span class="fc-chip" style="top:6%;left:50%;">Acceso</span>
+          <span class="fc-chip" style="top:50%;left:94%;">Contenido</span>
+          <span class="fc-chip" style="top:92%;left:50%;">Permisos</span>
+          <span class="fc-chip" style="top:50%;left:6%;">Distribución</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 7. CTA FINAL ===== -->
+<section class="cta-strip cta-orange">
+  <div class="wrap">
+    <div class="eyebrow">¿Hablamos?</div>
+    <h2 style="margin-top:14px;">Tu contenido es un activo.<br>Protegelo como tal.</h2>
+    <p>Conocé cómo FEATER puede ayudarte a centralizar, gestionar y proteger tu biblioteca audiovisual.</p>
+    <div class="hero-ctas" style="justify-content:center;margin-top:30px;">
+      <a class="btn btn-solid" href="/#contacto">Hablar con nuestro equipo</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-top">
+    <b>Diseñemos tu FEATER.</b>
+    <span class="foot-tag">LESS NOISE. BETTER PATHS.</span>
+  </div>
+  <div class="wrap foot-bottom">
+    <span>© 2026 Feater. Todos los derechos reservados.</span>
+    <div class="foot-social">
+      <a href="#">LinkedIn</a>
+      <a href="#">Instagram</a>
+      <a href="#">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var items = document.querySelectorAll('.capa-item');
+  var bands = document.querySelectorAll('.stack-band');
+  if (!items.length || !bands.length || !('IntersectionObserver' in window)) return;
+  var map = {};
+  bands.forEach(function(b){ map[b.dataset.layer] = b; });
+  var io = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        bands.forEach(function(b){ b.classList.remove('active'); });
+        var layer = entry.target.dataset.layer;
+        if (map[layer]) map[layer].classList.add('active');
+      }
+    });
+  }, {rootMargin:'-42% 0px -42% 0px', threshold:0});
+  items.forEach(function(it){ io.observe(it); });
+})();
+
+</script>
+
+</body>
+</html>

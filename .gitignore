@@ -1,0 +1,10 @@
+# Herramienta de testing local (no forma parte del sitio de produccion)
+_dev_server.py
+
+# Archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Logs / temporales
+*.log
+.vercel

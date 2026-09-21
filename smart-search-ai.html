@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feater — Smart Search AI</title>
+<style>
+  :root{
+    --orange:#F54C16;
+    --orange-bright:#FF5100;
+    --ink:#171717;
+    --ink-soft:#3A3634;
+    --paper:#FFFFFF;
+    --paper-warm:#FFF4EE;
+    --line:#EAD9CD;
+    --panel:#141210;
+    --panel-line:rgba(255,255,255,.10);
+    --panel-text:#F3EEE8;
+    --panel-text-soft:#B8ACA3;
+    --font-display:'Archivo', 'Arial Black', sans-serif;
+    --font-body:'Public Sans', 'Helvetica Neue', Arial, sans-serif;
+    --font-label:'Archivo', sans-serif;
+    --font-mono:'JetBrains Mono', 'Courier New', monospace;
+  }
+  /* Feater es una identidad de marca fija (naranja/negro/blanco/crema, igual que el resto del sitio):
+     esta página no cambia con el modo claro/oscuro del visitante. */
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;}
+  .wrap{max-width:1180px;margin:0 auto;padding-inline:24px;}
+  h1,h2,h3{font-family:var(--font-display);line-height:1.02;margin:0;text-wrap:balance;letter-spacing:-0.01em;}
+  p{line-height:1.6;color:var(--ink-soft);margin:0;}
+  .eyebrow{
+    font-family:var(--font-label);font-weight:800;font-size:13px;
+    letter-spacing:.14em;text-transform:uppercase;
+  }
+  section{padding-block:88px;}
+  @media (max-width:640px){ section{padding-block:56px;} }
+  .section-head{max-width:640px;margin-bottom:52px;}
+  .section-head h2{font-size:clamp(28px,3.6vw,40px);font-weight:900;margin-top:14px;}
+  .section-head.center{max-width:620px;margin-inline:auto;text-align:center;}
+
+  /* ---------- Header (idéntico al resto del sitio) ---------- */
+  header{
+    position:sticky;top:env(safe-area-inset-top,0px);z-index:50;
+    background:var(--paper);border-bottom:1px solid var(--line);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;padding-block:16px;}
+  .logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .logo svg{width:30px;height:22px;}
+  .logo span{font-family:'Fraunces',serif;font-size:26px;font-weight:600;color:var(--ink);}
+  .logo span em{color:var(--orange);font-style:italic;}
+  .navlinks{display:flex;align-items:center;gap:34px;}
+  .navlinks a{font-family:var(--font-label);font-weight:700;font-size:14px;text-decoration:none;color:var(--ink);}
+  .navlinks a.active, .mnav a.active{color:var(--orange);}
+  .btn{
+    display:inline-block;font-family:var(--font-label);font-weight:800;
+    font-size:14px;letter-spacing:.02em;text-decoration:none;
+    padding:13px 26px;border-radius:2px;border:2px solid var(--ink);
+  }
+  .btn-solid{background:var(--ink);color:var(--paper);}
+  .btn-solid:hover{background:var(--orange);border-color:var(--orange);color:#fff;}
+  .btn-outline{background:transparent;color:var(--ink);}
+  .btn-outline:hover{background:var(--ink);color:#fff;}
+  .btn-outline.on-dark{border-color:var(--panel-text);color:var(--panel-text);}
+  .btn-outline.on-dark:hover{background:var(--panel-text);color:var(--panel);}
+  .navcta{display:flex;align-items:center;gap:20px;}
+  .menu-toggle{display:none;background:none;border:none;cursor:pointer;padding:6px;}
+  .menu-toggle span{display:block;width:24px;height:2px;background:var(--ink);margin:5px 0;}
+  @media (max-width:860px){ .navlinks{display:none;} .menu-toggle{display:block;} }
+  .mnav{display:none;flex-direction:column;gap:14px;padding:14px 24px 20px;border-top:1px solid var(--line);}
+  .mnav:not([hidden]){display:flex;}
+  .mnav a{font-family:var(--font-label);font-weight:700;text-decoration:none;color:var(--ink);}
+
+  .back-link{
+    display:inline-flex;align-items:center;gap:6px;
+    font-family:var(--font-label);font-weight:800;font-size:13px;letter-spacing:.02em;
+    text-decoration:none;color:var(--ink-soft);margin-bottom:28px;
+  }
+  .back-link:hover{color:var(--ink);}
+
+  /* ---------- Hero demostrativo ---------- */
+  .hero-demo{background:var(--paper-warm);padding-block:56px 76px;border-bottom:1px solid var(--line);}
+  .hero-demo-grid{display:grid;grid-template-columns:minmax(0,420px) 1fr;gap:64px;align-items:center;}
+  @media (max-width:980px){ .hero-demo-grid{grid-template-columns:1fr;gap:44px;} }
+  .hero-badge{
+    display:inline-flex;align-items:center;gap:8px;font-family:var(--font-label);font-weight:800;
+    font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);
+    border:1.5px solid var(--orange);border-radius:100px;padding:8px 16px;margin-bottom:22px;
+  }
+  .hero-badge .dot{width:7px;height:7px;border-radius:50%;background:var(--orange);}
+  .hero-demo h1{font-size:clamp(38px,5.2vw,58px);font-weight:900;}
+  .hero-demo .lead{margin-top:22px;font-size:17px;max-width:440px;}
+  .hero-ctas{display:flex;gap:14px;margin-top:32px;flex-wrap:wrap;}
+
+  /* Product mockup window */
+  .mock-window{
+    background:var(--panel);color:var(--panel-text);border-radius:14px;
+    box-shadow:0 30px 60px -20px rgba(20,18,16,.35);overflow:hidden;
+  }
+  .mock-chrome{display:flex;align-items:center;gap:8px;padding:14px 18px;border-bottom:1px solid var(--panel-line);}
+  .mock-chrome i{width:10px;height:10px;border-radius:50%;background:#39352F;}
+  .mock-chrome span{font-family:var(--font-mono);font-size:11.5px;color:var(--panel-text-soft);margin-left:8px;}
+  .mock-search{
+    display:flex;align-items:center;gap:12px;margin:18px 18px 0;padding:14px 16px;
+    background:#1D1A17;border:1px solid var(--panel-line);border-radius:8px;
+  }
+  .mock-search svg{flex:none;width:18px;height:18px;}
+  .mock-search-text{font-family:var(--font-mono);font-size:14px;color:var(--panel-text);white-space:nowrap;overflow:hidden;}
+  .mock-cursor{display:inline-block;width:2px;background:var(--orange);margin-left:2px;animation:blink 1s steps(1,end) infinite;}
+  @media (prefers-reduced-motion:reduce){ .mock-cursor{animation:none;} }
+  @keyframes blink{0%,49%{opacity:1;}50%,100%{opacity:0;}}
+  .mock-filters{display:flex;gap:8px;flex-wrap:wrap;margin:14px 18px 0;}
+  .fchip{
+    font-family:var(--font-mono);font-size:11px;color:var(--panel-text-soft);
+    border:1px solid var(--panel-line);border-radius:100px;padding:6px 12px;
+  }
+  .mock-results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:18px;}
+  @media (max-width:560px){ .mock-results{grid-template-columns:repeat(2,1fr);} }
+  .rcard{
+    position:relative;border-radius:8px;overflow:hidden;aspect-ratio:4/5;
+    border:1px solid var(--panel-line);
+    animation:riseIn .55s cubic-bezier(.16,.8,.24,1) both;
+  }
+  @media (prefers-reduced-motion:reduce){ .rcard{animation:none;} }
+  @keyframes riseIn{from{transform:translateY(10px);}to{transform:translateY(0);}}
+  .rcard:nth-child(1){animation-delay:0ms;} .rcard:nth-child(2){animation-delay:50ms;}
+  .rcard:nth-child(3){animation-delay:100ms;} .rcard:nth-child(4){animation-delay:150ms;}
+  .rcard:nth-child(5){animation-delay:200ms;} .rcard:nth-child(6){animation-delay:250ms;}
+  .rcard:nth-child(7){animation-delay:300ms;} .rcard:nth-child(8){animation-delay:350ms;}
+  .rcard:hover{border-color:rgba(245,76,22,.55);}
+  .rcard .scene{position:absolute;inset:0;}
+  .rcard .rtop{position:absolute;top:6px;left:6px;right:6px;display:flex;justify-content:space-between;}
+  .rcard .rtype{
+    font-family:var(--font-mono);font-size:9px;letter-spacing:.06em;color:#fff;
+    background:rgba(20,18,16,.55);border-radius:3px;padding:3px 6px;backdrop-filter:blur(2px);
+  }
+  .rcard .rscore{
+    font-family:var(--font-mono);font-size:9px;font-variant-numeric:tabular-nums;color:var(--orange-bright);
+    background:rgba(20,18,16,.7);border-radius:3px;padding:3px 6px;
+  }
+  .rcard .rbottom{
+    position:absolute;left:0;right:0;bottom:0;padding:16px 8px 8px;
+    background:linear-gradient(to top, rgba(10,9,8,.92), rgba(10,9,8,0));
+  }
+  .rcard .rtitle{font-family:var(--font-label);font-weight:700;font-size:10.5px;color:#fff;line-height:1.25;}
+  .rcard .rmeta{font-family:var(--font-mono);font-size:8.5px;color:var(--panel-text-soft);margin-top:4px;font-variant-numeric:tabular-nums;}
+
+  /* Scene duotone thumbnails */
+  .scene{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+  .scene::before{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:radial-gradient(circle at 30% 18%, rgba(255,255,255,.16), transparent 55%);
+    mix-blend-mode:screen;
+  }
+  .scene svg{position:relative;z-index:1;width:44%;height:44%;}
+  .scene-stage{background:linear-gradient(155deg,#3A2013,#141210 70%);}
+  .scene-panel{background:linear-gradient(155deg,#33201A,#141210 68%);}
+  .scene-crowd{background:linear-gradient(155deg,#2B1710,#141210 70%);}
+  .scene-auditorium{background:linear-gradient(155deg,#33190F,#141210 65%);}
+  .scene-press{background:linear-gradient(155deg,#241713,#141210 70%);}
+  .scene-city{background:linear-gradient(160deg,#1A1A22,#141210 70%);}
+  .scene-office{background:linear-gradient(160deg,#26221C,#141210 70%);}
+  .scene-interview{background:linear-gradient(155deg,#241511,#141210 65%);}
+  .scene-institutional{background:linear-gradient(155deg,#2E1B10,#141210 70%);}
+  .scene svg *{fill:#F3EEE8;opacity:.9;}
+  .scene svg .accent{fill:var(--orange);opacity:1;}
+
+  /* ---------- Steps rail ---------- */
+  .steps-rail{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:start;}
+  @media (max-width:900px){ .steps-rail{grid-template-columns:1fr;} }
+  .step{max-width:320px;}
+  .step-num{font-family:var(--font-mono);font-size:13px;font-weight:600;color:var(--orange);font-variant-numeric:tabular-nums;}
+  .step h3{font-size:21px;font-weight:900;margin-top:10px;}
+  .step p{margin-top:10px;font-size:14.5px;}
+  .step-visual{margin-top:24px;}
+  .step-connector{display:flex;align-items:center;justify-content:center;padding-top:6px;}
+  .connector-line{position:relative;display:block;width:56px;height:1px;background:var(--line);}
+  .connector-dot{
+    position:absolute;top:50%;left:0;width:6px;height:6px;margin-top:-3px;
+    border-radius:50%;background:var(--orange);
+    animation:travelX 2.6s ease-in-out infinite;
+  }
+  .step-connector.c2 .connector-dot{animation-delay:1.3s;}
+  @keyframes travelX{0%{left:0;opacity:0;}12%{opacity:1;}88%{opacity:1;}100%{left:100%;opacity:0;}}
+  @media (prefers-reduced-motion:reduce){ .connector-dot{animation:none;left:50%;opacity:1;} }
+  @media (max-width:900px){ .step-connector{display:none;} .step{max-width:none;padding-block:28px;border-top:1px solid var(--line);} .step:first-child{border-top:none;padding-top:0;} }
+
+  /* Flujo conectado: aparición progresiva de tags + arribo del resultado */
+  .sv-interpret .tag{transition:opacity .4s ease, transform .4s ease;}
+  .sv-interpret .tag.tag-hidden{opacity:0;transform:translateY(6px);}
+  .sv-match{transition:box-shadow .4s ease;}
+  .sv-match.arrive{animation:arrivePulse .7s ease;}
+  @keyframes arrivePulse{0%{box-shadow:0 0 0 0 rgba(245,76,22,0);}35%{box-shadow:0 0 0 7px rgba(245,76,22,.18);}100%{box-shadow:0 0 0 0 rgba(245,76,22,0);}}
+  @media (prefers-reduced-motion:reduce){ .sv-match.arrive{animation:none;} }
+
+  .sv-type{
+    display:flex;align-items:center;gap:10px;background:var(--paper);border:1.5px solid var(--line);
+    border-radius:8px;padding:12px 14px;
+  }
+  .sv-type svg{width:16px;height:16px;flex:none;}
+  .sv-type span{font-family:var(--font-mono);font-size:12.5px;color:var(--ink-soft);}
+  .sv-type .mock-cursor{background:var(--orange);}
+
+  .sv-interpret{position:relative;height:150px;}
+  .sv-interpret .core{
+    position:absolute;top:50%;left:50%;width:14px;height:14px;margin:-7px 0 0 -7px;
+    border-radius:50%;background:var(--orange);animation:pulse 2s ease-in-out infinite;
+  }
+  @media (prefers-reduced-motion:reduce){ .sv-interpret .core{animation:none;} }
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,76,22,.35);}50%{box-shadow:0 0 0 14px rgba(245,76,22,0);}}
+  .sv-interpret .tag{
+    position:absolute;font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);
+    background:var(--paper);border:1px solid var(--line);border-radius:100px;padding:6px 12px;white-space:nowrap;
+  }
+  .sv-interpret .t1{top:4px;left:8%;} .sv-interpret .t2{top:14px;right:2%;}
+  .sv-interpret .t3{bottom:34px;left:0;} .sv-interpret .t4{bottom:30px;right:6%;}
+  .sv-interpret .t5{bottom:0;left:30%;}
+
+  .sv-match{
+    position:relative;border-radius:8px;overflow:hidden;aspect-ratio:16/10;border:1.5px solid var(--orange);
+  }
+  .sv-match .ribbon{
+    position:absolute;top:8px;left:8px;display:flex;align-items:center;gap:6px;
+    background:var(--orange);color:#fff;font-family:var(--font-label);font-weight:800;font-size:10px;
+    border-radius:100px;padding:5px 10px 5px 8px;
+  }
+  .sv-match .rbottom{
+    position:absolute;left:0;right:0;bottom:0;padding:20px 10px 8px;
+    background:linear-gradient(to top, rgba(10,9,8,.92), rgba(10,9,8,0));
+  }
+  .sv-match .rtitle{font-family:var(--font-label);font-weight:700;font-size:12px;color:#fff;}
+  .sv-match .rmeta{font-family:var(--font-mono);font-size:9.5px;color:var(--panel-text-soft);margin-top:4px;}
+
+  /* ---------- Tipos de búsqueda (sección oscura) ---------- */
+  .search-types{background:var(--panel);color:var(--panel-text);}
+  .search-types .eyebrow{color:var(--orange-bright);}
+  .search-types h2{color:#fff;}
+  .type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--panel-line);border:1px solid var(--panel-line);}
+  @media (max-width:760px){ .type-grid{grid-template-columns:1fr;} }
+  .type-card{background:var(--panel);padding:32px 30px;}
+  .type-card .ticon{width:30px;height:30px;}
+  .type-card .ticon *{stroke:var(--orange-bright);}
+  .type-card h3{color:#fff;font-size:19px;font-weight:800;margin-top:18px;}
+  .type-card p{color:var(--panel-text-soft);font-size:14.5px;margin-top:8px;max-width:360px;}
+  .type-visual{margin-top:20px;display:flex;gap:8px;flex-wrap:wrap;}
+  .tv-chip{font-family:var(--font-mono);font-size:11px;color:var(--panel-text-soft);border:1px solid var(--panel-line);border-radius:100px;padding:6px 12px;}
+  .tv-faces{display:flex;gap:8px;}
+  .tv-face{width:34px;height:34px;border-radius:50%;background:#241F1A;border:1.5px solid var(--panel-line);transition:border-color .35s ease, transform .35s ease;}
+  .type-card:hover .tv-face:nth-child(2){border-color:var(--orange-bright);transform:scale(1.1);transition-delay:.1s;}
+  .tv-scenes{display:flex;gap:8px;}
+  .tv-scene{width:44px;height:34px;border-radius:5px;}
+  .tv-scene.extra{opacity:0;transform:scale(.85);transition:opacity .35s ease, transform .35s ease;transition-delay:.15s;}
+  .type-card:hover .tv-scene.extra{opacity:1;transform:scale(1);}
+  .tv-filters{display:flex;flex-direction:column;gap:6px;align-items:flex-start;}
+  .tv-chip.extra{opacity:0;transform:translateY(4px);transition:opacity .35s ease, transform .35s ease;transition-delay:.15s;}
+  .type-card:hover .tv-chip.extra{opacity:1;transform:translateY(0);}
+  .tv-filters .tv-chip.seq{transition:border-color .3s ease, color .3s ease;}
+  .type-card:hover .tv-filters .tv-chip.seq:nth-child(1){border-color:var(--orange-bright);color:var(--panel-text);transition-delay:0ms;}
+  .type-card:hover .tv-filters .tv-chip.seq:nth-child(2){border-color:var(--orange-bright);color:var(--panel-text);transition-delay:140ms;}
+  .type-card:hover .tv-filters .tv-chip.seq:nth-child(3){border-color:var(--orange-bright);color:var(--panel-text);transition-delay:280ms;}
+  @media (prefers-reduced-motion:reduce){ .tv-face, .tv-scene.extra, .tv-chip.extra, .tv-filters .tv-chip.seq{transition:none;} }
+
+  /* ---------- Beneficio ---------- */
+  .benefit-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center;}
+  @media (max-width:820px){ .benefit-grid{grid-template-columns:1fr;gap:36px;} }
+  .flow-compare{display:flex;flex-direction:column;gap:36px;}
+  .flow-row-label{font-family:var(--font-label);font-weight:800;font-size:13px;letter-spacing:.03em;color:var(--ink-soft);display:block;margin-bottom:14px;}
+  .flow-nodes{display:flex;align-items:center;flex-wrap:wrap;gap:10px 0;}
+  .flow-node{
+    font-family:var(--font-label);font-weight:700;font-size:13.5px;white-space:nowrap;
+    border:1.5px solid var(--line);border-radius:100px;padding:10px 18px;background:var(--paper);color:var(--ink-soft);
+  }
+  .flow-sep{width:20px;height:1px;background:var(--line);margin:0 6px;flex:none;position:relative;}
+  .flow-sep::after{
+    content:"";position:absolute;right:-1px;top:50%;width:5px;height:5px;
+    border-right:1.5px solid var(--line);border-bottom:1.5px solid var(--line);
+    transform:translateY(-50%) rotate(-45deg);
+  }
+  .flow-nodes.fast .flow-node{border-color:var(--orange);color:var(--ink);}
+  .flow-nodes.fast .flow-node.final{background:var(--orange);color:#fff;border-color:var(--orange);}
+  .flow-nodes.fast .flow-sep{background:var(--orange);}
+  .flow-nodes.fast .flow-sep::after{border-color:var(--orange);}
+  @media (max-width:640px){
+    .flow-sep{display:none;}
+    .flow-node{width:100%;text-align:center;}
+  }
+  .benefit-points{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px;}
+  .benefit-points li{position:relative;padding-left:24px;font-size:16px;color:var(--ink-soft);}
+  .benefit-points li::before{content:"";position:absolute;left:0;top:8px;width:8px;height:8px;background:var(--orange);}
+
+  /* ---------- Casos de uso ---------- */
+  .usecase-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  @media (max-width:920px){ .usecase-grid{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:560px){ .usecase-grid{grid-template-columns:1fr;} }
+  .usecase-card{border:1.5px solid var(--line);border-radius:8px;padding:26px 22px;background:var(--paper);}
+  .usecase-card svg{width:26px;height:26px;}
+  .usecase-card svg *{stroke:var(--orange);}
+  .usecase-card h3{font-size:16.5px;font-weight:800;margin-top:16px;}
+  .usecase-card p{font-size:13.5px;margin-top:8px;}
+
+  /* ---------- CTA final ---------- */
+  .cta-strip{background:var(--ink);color:#fff;}
+  .cta-strip .wrap{text-align:center;}
+  .cta-strip h2{color:#fff;font-size:clamp(28px,3.8vw,40px);font-weight:900;}
+  .cta-strip p{color:#D8CFC7;margin-top:14px;max-width:520px;margin-inline:auto;font-size:16px;}
+  .cta-strip .hero-ctas{justify-content:center;margin-top:30px;}
+  .cta-strip .btn-solid{background:var(--orange);border-color:var(--orange);}
+  .cta-strip .btn-solid:hover{background:var(--orange-bright);border-color:var(--orange-bright);}
+
+  /* ---------- Footer (idéntico al resto del sitio) ---------- */
+  footer{background:var(--ink);color:#fff;padding-block:0;}
+  .foot-top{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;padding-block:22px;border-bottom:1px solid #34302C;}
+  .foot-top b{font-family:var(--font-label);font-size:16px;}
+  .foot-tag{font-family:var(--font-label);font-weight:800;font-size:13px;letter-spacing:.12em;color:#B8ACA3;}
+  .foot-bottom{display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;padding-block:20px;font-size:13px;color:#8A8078;}
+  .foot-social{display:flex;gap:16px;}
+  .foot-social a{text-decoration:none;color:#B8ACA3;font-family:var(--font-label);font-weight:700;font-size:13px;}
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500;600&family=Fraunces:ital,wght@0,600;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="/">
+      <svg viewBox="0 0 60 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M0 4 L14 22 L0 40 L8 40 L22 22 L8 4 Z" fill="var(--ink)"/>
+        <path d="M17 4 L31 22 L17 40 L25 40 L39 22 L25 4 Z" fill="var(--ink)"/>
+        <path d="M34 4 L48 22 L34 40 L42 40 L56 22 L42 4 Z" fill="var(--orange)"/>
+      </svg>
+      <span>Feat<em>er</em></span>
+    </a>
+    <nav class="navlinks">
+      <a href="/smart-search-ai" class="active">Smart Search AI</a>
+      <a href="/seguridad">Seguridad</a>
+      <a href="/plataforma">Plataforma</a>
+    </nav>
+    <div class="navcta">
+      <a class="btn btn-solid" href="/#contacto">Contactanos</a>
+    </div>
+    <button class="menu-toggle" aria-label="Abrir menú" onclick="document.getElementById('mnav').hidden = !document.getElementById('mnav').hidden">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div id="mnav" class="mnav" hidden>
+    <a href="/smart-search-ai" class="active">Smart Search AI</a>
+    <a href="/seguridad">Seguridad</a>
+    <a href="/plataforma">Plataforma</a>
+    <a class="btn btn-solid" style="text-align:center;" href="/#contacto">Contactanos</a>
+  </div>
+</header>
+
+<div id="top"></div>
+
+<!-- ===== 1. HERO DEMOSTRATIVO ===== -->
+<section class="hero-demo">
+  <div class="wrap hero-demo-grid">
+    <div class="hero-copy">
+      <a class="back-link" href="/">&larr; Volver a Feater</a>
+      <div class="hero-badge"><span class="dot"></span>Smart Search AI</div>
+      <h1>Encontrá cualquier<br>contenido en<br>segundos.</h1>
+      <p class="lead">Sin carpetas. Sin tags manuales. Describí lo que necesitás y FEATER lo encuentra por vos, con inteligencia artificial que entiende imágenes, video y contexto.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-solid" href="/#contacto">Solicitá una demo</a>
+        <a class="btn btn-outline" href="#como-funciona">Ver cómo funciona</a>
+      </div>
+    </div>
+
+    <div class="hero-mock">
+      <div class="mock-window">
+        <div class="mock-chrome"><i></i><i></i><i></i><span>feater / smart search</span></div>
+        <div class="mock-search">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#B8ACA3" stroke-width="1.8"/><path d="M20 20l-4.3-4.3" stroke="#B8ACA3" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span class="mock-search-text" id="typeText">persona hablando en un escenario</span><span class="mock-cursor">&nbsp;</span>
+        </div>
+        <div class="mock-filters">
+          <span class="fchip">Tipo: Video</span><span class="fchip">Duración</span><span class="fchip">Fecha</span><span class="fchip">Score ↓</span>
+        </div>
+        <div class="mock-results">
+          <div class="rcard">
+            <div class="scene scene-stage"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="2.6"/><path d="M7.5 21c0-3.6 2-5.8 4.5-5.8s4.5 2.2 4.5 5.8z"/><rect class="accent" x="5" y="20" width="14" height="1.4" rx=".7"/></svg></div>
+            <div class="rtop"><span class="rtype">VIDEO</span><span class="rscore">98%</span></div>
+            <div class="rbottom"><div class="rtitle">Charla — Auditorio Central</div><div class="rmeta">04:12 · 12/08</div></div>
+          </div>
+          <div class="rcard">
+            <div class="scene scene-auditorium"><svg viewBox="0 0 24 24"><rect class="accent" x="9" y="2.5" width="6" height="2" rx=".5"/><path d="M2 20c0-4.5 1.6-7 3.4-7s3.4 2.5 3.4 7z" opacity=".85"/><path d="M8.3 20.5c0-5 1.9-8 3.7-8s3.7 3 3.7 8z"/><path d="M15.7 20c0-4.5 1.6-7 3.4-7s3.4 2.5 3.4 7z" opacity=".85"/></svg></div>
+            <div class="rtop"><span class="rtype">VIDEO</span><span class="rscore">95%</span></div>
+            <div class="rbottom"><div class="rtitle">Presentación anual</div><div class="rmeta">18:40 · 03/07</div></div>
+          </div>
+          <div class="rcard">
+            <div class="scene scene-panel"><svg viewBox="0 0 24 24"><circle cx="6" cy="9" r="1.8"/><path d="M3.3 17c0-2.4 1.2-4 2.7-4s2.7 1.6 2.7 4z"/><circle class="accent" cx="12" cy="8.3" r="2"/><path class="accent" d="M9 17c0-2.7 1.3-4.5 3-4.5s3 1.8 3 4.5z"/><circle cx="18" cy="9" r="1.8"/><path d="M15.3 17c0-2.4 1.2-4 2.7-4s2.7 1.6 2.7 4z"/><rect x="2" y="18.4" width="20" height="1.3" rx=".6" opacity=".55"/></svg></div>
+            <div class="rtop"><span class="rtype">VIDEO</span><span class="rscore">93%</span></div>
+            <div class="rbottom"><div class="rtitle">Panel de oradores</div><div class="rmeta">32:10 · 14/06</div></div>
+          </div>
+          <div class="rcard">
+            <div class="scene scene-interview"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="10" r="2.6"/><path d="M4.5 20c0-3.3 1.8-5.4 4-5.4s4 2.1 4 5.4z"/><circle class="accent" cx="16" cy="10.6" r="2.2"/><path class="accent" d="M12.6 20c.2-3 1.6-4.8 3.4-4.8s3.2 1.8 3.4 4.8z"/><rect x="10.7" y="3" width="1.6" height="5" rx=".8" opacity=".6"/></svg></div>
+            <div class="rtop"><span class="rtype">VIDEO</span><span class="rscore">91%</span></div>
+            <div class="rbottom"><div class="rtitle">Entrevista — Sala 2</div><div class="rmeta">21:03 · 11/02</div></div>
+          </div>
+          <div class="rcard">
+            <div class="scene scene-press"><svg viewBox="0 0 24 24"><path d="M8 12h8l-1.4 9H9.4z"/><rect class="accent" x="10.8" y="4" width="2.4" height="7" rx="1.2"/><circle cx="4.5" cy="6" r="1.1" opacity=".75"/><circle cx="19.5" cy="7.2" r="1.1" opacity=".75"/><circle cx="6.8" cy="4" r=".8" opacity=".55"/></svg></div>
+            <div class="rtop"><span class="rtype">FOTO</span><span class="rscore">89%</span></div>
+            <div class="rbottom"><div class="rtitle">Conferencia de prensa</div><div class="rmeta">02/08</div></div>
+          </div>
+          <div class="rcard">
+            <div class="scene scene-office"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="15.5" rx="7.5" ry="2.3" opacity=".5"/><circle cx="7" cy="10.5" r="1.7"/><circle class="accent" cx="12" cy="9.3" r="1.9"/><circle cx="17" cy="10.5" r="1.7"/><rect x="16.5" y="2.5" width="5.5" height="6" rx=".6" opacity=".4"/></svg></div>
+            <div class="rtop"><span class="rtype">VIDEO</span><span class="rscore">87%</span></div>
+            <div class="rbottom"><div class="rtitle">Reunión de equipo</div><div class="rmeta">09:47 · 30/04</div></div>
+          </div>
+          <div class="rcard">
+            <div class="scene scene-city"><svg viewBox="0 0 24 24"><rect x="2" y="12" width="3.4" height="9"/><rect class="accent" x="6.4" y="8" width="3.4" height="13"/><rect x="10.8" y="14" width="3.4" height="7"/><rect x="15.2" y="6" width="3.4" height="15"/><rect x="19.6" y="11" width="2.4" height="10" opacity=".8"/><circle cx="19" cy="3.5" r="1.4" opacity=".7"/></svg></div>
+            <div class="rtop"><span class="rtype">FOTO</span><span class="rscore">85%</span></div>
+            <div class="rbottom"><div class="rtitle">Skyline nocturno</div><div class="rmeta">19/03</div></div>
+          </div>
+          <div class="rcard">
+            <div class="scene scene-institutional"><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="1.4" height="17" opacity=".7"/><path class="accent" d="M7.4 3l7 2.2-7 2.2z"/><path d="M11 21l1.2-6h5.6L19 21z" opacity=".85"/></svg></div>
+            <div class="rtop"><span class="rtype">VIDEO</span><span class="rscore">82%</span></div>
+            <div class="rbottom"><div class="rtitle">Acto institucional</div><div class="rmeta">14:22 · 22/05</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 2. CÓMO FUNCIONA ===== -->
+<section id="como-funciona">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" style="color:var(--orange);">Cómo funciona</div>
+      <h2>De la idea al archivo exacto, en tres pasos</h2>
+    </div>
+    <div class="steps-rail">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Describí lo que necesitás</h3>
+        <p>Escribilo como se lo explicarías a un colega, sin pensar en carpetas ni en nombres de archivo.</p>
+        <div class="step-visual sv-type">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          <span id="flowQueryText">entrevista en estudio con fondo oscuro</span><span class="mock-cursor">&nbsp;</span>
+        </div>
+      </div>
+      <div class="step-connector c1"><span class="connector-line"><span class="connector-dot"></span></span></div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>FEATER interpreta el contenido</h3>
+        <p>La IA entiende escenas, objetos y contexto visual, y los conecta con lo que escribiste.</p>
+        <div class="step-visual sv-interpret">
+          <span class="tag t1">estudio</span>
+          <span class="tag t2">fondo oscuro</span>
+          <span class="tag t3">una persona</span>
+          <span class="tag t4">voz clara</span>
+          <span class="tag t5">primer plano</span>
+          <div class="core"></div>
+        </div>
+      </div>
+      <div class="step-connector c2"><span class="connector-line"><span class="connector-dot"></span></span></div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Encontrá el material exacto</h3>
+        <p>Resultados ordenados por coincidencia, listos para previsualizar, compartir o descargar.</p>
+        <div class="step-visual sv-match">
+          <div class="scene scene-interview" style="position:absolute;inset:0;">
+            <svg viewBox="0 0 24 24"><circle cx="8.5" cy="10" r="2.6"/><path d="M4.5 20c0-3.3 1.8-5.4 4-5.4s4 2.1 4 5.4z"/><circle class="accent" cx="16" cy="10.6" r="2.2"/><path class="accent" d="M12.6 20c.2-3 1.6-4.8 3.4-4.8s3.2 1.8 3.4 4.8z"/><rect x="10.7" y="3" width="1.6" height="5" rx=".8" opacity=".6"/></svg>
+          </div>
+          <div class="ribbon">✓ Coincidencia exacta</div>
+          <div class="rbottom"><div class="rtitle">Entrevista — Estudio B</div><div class="rmeta">11:32 · 07/08 · 97% match</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 3. TIPOS DE BÚSQUEDA ===== -->
+<section class="search-types">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow">Tipos de búsqueda</div>
+      <h2>Cuatro formas de encontrar lo que buscás</h2>
+    </div>
+  </div>
+  <div class="wrap" style="padding-top:0;">
+    <div class="type-grid">
+      <div class="type-card">
+        <svg class="ticon" viewBox="0 0 24 24" fill="none"><path d="M3 5h8M3 12h18M3 19h12" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <h3>Búsqueda semántica</h3>
+        <p>Encontrá por concepto e idea, no solo por palabra clave exacta.</p>
+        <div class="type-visual">
+          <span class="tv-chip">reunión de equipo</span><span class="tv-chip">espacio abierto</span><span class="tv-chip">luz natural</span><span class="tv-chip extra">trabajo colaborativo</span>
+        </div>
+      </div>
+      <div class="type-card">
+        <svg class="ticon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke-width="1.8"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke-width="1.8"/></svg>
+        <h3>Búsqueda por personas</h3>
+        <p>Reconocimiento facial para encontrar a alguien en todo tu archivo.</p>
+        <div class="type-visual tv-faces">
+          <div class="tv-face"></div><div class="tv-face"></div><div class="tv-face"></div><div class="tv-face"></div>
+        </div>
+      </div>
+      <div class="type-card">
+        <svg class="ticon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="1.5" stroke-width="1.8"/><path d="M3 15l5-4 4 3 4-5 5 4" stroke-width="1.8"/></svg>
+        <h3>Búsqueda por contexto visual</h3>
+        <p>Buscá por escena, lugar o ambiente, no solo por un tag cargado a mano.</p>
+        <div class="type-visual tv-scenes">
+          <div class="tv-scene scene scene-office"></div><div class="tv-scene scene scene-city"></div><div class="tv-scene scene scene-institutional"></div><div class="tv-scene scene scene-panel extra"></div>
+        </div>
+      </div>
+      <div class="type-card">
+        <svg class="ticon" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M7 12h10M10 18h4" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <h3>Búsqueda combinada con filtros</h3>
+        <p>Afiná por tipo, duración, fecha o score de coincidencia, todo a la vez.</p>
+        <div class="type-visual tv-filters">
+          <span class="tv-chip seq">Tipo: Video</span><span class="tv-chip seq">Duración: &lt;5 min</span><span class="tv-chip seq">Score: &gt;90%</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 4. BENEFICIO / TRANSFORMACIÓN ===== -->
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" style="color:var(--orange);">El impacto</div>
+      <h2>Menos tiempo buscando.<br>Más tiempo creando.</h2>
+    </div>
+    <div class="benefit-grid">
+      <div class="flow-compare">
+        <div>
+          <span class="flow-row-label">Flujo tradicional</span>
+          <div class="flow-nodes">
+            <span class="flow-node">Carpetas</span><span class="flow-sep"></span>
+            <span class="flow-node">Recordar nombres</span><span class="flow-sep"></span>
+            <span class="flow-node">Abrir archivos</span><span class="flow-sep"></span>
+            <span class="flow-node">Revisar uno a uno</span><span class="flow-sep"></span>
+            <span class="flow-node">Encontrar</span>
+          </div>
+        </div>
+        <div>
+          <span class="flow-row-label">Con Smart Search AI</span>
+          <div class="flow-nodes fast">
+            <span class="flow-node">Describir lo que necesitás</span><span class="flow-sep"></span>
+            <span class="flow-node final">Encontrar</span>
+          </div>
+        </div>
+      </div>
+      <ul class="benefit-points">
+        <li>Sin depender de la memoria interna del equipo</li>
+        <li>Sin etiquetado manual de cada archivo</li>
+        <li>Acceso inmediato al material correcto, no a uno parecido</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 5. CASOS DE USO ===== -->
+<section style="background:var(--paper-warm);border-top:1px solid var(--line);border-bottom:1px solid var(--line);">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow" style="color:var(--orange);">Casos de uso</div>
+      <h2>Pensado para equipos con mucho contenido</h2>
+    </div>
+    <div class="usecase-grid">
+      <div class="usecase-card">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="12" rx="1.5" stroke-width="1.6"/><path d="M8 20h8" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <h3>Canales y medios</h3>
+        <p>Todo el archivo audiovisual, organizado y listo para salir al aire.</p>
+      </div>
+      <div class="usecase-card">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h13l3 4v12H4z" stroke-width="1.6"/><path d="M8 11h8M8 15h5" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <h3>Equipos de comunicación</h3>
+        <p>Encontrá el material correcto para cada pieza, sin ir y venir por mail.</p>
+      </div>
+      <div class="usecase-card">
+        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="6" height="16" stroke-width="1.6"/><rect x="10" y="4" width="6" height="16" stroke-width="1.6"/><rect x="17" y="4" width="4" height="16" stroke-width="1.6"/></svg>
+        <h3>Bibliotecas de contenido grandes</h3>
+        <p>Miles de archivos, un solo lugar donde encontrar cualquiera de ellos.</p>
+      </div>
+      <div class="usecase-card">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 11l18-7-7 18-3-8-8-3z" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <h3>Marketing y prensa</h3>
+        <p>La imagen o el video justo, disponible antes de que se enfríe la nota.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 6. CTA FINAL ===== -->
+<section class="cta-strip">
+  <div class="wrap">
+    <div class="eyebrow" style="color:var(--orange-bright);">¿Hablamos?</div>
+    <h2 style="margin-top:14px;">Buscá distinto. Encontrá en segundos.</h2>
+    <p>Contanos sobre tu archivo y tu volumen de contenido. Te mostramos Smart Search AI funcionando con un caso real de tu organización.</p>
+    <div class="hero-ctas">
+      <a class="btn btn-solid" href="/#contacto">Hablar con el equipo</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-top">
+    <b>Diseñemos tu FEATER.</b>
+    <span class="foot-tag">LESS NOISE. BETTER PATHS.</span>
+  </div>
+  <div class="wrap foot-bottom">
+    <span>© 2026 Feater. Todos los derechos reservados.</span>
+    <div class="foot-social">
+      <a href="#">LinkedIn</a>
+      <a href="#">Instagram</a>
+      <a href="#">Email</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var el = document.getElementById('typeText');
+  if (!el) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) return;
+  var queries = [
+    'persona hablando en un escenario',
+    'entrevista en estudio con fondo oscuro',
+    'evento institucional',
+    'ciudad de noche'
+  ];
+  var qi = 0, ci = queries[0].length, deleting = false;
+  function tick(){
+    var current = queries[qi];
+    if (!deleting){
+      ci++;
+      if (ci > current.length){ deleting = true; setTimeout(tick, 1800); return; }
+    } else {
+      ci--;
+      if (ci < 0){ deleting = false; qi = (qi+1) % queries.length; ci = 0; setTimeout(tick, 300); return; }
+    }
+    el.textContent = current.slice(0, ci);
+    setTimeout(tick, deleting ? 28 : 46);
+  }
+  setTimeout(tick, 2200);
+})();
+
+(function(){
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var qEl = document.getElementById('flowQueryText');
+  var tags = document.querySelectorAll('.sv-interpret .tag');
+  var resultBox = document.querySelector('.sv-match');
+  if (reduce || !qEl || !resultBox || !tags.length) return;
+  var phrase = 'entrevista en estudio con fondo oscuro';
+
+  function cycle(){
+    tags.forEach(function(t){ t.classList.add('tag-hidden'); });
+    resultBox.classList.remove('arrive');
+    qEl.textContent = '';
+    var i = 0;
+    (function type(){
+      if (i <= phrase.length){
+        qEl.textContent = phrase.slice(0, i);
+        i++;
+        setTimeout(type, 42);
+      } else {
+        setTimeout(revealTags, 400);
+      }
+    })();
+    function revealTags(){
+      tags.forEach(function(t, idx){
+        setTimeout(function(){ t.classList.remove('tag-hidden'); }, idx * 170);
+      });
+      setTimeout(function(){ resultBox.classList.add('arrive'); }, tags.length * 170 + 350);
+    }
+  }
+  setTimeout(cycle, 2600);
+  setInterval(cycle, 12000);
+})();
+</script>
+
+</body>
+</html>
