@@ -8,3 +8,6 @@ Thumbs.db
 # Logs / temporales
 *.log
 .vercel
+
+# Herramienta local para generar miniaturas (no commitear)
+.tools-pillow

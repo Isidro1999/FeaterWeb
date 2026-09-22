@@ -6,6 +6,14 @@
 <title>Feater — Smart Search AI</title>
 <link rel="icon" href="/favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="/favicon.png">
+<link rel="preload" as="image" href="/smart-search-thumbs/primer_pantallaso/pexels-cottonbro-6883794.webp">
+<link rel="preload" as="image" href="/smart-search-thumbs/primer_pantallaso/pexels-ron-lach-8089662.webp">
+<link rel="preload" as="image" href="/smart-search-thumbs/primer_pantallaso/pexels-ivan-s-8117405.webp">
+<link rel="preload" as="image" href="/smart-search-thumbs/primer_pantallaso/pexels-yaroslav-shuraev-5562994.webp">
+<link rel="preload" as="image" href="/smart-search-thumbs/primer_pantallaso/pexels-gabriella-ally-3664539-33401241.webp">
+<link rel="preload" as="image" href="/smart-search-thumbs/primer_pantallaso/pexels-kevin-cuesta-79785555-9209815.webp">
+<link rel="preload" as="image" href="/smart-search-thumbs/primer_pantallaso/pexels-optical-chemist-340351297-35803215.webp">
+<link rel="preload" as="image" href="/smart-search-thumbs/primer_pantallaso/pexels-german-latasa-814203747-31619132.webp">
 <style>
   :root{
     --orange:#F54C16;
@@ -105,6 +113,7 @@
 
   /* Product mockup window */
   .mock-window{
+    position:relative;
     background:var(--panel);color:var(--panel-text);border-radius:14px;
     box-shadow:0 30px 60px -20px rgba(20,18,16,.35);overflow:hidden;
   }
@@ -125,8 +134,19 @@
     font-family:var(--font-mono);font-size:11px;color:var(--panel-text-soft);
     border:1px solid var(--panel-line);border-radius:100px;padding:6px 12px;
   }
+  .hero-results{position:relative;}
   .mock-results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:18px;}
   @media (max-width:560px){ .mock-results{grid-template-columns:repeat(2,1fr);} }
+  .mock-results.is-incoming{
+    position:absolute;left:0;right:0;top:0;z-index:2;
+    opacity:0;pointer-events:none;
+    transition:opacity .32s ease;
+  }
+  .mock-results.is-incoming.is-in{opacity:1;}
+  .mock-results.is-out{opacity:0;transition:opacity .32s ease;}
+  @media (prefers-reduced-motion:reduce){
+    .mock-results.is-incoming, .mock-results.is-out{transition:none;}
+  }
   .rcard{
     position:relative;border-radius:8px;overflow:hidden;aspect-ratio:4/5;
     border:1px solid var(--panel-line);
@@ -155,6 +175,41 @@
   }
   .rcard .rtitle{font-family:var(--font-label);font-weight:700;font-size:10.5px;color:#fff;line-height:1.25;}
   .rcard .rmeta{font-family:var(--font-mono);font-size:8.5px;color:var(--panel-text-soft);margin-top:4px;font-variant-numeric:tabular-nums;}
+  .rcard.is-selected{border-color:var(--orange);}
+  .rsim-btn{
+    font-family:var(--font-mono);font-size:8.5px;letter-spacing:.02em;line-height:1.2;
+    color:#fff;background:var(--orange);border:none;border-radius:3px;
+    padding:3px 7px;cursor:pointer;
+  }
+  .rsim-btn:hover, .rsim-btn.is-pressed{background:var(--orange-bright);}
+  .scene img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;}
+  .mock-results.is-waiting .rcard{opacity:0;animation:none;}
+  .mock-results.is-static .rcard{animation:none;}
+  .sim-bar{
+    display:none;align-items:center;gap:10px;
+    margin:12px 18px 0;padding:7px 10px;
+    background:#1D1A17;border:1px solid var(--panel-line);border-radius:8px;
+  }
+  .sim-bar.is-on{display:flex;}
+  .sim-bar img{
+    width:28px;height:28px;flex:none;border-radius:4px;object-fit:cover;
+    border:1px solid rgba(245,76,22,.4);
+  }
+  .sim-bar span{
+    font-family:var(--font-mono);font-size:11px;color:var(--panel-text-soft);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  }
+  .sim-bar strong{color:var(--orange-bright);font-weight:600;}
+  .sim-bar b{color:var(--panel-text);font-weight:600;}
+  .demo-pointer{
+    position:absolute;top:0;left:0;width:18px;height:18px;z-index:6;
+    opacity:0;pointer-events:none;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.45));
+    transition:transform .7s cubic-bezier(.22,.7,.2,1), opacity .25s ease;
+    will-change:transform;
+  }
+  @media (max-width:560px){ .demo-pointer{display:none;} }
+  @media (prefers-reduced-motion:reduce){ .demo-pointer{display:none;} }
 
   /* Scene duotone thumbnails */
   .scene{position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
@@ -379,57 +434,66 @@
     </div>
 
     <div class="hero-mock">
-      <div class="mock-window">
+      <div class="mock-window" id="heroMock">
         <div class="mock-chrome"><i></i><i></i><i></i><span>feater / smart search</span></div>
         <div class="mock-search">
           <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="#B8ACA3" stroke-width="1.8"/><path d="M20 20l-4.3-4.3" stroke="#B8ACA3" stroke-width="1.8" stroke-linecap="round"/></svg>
-          <span class="mock-search-text" id="typeText">persona hablando en un escenario</span><span class="mock-cursor">&nbsp;</span>
+          <span class="mock-search-text" id="typeText"></span><span class="mock-cursor">&nbsp;</span>
         </div>
         <div class="mock-filters">
-          <span class="fchip">Tipo: Video</span><span class="fchip">Duración</span><span class="fchip">Fecha</span><span class="fchip">Score ↓</span>
+          <span class="fchip" id="heroTypeChip">Tipo: Foto</span><span class="fchip">Duración</span><span class="fchip">Fecha</span><span class="fchip" id="heroModeChip">Recientes</span>
         </div>
-        <div class="mock-results">
-          <div class="rcard">
-            <div class="scene scene-stage"><svg viewBox="0 0 24 24"><circle cx="12" cy="7" r="2.6"/><path d="M7.5 21c0-3.6 2-5.8 4.5-5.8s4.5 2.2 4.5 5.8z"/><rect class="accent" x="5" y="20" width="14" height="1.4" rx=".7"/></svg></div>
-            <div class="rtop"><span class="rtype">VIDEO</span><span class="rscore">98%</span></div>
-            <div class="rbottom"><div class="rtitle">Charla — Auditorio Central</div><div class="rmeta">04:12 · 12/08</div></div>
+        <div class="sim-bar" id="heroSimBar">
+          <img id="heroSimThumb" alt="">
+          <span><strong>Buscando por similitud</strong> · <b id="heroSimName">Panorámica urbana al atardecer</b></span>
+        </div>
+        <div class="hero-results" id="heroResultsWrap">
+        <div class="mock-results" id="heroDemoGrid">
+          <div class="rcard" data-id="p1">
+            <div class="scene"><img src="/smart-search-thumbs/primer_pantallaso/pexels-cottonbro-6883794.webp" alt=""></div>
+            <div class="rtop"><span class="rtype">VIDEO</span></div>
+            <div class="rbottom"><div class="rtitle">Entrevista en estudio</div><div class="rmeta">04/08</div></div>
           </div>
-          <div class="rcard">
-            <div class="scene scene-auditorium"><svg viewBox="0 0 24 24"><rect class="accent" x="9" y="2.5" width="6" height="2" rx=".5"/><path d="M2 20c0-4.5 1.6-7 3.4-7s3.4 2.5 3.4 7z" opacity=".85"/><path d="M8.3 20.5c0-5 1.9-8 3.7-8s3.7 3 3.7 8z"/><path d="M15.7 20c0-4.5 1.6-7 3.4-7s3.4 2.5 3.4 7z" opacity=".85"/></svg></div>
-            <div class="rtop"><span class="rtype">VIDEO</span><span class="rscore">95%</span></div>
-            <div class="rbottom"><div class="rtitle">Presentación anual</div><div class="rmeta">18:40 · 03/07</div></div>
+          <div class="rcard" data-id="p2">
+            <div class="scene"><img src="/smart-search-thumbs/primer_pantallaso/pexels-ron-lach-8089662.webp" alt=""></div>
+            <div class="rtop"><span class="rtype">VIDEO</span></div>
+            <div class="rbottom"><div class="rtitle">Making of — set rojo</div><div class="rmeta">21/07</div></div>
           </div>
-          <div class="rcard">
-            <div class="scene scene-panel"><svg viewBox="0 0 24 24"><circle cx="6" cy="9" r="1.8"/><path d="M3.3 17c0-2.4 1.2-4 2.7-4s2.7 1.6 2.7 4z"/><circle class="accent" cx="12" cy="8.3" r="2"/><path class="accent" d="M9 17c0-2.7 1.3-4.5 3-4.5s3 1.8 3 4.5z"/><circle cx="18" cy="9" r="1.8"/><path d="M15.3 17c0-2.4 1.2-4 2.7-4s2.7 1.6 2.7 4z"/><rect x="2" y="18.4" width="20" height="1.3" rx=".6" opacity=".55"/></svg></div>
-            <div class="rtop"><span class="rtype">VIDEO</span><span class="rscore">93%</span></div>
-            <div class="rbottom"><div class="rtitle">Panel de oradores</div><div class="rmeta">32:10 · 14/06</div></div>
+          <div class="rcard" data-id="p3">
+            <div class="scene"><img src="/smart-search-thumbs/primer_pantallaso/pexels-ivan-s-8117405.webp" alt=""></div>
+            <div class="rtop"><span class="rtype">FOTO</span></div>
+            <div class="rbottom"><div class="rtitle">Reunión de equipo</div><div class="rmeta">16/06</div></div>
           </div>
-          <div class="rcard">
-            <div class="scene scene-interview"><svg viewBox="0 0 24 24"><circle cx="8.5" cy="10" r="2.6"/><path d="M4.5 20c0-3.3 1.8-5.4 4-5.4s4 2.1 4 5.4z"/><circle class="accent" cx="16" cy="10.6" r="2.2"/><path class="accent" d="M12.6 20c.2-3 1.6-4.8 3.4-4.8s3.2 1.8 3.4 4.8z"/><rect x="10.7" y="3" width="1.6" height="5" rx=".8" opacity=".6"/></svg></div>
-            <div class="rtop"><span class="rtype">VIDEO</span><span class="rscore">91%</span></div>
-            <div class="rbottom"><div class="rtitle">Entrevista — Sala 2</div><div class="rmeta">21:03 · 11/02</div></div>
+          <div class="rcard" data-id="p4">
+            <div class="scene"><img src="/smart-search-thumbs/primer_pantallaso/pexels-yaroslav-shuraev-5562994.webp" alt=""></div>
+            <div class="rtop"><span class="rtype">FOTO</span></div>
+            <div class="rbottom"><div class="rtitle">Bosque al atardecer</div><div class="rmeta">09/05</div></div>
           </div>
-          <div class="rcard">
-            <div class="scene scene-press"><svg viewBox="0 0 24 24"><path d="M8 12h8l-1.4 9H9.4z"/><rect class="accent" x="10.8" y="4" width="2.4" height="7" rx="1.2"/><circle cx="4.5" cy="6" r="1.1" opacity=".75"/><circle cx="19.5" cy="7.2" r="1.1" opacity=".75"/><circle cx="6.8" cy="4" r=".8" opacity=".55"/></svg></div>
-            <div class="rtop"><span class="rtype">FOTO</span><span class="rscore">89%</span></div>
-            <div class="rbottom"><div class="rtitle">Conferencia de prensa</div><div class="rmeta">02/08</div></div>
+          <div class="rcard" data-id="p5">
+            <div class="scene"><img src="/smart-search-thumbs/primer_pantallaso/pexels-gabriella-ally-3664539-33401241.webp" alt=""></div>
+            <div class="rtop"><span class="rtype">VIDEO</span></div>
+            <div class="rbottom"><div class="rtitle">Sesión en estudio</div><div class="rmeta">28/04</div></div>
           </div>
-          <div class="rcard">
-            <div class="scene scene-office"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="15.5" rx="7.5" ry="2.3" opacity=".5"/><circle cx="7" cy="10.5" r="1.7"/><circle class="accent" cx="12" cy="9.3" r="1.9"/><circle cx="17" cy="10.5" r="1.7"/><rect x="16.5" y="2.5" width="5.5" height="6" rx=".6" opacity=".4"/></svg></div>
-            <div class="rtop"><span class="rtype">VIDEO</span><span class="rscore">87%</span></div>
-            <div class="rbottom"><div class="rtitle">Reunión de equipo</div><div class="rmeta">09:47 · 30/04</div></div>
+          <div class="rcard" data-id="p6">
+            <div class="scene"><img src="/smart-search-thumbs/primer_pantallaso/pexels-kevin-cuesta-79785555-9209815.webp" alt=""></div>
+            <div class="rtop"><span class="rtype">FOTO</span></div>
+            <div class="rbottom"><div class="rtitle">Costa al amanecer</div><div class="rmeta">12/03</div></div>
           </div>
-          <div class="rcard">
-            <div class="scene scene-city"><svg viewBox="0 0 24 24"><rect x="2" y="12" width="3.4" height="9"/><rect class="accent" x="6.4" y="8" width="3.4" height="13"/><rect x="10.8" y="14" width="3.4" height="7"/><rect x="15.2" y="6" width="3.4" height="15"/><rect x="19.6" y="11" width="2.4" height="10" opacity=".8"/><circle cx="19" cy="3.5" r="1.4" opacity=".7"/></svg></div>
-            <div class="rtop"><span class="rtype">FOTO</span><span class="rscore">85%</span></div>
-            <div class="rbottom"><div class="rtitle">Skyline nocturno</div><div class="rmeta">19/03</div></div>
+          <div class="rcard" data-id="p7">
+            <div class="scene"><img src="/smart-search-thumbs/primer_pantallaso/pexels-optical-chemist-340351297-35803215.webp" alt=""></div>
+            <div class="rtop"><span class="rtype">FOTO</span></div>
+            <div class="rbottom"><div class="rtitle">Fachada contemporánea</div><div class="rmeta">02/02</div></div>
           </div>
-          <div class="rcard">
-            <div class="scene scene-institutional"><svg viewBox="0 0 24 24"><rect x="6" y="2.5" width="1.4" height="17" opacity=".7"/><path class="accent" d="M7.4 3l7 2.2-7 2.2z"/><path d="M11 21l1.2-6h5.6L19 21z" opacity=".85"/></svg></div>
-            <div class="rtop"><span class="rtype">VIDEO</span><span class="rscore">82%</span></div>
-            <div class="rbottom"><div class="rtitle">Acto institucional</div><div class="rmeta">14:22 · 22/05</div></div>
+          <div class="rcard" data-id="p8">
+            <div class="scene"><img src="/smart-search-thumbs/primer_pantallaso/pexels-german-latasa-814203747-31619132.webp" alt=""></div>
+            <div class="rtop"><span class="rtype">FOTO</span></div>
+            <div class="rbottom"><div class="rtitle">Arquitectura en curva</div><div class="rmeta">18/01</div></div>
           </div>
         </div>
+        </div>
+        <svg class="demo-pointer" id="heroPointer" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 3.2l1.1 16.4 4.6-4.2 3.6 7.6 2.5-1.2-3.6-7.5 6.4-.2z" fill="#fff" stroke="#171717" stroke-width="1.3" stroke-linejoin="round"/>
+        </svg>
       </div>
     </div>
   </div>
@@ -625,31 +689,364 @@
 </footer>
 
 <script>
+/* Hero demo — editar imágenes, textos y timing acá.
+   Miniaturas web: /smart-search-thumbs/{primer_pantallaso|inicial|similitud}
+   Originales sin tocar: /primer_pantallaso  /inicial  /similitud
+   El id “sunset” es la card que selecciona la demo. */
 (function(){
-  var el = document.getElementById('typeText');
-  if (!el) return;
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;
-  var queries = [
-    'persona hablando en un escenario',
-    'entrevista en estudio con fondo oscuro',
-    'evento institucional',
-    'ciudad de noche'
+  var QUERY = 'ciudad iluminada de noche';
+  var TARGET_ID = 'sunset';
+  var T = {
+    firstHold: 1800,
+    typeMs: 52,
+    afterType: 420,
+    resultsHold: 1300,
+    afterSelect: 650,
+    toBtn: 620,
+    afterClick: 200,
+    similarHold: 4200,
+    resumeManual: 8000,
+    swapMs: 320
+  };
+
+  var firstScreenResults = [
+    {id:'p1', image:'/smart-search-thumbs/primer_pantallaso/pexels-cottonbro-6883794.webp', title:'Entrevista en estudio', type:'VIDEO', meta:'04/08'},
+    {id:'p2', image:'/smart-search-thumbs/primer_pantallaso/pexels-ron-lach-8089662.webp', title:'Making of — set rojo', type:'VIDEO', meta:'21/07'},
+    {id:'p3', image:'/smart-search-thumbs/primer_pantallaso/pexels-ivan-s-8117405.webp', title:'Reunión de equipo', type:'FOTO', meta:'16/06'},
+    {id:'p4', image:'/smart-search-thumbs/primer_pantallaso/pexels-yaroslav-shuraev-5562994.webp', title:'Bosque al atardecer', type:'FOTO', meta:'09/05'},
+    {id:'p5', image:'/smart-search-thumbs/primer_pantallaso/pexels-gabriella-ally-3664539-33401241.webp', title:'Sesión en estudio', type:'VIDEO', meta:'28/04'},
+    {id:'p6', image:'/smart-search-thumbs/primer_pantallaso/pexels-kevin-cuesta-79785555-9209815.webp', title:'Costa al amanecer', type:'FOTO', meta:'12/03'},
+    {id:'p7', image:'/smart-search-thumbs/primer_pantallaso/pexels-optical-chemist-340351297-35803215.webp', title:'Fachada contemporánea', type:'FOTO', meta:'02/02'},
+    {id:'p8', image:'/smart-search-thumbs/primer_pantallaso/pexels-german-latasa-814203747-31619132.webp', title:'Arquitectura en curva', type:'FOTO', meta:'18/01'}
   ];
-  var qi = 0, ci = queries[0].length, deleting = false;
-  function tick(){
-    var current = queries[qi];
-    if (!deleting){
-      ci++;
-      if (ci > current.length){ deleting = true; setTimeout(tick, 1800); return; }
-    } else {
-      ci--;
-      if (ci < 0){ deleting = false; qi = (qi+1) % queries.length; ci = 0; setTimeout(tick, 300); return; }
-    }
-    el.textContent = current.slice(0, ci);
-    setTimeout(tick, deleting ? 28 : 46);
+
+  var initialResults = [
+    {id:'skyline', image:'/smart-search-thumbs/inicial/skyline-nocturno.webp', title:'Skyline nocturno', type:'FOTO', score:'98%', meta:'12/08'},
+    {id:'towers', image:'/smart-search-thumbs/inicial/edificios-con-luces.webp', title:'Edificios con luces', type:'FOTO', score:'96%', meta:'03/07'},
+    {id:'sunset', image:'/smart-search-thumbs/inicial/panoramica-de-ciudad-al-atardecer.webp', title:'Panorámica urbana al atardecer', type:'FOTO', score:'95%', meta:'14/06'},
+    {id:'avenue', image:'/smart-search-thumbs/inicial/avenida-con-luces.webp', title:'Avenida con luces', type:'FOTO', score:'93%', meta:'11/02'},
+    {id:'bridges', image:'/smart-search-thumbs/inicial/puentes-iluminados.webp', title:'Puentes iluminados', type:'FOTO', score:'91%', meta:'02/08'},
+    {id:'river', image:'/smart-search-thumbs/inicial/ciudad-con-rio-iluminado.webp', title:'Ciudad con río iluminado', type:'FOTO', score:'88%', meta:'30/04'},
+    {id:'aerial', image:'/smart-search-thumbs/inicial/toma-aerea-urbana-nocturna.webp', title:'Toma aérea urbana nocturna', type:'FOTO', score:'86%', meta:'19/03'},
+    {id:'citylights', image:'/smart-search-thumbs/inicial/vista-nocturna-de-la-ciudad.webp', title:'Vista nocturna de la ciudad', type:'FOTO', score:'84%', meta:'22/05'}
+  ];
+
+  var similarResults = [
+    {id:'s1', image:'/smart-search-thumbs/similitud/pexels-claiton-5264470.webp', title:'Colinas al anochecer', type:'FOTO', score:'97%', meta:'18/06'},
+    {id:'s2', image:'/smart-search-thumbs/similitud/pexels-helloiamtugce-19035873.webp', title:'Skyline al crepúsculo', type:'FOTO', score:'95%', meta:'07/08'},
+    {id:'s3', image:'/smart-search-thumbs/similitud/pexels-justyna-serafin-127253298-12485441.webp', title:'Costa al atardecer', type:'FOTO', score:'94%', meta:'21/04'},
+    {id:'s4', image:'/smart-search-thumbs/similitud/pexels-maria-regina-diaz-295717408-18971309.webp', title:'Toma aérea al anochecer', type:'FOTO', score:'92%', meta:'03/09'},
+    {id:'s5', image:'/smart-search-thumbs/similitud/pexels-tinny-hu-109766654-11506719.webp', title:'Río al atardecer', type:'FOTO', score:'90%', meta:'15/03'},
+    {id:'s6', image:'/smart-search-thumbs/similitud/pexels-tahsin-yasar-2157525423-35443902.webp', title:'Ciudad nublada al anochecer', type:'FOTO', score:'89%', meta:'28/07'},
+    {id:'s7', image:'/smart-search-thumbs/similitud/pexels-vinicius-quaresma-511530024-33057232.webp', title:'Horizonte en llamas', type:'FOTO', score:'87%', meta:'09/05'},
+    {id:'s8', image:'/smart-search-thumbs/similitud/pexels-ec-lipse-263453583-36282115.webp', title:'Río y luces al anochecer', type:'FOTO', score:'85%', meta:'02/06'}
+  ];
+
+  var typeEl = document.getElementById('typeText');
+  var grid = document.getElementById('heroDemoGrid');
+  var wrap = document.getElementById('heroResultsWrap');
+  var pointer = document.getElementById('heroPointer');
+  var mock = document.getElementById('heroMock');
+  var modeChip = document.getElementById('heroModeChip');
+  var simBar = document.getElementById('heroSimBar');
+  var simThumb = document.getElementById('heroSimThumb');
+  var simName = document.getElementById('heroSimName');
+  if (!typeEl || !grid || !mock || !wrap) return;
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var phase = 'browse';
+  var selectedId = null;
+  var timers = [];
+  var interacting = false;
+  var pointerXY = {x:24, y:70};
+  var gen = 0;
+  var readyMap = {};
+  var targetItem = initialResults.filter(function(item){ return item.id === TARGET_ID; })[0];
+
+  function later(fn, ms){
+    var id = setTimeout(fn, ms);
+    timers.push(id);
+    return id;
   }
-  setTimeout(tick, 2200);
+  function clearTimers(){
+    timers.forEach(clearTimeout);
+    timers = [];
+  }
+  function esc(s){
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;');
+  }
+  function src(path){ return encodeURI(path); }
+
+  function preloadOne(url){
+    url = src(url);
+    if (readyMap[url]) return readyMap[url];
+    readyMap[url] = new Promise(function(resolve){
+      var img = new Image();
+      img.decoding = 'async';
+      function finish(){ resolve(img); }
+      img.onload = function(){
+        if (img.decode) img.decode().then(finish, finish);
+        else finish();
+      };
+      img.onerror = finish;
+      img.src = url;
+    });
+    return readyMap[url];
+  }
+
+  function waitForSet(list, cb){
+    var my = gen;
+    Promise.all(list.map(function(item){ return preloadOne(item.image); })).then(function(){
+      if (my !== gen) return;
+      later(cb, 0);
+    });
+  }
+
+  function cardHTML(item, opts){
+    var selected = opts.selectedId === item.id;
+    var showBtn = selected && opts.allowSim;
+    var action = '';
+    if (showBtn) action = '<button type="button" class="rsim-btn" data-sim="1">Buscar por similitud</button>';
+    return (
+      '<div class="rcard' + (selected ? ' is-selected' : '') + '" data-id="' + esc(item.id) + '">' +
+        '<div class="scene"><img src="' + src(item.image) + '" alt=""></div>' +
+        '<div class="rtop"><span class="rtype">' + esc(item.type) + '</span>' + action + '</div>' +
+        '<div class="rbottom"><div class="rtitle">' + esc(item.title) + '</div><div class="rmeta">' + esc(item.meta) + '</div></div>' +
+      '</div>'
+    );
+  }
+
+  function chipLabel(){
+    if (phase === 'similar') return 'Similares';
+    if (phase === 'initial') return 'Score ↓';
+    return 'Recientes';
+  }
+
+  function cardsHTML(list, nextPhase, nextSelected){
+    return list.map(function(item){
+      return cardHTML(item, {
+        selectedId: nextSelected || null,
+        allowSim: nextPhase === 'initial'
+      });
+    }).join('');
+  }
+
+  function render(list, opts){
+    opts = opts || {};
+    phase = opts.phase || phase;
+    selectedId = opts.selectedId || null;
+    grid.classList.toggle('is-static', !!opts.static);
+    grid.innerHTML = cardsHTML(list, phase, selectedId);
+    if (modeChip) modeChip.textContent = chipLabel();
+  }
+
+  function swapTo(list, opts, done){
+    opts = opts || {};
+    var my = gen;
+    var nextPhase = opts.phase || phase;
+    var nextSelected = opts.selectedId || null;
+    var html = cardsHTML(list, nextPhase, nextSelected);
+
+    function apply(){
+      if (my !== gen) return;
+      phase = nextPhase;
+      selectedId = nextSelected;
+      grid.classList.add('is-static');
+      grid.classList.remove('is-out');
+      grid.innerHTML = html;
+      if (modeChip) modeChip.textContent = chipLabel();
+      if (done) done();
+    }
+
+    if (reduce){ apply(); return; }
+
+    var incoming = document.createElement('div');
+    incoming.className = 'mock-results is-incoming is-static';
+    incoming.innerHTML = html;
+    wrap.appendChild(incoming);
+    incoming.offsetHeight;
+    incoming.classList.add('is-in');
+    grid.classList.add('is-out');
+    later(function(){
+      if (incoming.parentNode) incoming.parentNode.removeChild(incoming);
+      apply();
+    }, T.swapMs);
+  }
+
+  function currentList(){
+    if (phase === 'similar') return similarResults;
+    if (phase === 'browse') return firstScreenResults;
+    return initialResults;
+  }
+
+  function selectCard(id){
+    selectedId = id;
+    render(currentList(), {selectedId: id, phase: phase, static: true});
+  }
+
+  function showSimBar(item){
+    if (!simBar || !item) return;
+    if (simThumb) simThumb.src = src(item.image);
+    if (simName) simName.textContent = item.title;
+    simBar.classList.add('is-on');
+  }
+
+  function hideSimBar(){
+    if (!simBar) return;
+    simBar.classList.remove('is-on');
+  }
+
+  function showSimilar(){
+    hidePointer();
+    waitForSet(similarResults, function(){
+      showSimBar(targetItem);
+      swapTo(similarResults, {phase: 'similar'});
+    });
+  }
+
+  function hidePointer(){
+    if (!pointer) return;
+    pointer.style.opacity = '0';
+  }
+
+  function setPointer(x, y, click){
+    if (!pointer) return;
+    pointerXY = {x:x, y:y};
+    pointer.style.opacity = '1';
+    pointer.style.transform = 'translate(' + x + 'px,' + y + 'px)' + (click ? ' scale(.88)' : '');
+  }
+
+  function pointerTo(el, ox, oy){
+    if (!pointer || !el) return;
+    var wr = mock.getBoundingClientRect();
+    var r = el.getBoundingClientRect();
+    setPointer(r.left - wr.left + (ox != null ? ox : r.width * 0.58), r.top - wr.top + (oy != null ? oy : r.height * 0.42));
+  }
+
+  function canUsePointer(){
+    return pointer && window.matchMedia('(min-width:561px)').matches &&
+      !(window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+  }
+
+  function typeQuery(text, done){
+    typeEl.textContent = '';
+    var i = 0;
+    (function step(){
+      if (i <= text.length){
+        typeEl.textContent = text.slice(0, i);
+        i++;
+        later(step, T.typeMs);
+      } else {
+        later(done, T.afterType);
+      }
+    })();
+  }
+
+  function startLoop(){
+    if (interacting) return;
+    gen += 1;
+    var my = gen;
+    clearTimers();
+    hidePointer();
+    hideSimBar();
+    typeEl.textContent = '';
+    waitForSet(firstScreenResults, function(){
+      if (my !== gen) return;
+      function afterBrowse(){
+        later(function(){
+          if (my !== gen) return;
+          typeQuery(QUERY, function(){
+            waitForSet(initialResults, function(){
+              if (my !== gen) return;
+              swapTo(initialResults, {phase: 'initial'}, function(){
+                later(runSelection, T.resultsHold);
+              });
+            });
+          });
+        }, T.firstHold);
+      }
+      if (phase !== 'browse') swapTo(firstScreenResults, {phase: 'browse'}, afterBrowse);
+      else afterBrowse();
+    });
+  }
+
+  function runSelection(){
+    if (interacting) return;
+    var card = grid.querySelector('[data-id="' + TARGET_ID + '"]');
+    if (!card){
+      later(function(){ showSimilar(); later(startLoop, T.similarHold); }, 800);
+      return;
+    }
+    if (!canUsePointer()){
+      later(function(){
+        selectCard(TARGET_ID);
+        later(function(){ showSimilar(); later(startLoop, T.similarHold); }, 1000);
+      }, 700);
+      return;
+    }
+    pointer.style.transition = 'none';
+    var wr = mock.getBoundingClientRect();
+    var sr = typeEl.getBoundingClientRect();
+    setPointer(sr.left - wr.left + 16, sr.top - wr.top + 6);
+    later(function(){
+      pointer.style.transition = '';
+      pointerTo(card);
+      later(function(){
+        selectCard(TARGET_ID);
+        later(function(){
+          var btn = grid.querySelector('[data-sim]');
+          if (btn) pointerTo(btn, 12, 8);
+          later(function(){
+            if (btn) btn.classList.add('is-pressed');
+            setPointer(pointerXY.x, pointerXY.y, true);
+            later(function(){
+              showSimilar();
+              later(startLoop, T.similarHold);
+            }, T.afterClick);
+          }, T.toBtn);
+        }, T.afterSelect);
+      }, 720);
+    }, 40);
+  }
+
+  function interrupt(){
+    interacting = true;
+    gen += 1;
+    clearTimers();
+    hidePointer();
+    later(function(){
+      interacting = false;
+      startLoop();
+    }, T.resumeManual);
+  }
+
+  grid.addEventListener('click', function(e){
+    var btn = e.target.closest('[data-sim]');
+    var card = e.target.closest('.rcard');
+    if (btn){
+      interrupt();
+      showSimilar();
+      return;
+    }
+    if (card && phase === 'initial'){
+      interrupt();
+      selectCard(card.getAttribute('data-id'));
+    }
+  });
+
+  firstScreenResults.forEach(function(item){ preloadOne(item.image); });
+  later(function(){
+    initialResults.concat(similarResults).forEach(function(item){ preloadOne(item.image); });
+  }, 0);
+
+  if (reduce){
+    waitForSet(firstScreenResults, function(){
+      render(firstScreenResults, {phase: 'browse', static: true});
+    });
+    return;
+  }
+
+  later(startLoop, 500);
 })();
 
 (function(){
