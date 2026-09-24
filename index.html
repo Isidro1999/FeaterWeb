@@ -1078,7 +1078,8 @@
     beforeImageResults: 500,
     imageHold: 2800,
     resumeManual: 8000,
-    swapMs: 320
+    swapMs: 320,
+    startWhenVisible: 2000
   };
 
   var firstScreenResults = [
@@ -1492,7 +1493,8 @@
               });
             });
           });
-        }, T.firstHold);
+        }, openingHold);
+        openingHold = T.firstHold;
       }
       if (phase !== 'browse') swapTo(firstScreenResults, {phase: 'browse'}, afterBrowse);
       else afterBrowse();
@@ -1630,7 +1632,40 @@
     return;
   }
 
-  later(startLoop, 500);
+  var loopStarted = false;
+  var openingHold = T.startWhenVisible;
+  var io = null;
+  function startLoopWhenVisible(){
+    if (loopStarted) return;
+    loopStarted = true;
+    if (io) io.disconnect();
+    window.removeEventListener('scroll', onDemoVisible);
+    window.removeEventListener('resize', onDemoVisible);
+    startLoop();
+  }
+  function demoIsVisible(){
+    var r = mock.getBoundingClientRect();
+    if (!r.height) return false;
+    var visible = Math.max(0, Math.min(r.bottom, window.innerHeight) - Math.max(r.top, 0));
+    return visible / r.height >= 0.35;
+  }
+  function onDemoVisible(){
+    if (demoIsVisible()) startLoopWhenVisible();
+  }
+  if ('IntersectionObserver' in window){
+    io = new IntersectionObserver(function(entries){
+      for (var i = 0; i < entries.length; i++){
+        if (entries[i].isIntersecting && entries[i].intersectionRatio >= 0.35){
+          startLoopWhenVisible();
+          break;
+        }
+      }
+    }, { threshold: [0.35, 0.5, 0.75] });
+    io.observe(mock);
+  }
+  window.addEventListener('scroll', onDemoVisible, { passive: true });
+  window.addEventListener('resize', onDemoVisible);
+  later(onDemoVisible, 0);
 })();
 
 (function(){
