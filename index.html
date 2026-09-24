@@ -599,13 +599,64 @@
   .type-card p{color:var(--panel-text-soft);font-size:14.5px;margin-top:8px;max-width:360px;}
   .type-visual{margin-top:20px;display:flex;gap:8px;flex-wrap:wrap;}
   .tv-chip{font-family:var(--font-mono);font-size:11px;color:var(--panel-text-soft);border:1px solid var(--panel-line);border-radius:100px;padding:6px 12px;}
-  .tv-faces{display:flex;gap:8px;}
-  .tv-face{width:34px;height:34px;border-radius:50%;background:#241F1A;border:1.5px solid var(--panel-line);transition:border-color .35s ease, transform .35s ease;}
-  .type-card:hover .tv-face:nth-child(2){border-color:var(--orange-bright);transform:scale(1.1);transition-delay:.1s;}
+  .tv-people{align-items:center;gap:16px;flex-wrap:wrap;}
+  .tv-people-ref{
+    width:46px;height:46px;flex:none;border-radius:50%;
+    background:#241F1A center/cover no-repeat;
+    border:1.5px solid rgba(245,76,22,.5);
+    box-shadow:0 0 0 3px rgba(245,76,22,.12);
+  }
+  .tv-people-sep{
+    width:18px;height:1px;flex:none;position:relative;background:var(--panel-line);
+  }
+  .tv-people-sep::after{
+    content:"";position:absolute;right:-1px;top:50%;width:5px;height:5px;
+    border-right:1px solid var(--panel-line);border-bottom:1px solid var(--panel-line);
+    transform:translateY(-50%) rotate(-45deg);
+  }
+  .tv-people-hits{display:flex;gap:8px;}
+  .tv-people-hit{
+    width:64px;height:47px;border-radius:5px;
+    background:#241F1A center/cover no-repeat;
+    border:1px solid var(--panel-line);
+    box-shadow:0 8px 16px -14px rgba(0,0,0,.7);
+  }
+  .tv-people-hit.is-accent{border-color:rgba(245,76,22,.55);}
+  @media (max-width:420px){
+    .tv-people{gap:12px;}
+    .tv-people-hit{width:52px;height:38px;}
+  }
   .tv-scenes{display:flex;gap:8px;}
   .tv-scene{width:44px;height:34px;border-radius:5px;}
   .tv-scene.extra{opacity:0;transform:scale(.85);transition:opacity .35s ease, transform .35s ease;transition-delay:.15s;}
   .type-card:hover .tv-scene.extra{opacity:1;transform:scale(1);}
+  .tv-context{align-items:center;gap:18px;flex-wrap:wrap;}
+  .tv-context-ref{
+    width:54px;height:62px;flex:none;border-radius:6px;
+    background:#241F1A center/cover no-repeat;
+    border:1.5px solid rgba(245,76,22,.5);
+    box-shadow:0 0 0 3px rgba(245,76,22,.12);
+  }
+  .tv-context-sep{
+    width:20px;height:1px;flex:none;position:relative;background:var(--panel-line);
+  }
+  .tv-context-sep::after{
+    content:"";position:absolute;right:-1px;top:50%;width:5px;height:5px;
+    border-right:1px solid var(--panel-line);border-bottom:1px solid var(--panel-line);
+    transform:translateY(-50%) rotate(-45deg);
+  }
+  .tv-context-hits{display:flex;gap:10px;}
+  .tv-context-hit{
+    width:88px;height:65px;border-radius:5px;
+    background:#241F1A center/cover no-repeat;
+    border:1px solid var(--panel-line);
+    box-shadow:0 8px 16px -14px rgba(0,0,0,.7);
+  }
+  @media (max-width:420px){
+    .tv-context{gap:12px;}
+    .tv-context-ref{width:44px;height:50px;}
+    .tv-context-hit{width:64px;height:47px;}
+  }
   .tv-filters{display:flex;flex-direction:column;gap:6px;align-items:flex-start;}
   .tv-chip.extra{opacity:0;transform:translateY(4px);transition:opacity .35s ease, transform .35s ease;transition-delay:.15s;}
   .type-card:hover .tv-chip.extra{opacity:1;transform:translateY(0);}
@@ -613,7 +664,7 @@
   .type-card:hover .tv-filters .tv-chip.seq:nth-child(1){border-color:var(--orange-bright);color:var(--panel-text);transition-delay:0ms;}
   .type-card:hover .tv-filters .tv-chip.seq:nth-child(2){border-color:var(--orange-bright);color:var(--panel-text);transition-delay:140ms;}
   .type-card:hover .tv-filters .tv-chip.seq:nth-child(3){border-color:var(--orange-bright);color:var(--panel-text);transition-delay:280ms;}
-  @media (prefers-reduced-motion:reduce){ .tv-face, .tv-scene.extra, .tv-chip.extra, .tv-filters .tv-chip.seq{transition:none;} }
+  @media (prefers-reduced-motion:reduce){ .tv-scene.extra, .tv-chip.extra, .tv-filters .tv-chip.seq{transition:none;} }
 
   /* ---------- Beneficio ---------- */
   .benefit-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:64px;align-items:center;}
@@ -881,24 +932,36 @@
         <svg class="ticon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" stroke-width="1.8"/><path d="M4 21c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke-width="1.8"/></svg>
         <h3>Búsqueda por personas</h3>
         <p>Reconocimiento facial para encontrar a alguien en todo tu archivo.</p>
-        <div class="type-visual tv-faces">
-          <div class="tv-face"></div><div class="tv-face"></div><div class="tv-face"></div><div class="tv-face"></div>
+        <div class="type-visual tv-people">
+          <div class="tv-people-ref" style="background-image:url('/search-people/persona-ref.png')" aria-hidden="true"></div>
+          <span class="tv-people-sep" aria-hidden="true"></span>
+          <div class="tv-people-hits">
+            <div class="tv-people-hit is-accent" style="background-image:url('/search-people/persona-resultado-1.png')" aria-hidden="true"></div>
+            <div class="tv-people-hit" style="background-image:url('/search-people/persona-resultado-2.png')" aria-hidden="true"></div>
+            <div class="tv-people-hit" style="background-image:url('/search-people/persona-resultado-3.png')" aria-hidden="true"></div>
+          </div>
         </div>
       </div>
       <div class="type-card">
         <svg class="ticon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="1.5" stroke-width="1.8"/><path d="M3 15l5-4 4 3 4-5 5 4" stroke-width="1.8"/></svg>
         <h3>Búsqueda por contexto visual</h3>
         <p>Buscá por escena, lugar o ambiente, no solo por un tag cargado a mano.</p>
-        <div class="type-visual tv-scenes">
-          <div class="tv-scene scene scene-office"></div><div class="tv-scene scene scene-city"></div><div class="tv-scene scene scene-institutional"></div><div class="tv-scene scene scene-panel extra"></div>
+        <div class="type-visual tv-context">
+          <div class="tv-context-ref" style="background-image:url('/smart-search-thumbs/similitud/pexels-claiton-5264470.webp')" aria-hidden="true"></div>
+          <span class="tv-context-sep" aria-hidden="true"></span>
+          <div class="tv-context-hits">
+            <div class="tv-context-hit" style="background-image:url('/smart-search-thumbs/similitud/pexels-helloiamtugce-19035873.webp')" aria-hidden="true"></div>
+            <div class="tv-context-hit" style="background-image:url('/smart-search-thumbs/similitud/pexels-justyna-serafin-127253298-12485441.webp')" aria-hidden="true"></div>
+            <div class="tv-context-hit" style="background-image:url('/smart-search-thumbs/similitud/pexels-vinicius-quaresma-511530024-33057232.webp')" aria-hidden="true"></div>
+          </div>
         </div>
       </div>
       <div class="type-card">
         <svg class="ticon" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M7 12h10M10 18h4" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <h3>Búsqueda combinada con filtros</h3>
-        <p>Afiná por tipo, duración, fecha o score de coincidencia, todo a la vez.</p>
+        <h3>Búsqueda combinada con tags</h3>
+        <p>Combiná la búsqueda con tags propios para afinar resultados según tu forma de organizar el contenido.</p>
         <div class="type-visual tv-filters">
-          <span class="tv-chip seq">Tipo: Video</span><span class="tv-chip seq">Duración: &lt;5 min</span><span class="tv-chip seq">Score: &gt;90%</span>
+          <span class="tv-chip seq">Espacio: abierto</span><span class="tv-chip seq">Tipo de lugar: Evento</span><span class="tv-chip seq">Material: Seleccionado</span>
         </div>
       </div>
     </div>
@@ -1012,7 +1075,6 @@
 
 <footer>
   <div class="wrap foot-top">
-    <b>Diseñemos tu FEATER.</b>
     <span class="foot-tag">LESS NOISE. BETTER PATHS.</span>
   </div>
   <div class="wrap foot-bottom">
