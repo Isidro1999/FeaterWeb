@@ -144,6 +144,25 @@
   .capa-num{font-family:var(--font-mono);font-size:11.5px;color:var(--orange);letter-spacing:.06em;}
   .capa-item h3{color:#fff;font-size:22px;font-weight:800;margin-top:10px;}
   .capa-item p{color:var(--dtext-soft);margin-top:10px;font-size:15px;max-width:420px;}
+  .capa-mini{
+    display:flex;align-items:stretch;gap:7px;margin-top:18px;max-width:420px;
+  }
+  .capa-chip{
+    flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+    padding:11px 8px;border-radius:8px;border:1px solid var(--dline-soft);
+    background:var(--bg-elevated-2);color:var(--nd,var(--dtext-soft));
+  }
+  .capa-chip svg{width:16px;height:16px;}
+  .capa-chip span{font-family:var(--font-mono);font-size:9px;letter-spacing:.04em;color:var(--dtext-soft);text-align:center;}
+  .capa-chip.waf{--nd:#FF5A4E;border-color:rgba(255,90,78,.42);}
+  .capa-chip.cdn{--nd:#9A7BFF;border-color:rgba(154,123,255,.40);}
+  .capa-chip.lb{--nd:var(--orange-bright);border-color:rgba(255,81,0,.44);}
+  .capa-mini-arr{
+    flex:none;align-self:center;width:12px;height:12px;color:var(--dtext-dim);
+  }
+  .capa-mini-split{flex:1;display:flex;flex-direction:column;gap:6px;}
+  .capa-mini-split .capa-chip{flex:1;flex-direction:row;justify-content:flex-start;gap:8px;padding:8px 10px;}
+  .capa-mini-split .capa-chip span{text-align:left;}
 
   /* ---------- Control en cada acceso (única sección clara) ---------- */
   .control-section{background:var(--paper-warm);border-block:1px solid var(--line);}
@@ -393,16 +412,16 @@
     <div class="capas-visual">
       <div class="stack">
         <div class="stack-band active" data-layer="1">
-          <span class="band-num">01</span><span class="band-name">Acceso controlado</span>
-          <svg class="band-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7" stroke-width="1.6"/><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none" style="fill:var(--dtext-soft)"/></svg>
+          <span class="band-num">01</span><span class="band-name">Infraestructura protegida</span>
+          <svg class="band-icon" viewBox="0 0 24 24" fill="none"><path d="M12 3.2 5.5 5.7v5.1c0 4 2.6 7.6 6.5 9 3.9-1.4 6.5-5 6.5-9V5.7L12 3.2Z" stroke-width="1.6" stroke-linejoin="round"/></svg>
         </div>
         <div class="stack-band" data-layer="2">
           <span class="band-num">02</span><span class="band-name">Roles y permisos</span>
           <svg class="band-icon" viewBox="0 0 24 24" fill="none"><circle cx="9" cy="10" r="3.4" stroke-width="1.6"/><circle cx="16" cy="12.5" r="2.6" stroke-width="1.6"/></svg>
         </div>
         <div class="stack-band" data-layer="3">
-          <span class="band-num">03</span><span class="band-name">Infraestructura protegida</span>
-          <svg class="band-icon" viewBox="0 0 24 24" fill="none"><rect x="5" y="3.5" width="14" height="5" rx="1" stroke-width="1.6"/><rect x="5" y="10" width="14" height="5" rx="1" stroke-width="1.6"/><rect x="5" y="16.5" width="14" height="4" rx="1" stroke-width="1.6"/></svg>
+          <span class="band-num">03</span><span class="band-name">Acceso controlado</span>
+          <svg class="band-icon" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="7" stroke-width="1.6"/><circle cx="12" cy="12" r="1.8" fill="currentColor" stroke="none" style="fill:var(--dtext-soft)"/></svg>
         </div>
         <div class="stack-band" data-layer="4">
           <span class="band-num">04</span><span class="band-name">Backups y continuidad</span>
@@ -417,8 +436,30 @@
     <div class="capas-list">
       <div class="capa-item" data-layer="1">
         <span class="capa-num">CAPA 01</span>
-        <h3>Acceso controlado</h3>
-        <p>Definí quién puede ingresar, qué puede ver y qué puede hacer dentro de la plataforma.</p>
+        <h3>Infraestructura protegida</h3>
+        <p>Por delante, un Web Application Firewall (AWS WAF) protege la plataforma frente a tráfico malicioso y amenazas comunes. Por detrás, una CDN y un Load Balancer distribuyen la carga y permiten escalar dinámicamente ante picos inesperados de tráfico, manteniendo estabilidad y disponibilidad.</p>
+        <div class="capa-mini" aria-hidden="true">
+          <div class="capa-chip">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="3.2"/><path d="M5.6 19.2c1.2-3 3.6-4.5 6.4-4.5s5.2 1.5 6.4 4.5"/></svg>
+            <span>Usuario</span>
+          </div>
+          <svg class="capa-mini-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h12M13 7l5 5-5 5"/></svg>
+          <div class="capa-chip waf">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M12 3.2 5.5 5.7v5.1c0 4 2.6 7.6 6.5 9 3.9-1.4 6.5-5 6.5-9V5.7L12 3.2Z"/></svg>
+            <span>AWS WAF</span>
+          </div>
+          <svg class="capa-mini-arr" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h12M13 7l5 5-5 5"/></svg>
+          <div class="capa-mini-split">
+            <div class="capa-chip cdn">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.4"/><path d="M3.6 12h16.8"/><path d="M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4s-1.2 6.1-3.4 8.4c-2.2-2.3-3.4-5.3-3.4-8.4s1.2-6.1 3.4-8.4Z"/></svg>
+              <span>CDN</span>
+            </div>
+            <div class="capa-chip lb">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2.8" width="6" height="5" rx="1.2"/><rect x="2.6" y="16.2" width="6" height="5" rx="1.2"/><rect x="15.4" y="16.2" width="6" height="5" rx="1.2"/><path d="M12 7.8v4.1M5.6 16.2v-4.3h12.8v4.3"/></svg>
+              <span>Load Balancer</span>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="capa-item" data-layer="2">
         <span class="capa-num">CAPA 02</span>
@@ -427,8 +468,8 @@
       </div>
       <div class="capa-item" data-layer="3">
         <span class="capa-num">CAPA 03</span>
-        <h3>Infraestructura protegida</h3>
-        <p>Tus activos viven sobre una arquitectura diseñada para operar de forma estable y segura.</p>
+        <h3>Acceso controlado</h3>
+        <p>Definí quién puede ingresar, qué puede ver y qué puede hacer dentro de la plataforma.</p>
       </div>
       <div class="capa-item" data-layer="4">
         <span class="capa-num">CAPA 04</span>
