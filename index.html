@@ -196,7 +196,7 @@
   .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
   .stat b{display:block;font-family:var(--font-display);font-size:38px;color:var(--orange-bright);}
   .stat span{font-size:13px;color:#B8ACA3;letter-spacing:.04em;}
-  .about .stat-inf{font-size:62px;line-height:.68;letter-spacing:-.04em;}
+  .stat .stat-phrase{font-size:clamp(22px,2.6vw,30px);letter-spacing:-.03em;line-height:1.1;}
 
   /* ---------- Clients ---------- */
   .clients .eyebrow{display:block;text-align:center;margin-bottom:34px;color:var(--ink-soft);}
@@ -323,6 +323,7 @@
   .mock-search{
     position:relative;
     display:flex;align-items:center;gap:12px;margin:18px 18px 0;padding:14px 16px;
+    min-height:58px;box-sizing:border-box;
     background:#1D1A17;border:1px solid var(--panel-line);border-radius:8px;
   }
   .mock-search svg{flex:none;width:18px;height:18px;}
@@ -423,11 +424,14 @@
     font-family:var(--font-mono);font-size:11px;color:var(--panel-text-soft);
     border:1px solid var(--panel-line);border-radius:100px;padding:6px 12px;
   }
+  /* Ancho fijo: el chip de modo cambia de texto entre estados y no debe
+     alterar el wrapping de la fila de filtros. */
+  #heroModeChip{min-width:calc(9ch + 26px);text-align:center;}
   .hero-results{position:relative;}
   .mock-results{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:18px;}
   @media (max-width:560px){ .mock-results{grid-template-columns:repeat(2,1fr);} }
   .mock-results.is-incoming{
-    position:absolute;left:0;right:0;top:0;z-index:2;
+    position:absolute;inset:0;z-index:2;
     opacity:0;pointer-events:none;
     transition:opacity .32s ease;
   }
@@ -458,6 +462,14 @@
     font-family:var(--font-mono);font-size:9px;font-variant-numeric:tabular-nums;color:var(--orange-bright);
     background:rgba(20,18,16,.7);border-radius:3px;padding:3px 6px;
   }
+  .rcard .rplay{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+    width:32px;height:32px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    background:rgba(12,10,9,.42);border:1px solid rgba(255,255,255,.3);
+    backdrop-filter:blur(2px);pointer-events:none;
+  }
+  .rcard .rplay svg{width:11px;height:11px;margin-left:1.5px;}
   .rcard .rbottom{
     position:absolute;left:0;right:0;bottom:0;padding:16px 8px 8px;
     background:linear-gradient(to top, rgba(10,9,8,.92), rgba(10,9,8,0));
@@ -474,12 +486,15 @@
   .scene img{position:absolute;inset:0;width:100%;height:100%;max-width:none;object-fit:cover;}
   .mock-results.is-waiting .rcard{opacity:0;animation:none;}
   .mock-results.is-static .rcard{animation:none;}
+  /* La barra ocupa siempre su lugar (visibility) para que ni el frame ni la
+     grilla se muevan al entrar o salir del estado de similitud. */
   .sim-bar{
-    display:none;align-items:center;gap:10px;
-    margin:12px 18px 0;padding:7px 10px;
+    display:flex;align-items:center;gap:10px;
+    margin:12px 18px 0;padding:7px 10px;min-height:44px;box-sizing:border-box;
     background:#1D1A17;border:1px solid var(--panel-line);border-radius:8px;
+    visibility:hidden;opacity:0;pointer-events:none;
   }
-  .sim-bar.is-on{display:flex;}
+  .sim-bar.is-on{visibility:visible;opacity:1;pointer-events:auto;}
   .sim-bar img{
     width:28px;height:28px;flex:none;border-radius:4px;object-fit:cover;
     border:1px solid rgba(245,76,22,.4);
@@ -695,13 +710,13 @@
   .benefit-points li::before{content:"";position:absolute;left:0;top:8px;width:8px;height:8px;background:var(--orange);}
 
   /* ---------- Casos de uso ---------- */
-  .usecase-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .usecase-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;align-items:stretch;}
   @media (max-width:920px){ .usecase-grid{grid-template-columns:repeat(2,1fr);} }
   @media (max-width:560px){ .usecase-grid{grid-template-columns:1fr;} }
-  .usecase-card{border:1.5px solid var(--line);border-radius:8px;padding:26px 22px;background:var(--paper);}
-  .usecase-card svg{width:26px;height:26px;}
+  .usecase-card{border:1.5px solid var(--line);border-radius:8px;padding:26px 22px;background:var(--paper);display:flex;flex-direction:column;}
+  .usecase-card svg{width:26px;height:26px;flex-shrink:0;}
   .usecase-card svg *{stroke:var(--orange);}
-  .usecase-card h3{font-size:16.5px;font-weight:800;margin-top:16px;}
+  .usecase-card h3{font-size:16.5px;font-weight:800;margin-top:16px;line-height:1.2;min-height:2.4em;}
   .usecase-card p{font-size:13.5px;margin-top:8px;}
 
   /* ---------- CTA final ---------- */
@@ -768,7 +783,7 @@
 <section class="hero-demo">
   <div class="wrap hero-demo-grid">
     <div class="hero-copy">
-      <div class="hero-badge"><span class="dot"></span>Smart Search AI</div>
+      <div class="hero-badge"><span class="dot"></span>Búsqueda con AI</div>
       <h1>Encontrá cualquier contenido en segundos.</h1>
       <p class="lead">Sin carpetas. Sin tags manuales. Describí lo que necesitás y FEATER lo encuentra por vos, con inteligencia artificial que entiende imágenes, video y contexto.</p>
     </div>
@@ -785,7 +800,7 @@
           </button>
         </div>
         <div class="mock-filters">
-          <span class="fchip" id="heroTypeChip">Tipo: Foto</span><span class="fchip">Duración</span><span class="fchip">Fecha</span><span class="fchip" id="heroModeChip">Recientes</span>
+          <span class="fchip">Duración</span><span class="fchip">Fecha</span><span class="fchip" id="heroModeChip">Recientes</span>
         </div>
         <div class="sim-bar" id="heroSimBar">
           <img id="heroSimThumb" alt="">
@@ -795,11 +810,13 @@
         <div class="mock-results" id="heroDemoGrid">
           <div class="rcard" data-id="p1">
             <div class="scene"><img src="/smart-search-thumbs/primer_pantallaso/pexels-cottonbro-6883794.webp" alt=""></div>
+            <div class="rplay" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M3 1.6 10 6l-7 4.4z" fill="rgba(255,255,255,.92)"/></svg></div>
             <div class="rtop"><span class="rtype">VIDEO</span></div>
             <div class="rbottom"><div class="rtitle">Entrevista en estudio</div><div class="rmeta">04/08</div></div>
           </div>
           <div class="rcard" data-id="p2">
             <div class="scene"><img src="/smart-search-thumbs/primer_pantallaso/pexels-ron-lach-8089662.webp" alt=""></div>
+            <div class="rplay" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M3 1.6 10 6l-7 4.4z" fill="rgba(255,255,255,.92)"/></svg></div>
             <div class="rtop"><span class="rtype">VIDEO</span></div>
             <div class="rbottom"><div class="rtitle">Making of — set rojo</div><div class="rmeta">21/07</div></div>
           </div>
@@ -815,6 +832,7 @@
           </div>
           <div class="rcard" data-id="p5">
             <div class="scene"><img src="/smart-search-thumbs/primer_pantallaso/pexels-gabriella-ally-3664539-33401241.webp" alt=""></div>
+            <div class="rplay" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M3 1.6 10 6l-7 4.4z" fill="rgba(255,255,255,.92)"/></svg></div>
             <div class="rtop"><span class="rtype">VIDEO</span></div>
             <div class="rbottom"><div class="rtitle">Sesión en estudio</div><div class="rmeta">28/04</div></div>
           </div>
@@ -944,8 +962,8 @@
       </div>
       <div class="type-card">
         <svg class="ticon" viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="18" height="14" rx="1.5" stroke-width="1.8"/><path d="M3 15l5-4 4 3 4-5 5 4" stroke-width="1.8"/></svg>
-        <h3>Búsqueda por contexto visual</h3>
-        <p>Buscá por escena, lugar o ambiente, no solo por un tag cargado a mano.</p>
+        <h3>Búsqueda por similaridad</h3>
+        <p>Encontrá contenido similar a otro, desde los resultados o incluso subiendo una imagen de referencia.</p>
         <div class="type-visual tv-context">
           <div class="tv-context-ref" style="background-image:url('/smart-search-thumbs/similitud/pexels-claiton-5264470.webp')" aria-hidden="true"></div>
           <span class="tv-context-sep" aria-hidden="true"></span>
@@ -1013,24 +1031,24 @@
     </div>
     <div class="usecase-grid">
       <div class="usecase-card">
-        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="12" rx="1.5" stroke-width="1.6"/><path d="M8 20h8" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <h3>Canales y medios</h3>
-        <p>Todo el archivo audiovisual, organizado y listo para salir al aire.</p>
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 21h16" stroke-width="1.6" stroke-linecap="round"/><path d="M5 21V11h14v10" stroke-width="1.6"/><path d="M3 11h18" stroke-width="1.6" stroke-linecap="round"/><path d="M12 3 20 11H4z" stroke-width="1.6" stroke-linejoin="round"/><path d="M8 15v6M12 15v6M16 15v6" stroke-width="1.6"/></svg>
+        <h3>Gobiernos y Municipios</h3>
+        <p>Centralizá años de archivo institucional y encontrá rápido el material que cada área necesita.</p>
       </div>
       <div class="usecase-card">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h13l3 4v12H4z" stroke-width="1.6"/><path d="M8 11h8M8 15h5" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <h3>Equipos de comunicación</h3>
-        <p>Encontrá el material correcto para cada pieza, sin ir y venir por mail.</p>
+        <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="14" height="11" rx="1.5" stroke-width="1.6"/><circle cx="9" cy="12.5" r="2.5" stroke-width="1.6"/><path d="M16 10.2 21.5 7.5v10L16 14.8z" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <h3>Agencias y Productoras</h3>
+        <p>Encontrá tomas, versiones y entregables sin perder tiempo recorriendo carpetas o discos.</p>
       </div>
       <div class="usecase-card">
-        <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="4" width="6" height="16" stroke-width="1.6"/><rect x="10" y="4" width="6" height="16" stroke-width="1.6"/><rect x="17" y="4" width="4" height="16" stroke-width="1.6"/></svg>
-        <h3>Bibliotecas de contenido grandes</h3>
-        <p>Miles de archivos, un solo lugar donde encontrar cualquiera de ellos.</p>
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke-width="1.6"/><path d="M12 7.4 15.7 10l-1.4 4.4h-4.6L8.3 10 12 7.4z" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.3 10 4.6 8.2M15.7 10l3.7-1.8M9.7 14.4 7.8 18.8M14.3 14.4l1.9 4.4" stroke-width="1.6"/></svg>
+        <h3>Clubes</h3>
+        <p>Tené partidos, entrenamientos, entrevistas y archivo histórico listos para encontrar y reutilizar.</p>
       </div>
       <div class="usecase-card">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M3 11l18-7-7 18-3-8-8-3z" stroke-width="1.6" stroke-linejoin="round"/></svg>
-        <h3>Marketing y prensa</h3>
-        <p>La imagen o el video justo, disponible antes de que se enfríe la nota.</p>
+        <svg viewBox="0 0 24 24" fill="none"><path d="M3 10h3l8-5v14l-8-5H3z" stroke-width="1.6" stroke-linejoin="round"/><path d="M6 14.5 7.2 20h3l-.8-5.2" stroke-width="1.6" stroke-linejoin="round"/><path d="M17 9.2c1.1.8 1.8 2 1.8 3.3s-.7 2.5-1.8 3.3" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <h3>Marcas</h3>
+        <p>Ordená campañas, piezas y contenido histórico para que cada equipo encuentre siempre la versión correcta.</p>
       </div>
     </div>
   </div>
@@ -1045,8 +1063,8 @@
     </div>
     <div class="about-stats">
       <div class="stat"><b>100%</b><span>Infraestructura en AWS</span></div>
-      <div class="stat"><b>0</b><span>Límites de storage</span></div>
-      <div class="stat"><b class="stat-inf">∞</b><span>Usuarios y visitas</span></div>
+      <div class="stat"><b class="stat-phrase">Sin límites</b><span>Límites de storage</span></div>
+      <div class="stat"><b class="stat-phrase">Sin límites</b><span>Usuarios y visitas</span></div>
       <div class="stat"><b>AI</b><span>Búsqueda híbrida nativa</span></div>
     </div>
   </div>
@@ -1157,22 +1175,22 @@
 
   var initialResults = [
     {id:'skyline', image:'/smart-search-thumbs/inicial/skyline-nocturno.webp', title:'Skyline nocturno', type:'FOTO', score:'98%', meta:'12/08'},
-    {id:'towers', image:'/smart-search-thumbs/inicial/edificios-con-luces.webp', title:'Edificios con luces', type:'FOTO', score:'96%', meta:'03/07'},
+    {id:'towers', image:'/smart-search-thumbs/inicial/edificios-con-luces.webp', title:'Edificios con luces', type:'VIDEO', score:'96%', meta:'03/07'},
     {id:'sunset', image:'/smart-search-thumbs/inicial/panoramica-de-ciudad-al-atardecer.webp', title:'Panorámica urbana al atardecer', type:'FOTO', score:'95%', meta:'14/06'},
     {id:'avenue', image:'/smart-search-thumbs/inicial/avenida-con-luces.webp', title:'Avenida con luces', type:'FOTO', score:'93%', meta:'11/02'},
-    {id:'bridges', image:'/smart-search-thumbs/inicial/puentes-iluminados.webp', title:'Puentes iluminados', type:'FOTO', score:'91%', meta:'02/08'},
+    {id:'bridges', image:'/smart-search-thumbs/inicial/puentes-iluminados.webp', title:'Puentes iluminados', type:'VIDEO', score:'91%', meta:'02/08'},
     {id:'river', image:'/smart-search-thumbs/inicial/ciudad-con-rio-iluminado.webp', title:'Ciudad con río iluminado', type:'FOTO', score:'88%', meta:'30/04'},
     {id:'aerial', image:'/smart-search-thumbs/inicial/toma-aerea-urbana-nocturna.webp', title:'Toma aérea urbana nocturna', type:'FOTO', score:'86%', meta:'19/03'},
-    {id:'citylights', image:'/smart-search-thumbs/inicial/vista-nocturna-de-la-ciudad.webp', title:'Vista nocturna de la ciudad', type:'FOTO', score:'84%', meta:'22/05'}
+    {id:'citylights', image:'/smart-search-thumbs/inicial/vista-nocturna-de-la-ciudad.webp', title:'Vista nocturna de la ciudad', type:'VIDEO', score:'84%', meta:'22/05'}
   ];
 
   var similarResults = [
     {id:'s1', image:'/smart-search-thumbs/similitud/pexels-claiton-5264470.webp', title:'Colinas al anochecer', type:'FOTO', score:'97%', meta:'18/06'},
     {id:'s2', image:'/smart-search-thumbs/similitud/pexels-helloiamtugce-19035873.webp', title:'Skyline al crepúsculo', type:'FOTO', score:'95%', meta:'07/08'},
-    {id:'s3', image:'/smart-search-thumbs/similitud/pexels-justyna-serafin-127253298-12485441.webp', title:'Costa al atardecer', type:'FOTO', score:'94%', meta:'21/04'},
+    {id:'s3', image:'/smart-search-thumbs/similitud/pexels-justyna-serafin-127253298-12485441.webp', title:'Costa al atardecer', type:'VIDEO', score:'94%', meta:'21/04'},
     {id:'s4', image:'/smart-search-thumbs/similitud/pexels-maria-regina-diaz-295717408-18971309.webp', title:'Toma aérea al anochecer', type:'FOTO', score:'92%', meta:'03/09'},
     {id:'s5', image:'/smart-search-thumbs/similitud/pexels-tinny-hu-109766654-11506719.webp', title:'Río al atardecer', type:'FOTO', score:'90%', meta:'15/03'},
-    {id:'s6', image:'/smart-search-thumbs/similitud/pexels-tahsin-yasar-2157525423-35443902.webp', title:'Ciudad nublada al anochecer', type:'FOTO', score:'89%', meta:'28/07'},
+    {id:'s6', image:'/smart-search-thumbs/similitud/pexels-tahsin-yasar-2157525423-35443902.webp', title:'Ciudad nublada al anochecer', type:'VIDEO', score:'89%', meta:'28/07'},
     {id:'s7', image:'/smart-search-thumbs/similitud/pexels-vinicius-quaresma-511530024-33057232.webp', title:'Horizonte en llamas', type:'FOTO', score:'87%', meta:'09/05'},
     {id:'s8', image:'/smart-search-thumbs/similitud/pexels-ec-lipse-263453583-36282115.webp', title:'Río y luces al anochecer', type:'FOTO', score:'85%', meta:'02/06'}
   ];
@@ -1180,12 +1198,12 @@
   var uploadItem = {id:'up1', image:'/smart-search-thumbs/bw-similitud/pexels-ardias-artdesign-3905751-5816446.webp', title:'Andén nocturno', file:'estacion_nocturna.jpg', type:'FOTO'};
   var imageResults = [
     {id:'b1', image:'/smart-search-thumbs/bw-similitud/pexels-biravencrow-38399474.webp', title:'Andén 10', type:'FOTO', meta:'19/08'},
-    {id:'b2', image:'/smart-search-thumbs/bw-similitud/pexels-cristiano-de-luca-137932148-10275586.webp', title:'Tren en andén', type:'FOTO', meta:'04/07'},
+    {id:'b2', image:'/smart-search-thumbs/bw-similitud/pexels-cristiano-de-luca-137932148-10275586.webp', title:'Tren en andén', type:'VIDEO', meta:'04/07'},
     {id:'b3', image:'/smart-search-thumbs/bw-similitud/pexels-ervin-fon-trichev-102943620-19383880.webp', title:'Pasajeros en el tren', type:'FOTO', meta:'22/06'},
     {id:'b4', image:'/smart-search-thumbs/bw-similitud/pexels-ollie-david-402485454-15043044.webp', title:'Vías y andén de noche', type:'FOTO', meta:'11/05'},
     {id:'b5', image:'/smart-search-thumbs/bw-similitud/pexels-paparazziratzfatzzi-39010185.webp', title:'Estación vacía', type:'FOTO', meta:'28/03'},
     {id:'b6', image:'/smart-search-thumbs/bw-similitud/pexels-raj-manohar-253004-29757509.webp', title:'Andén mojado', type:'FOTO', meta:'16/02'},
-    {id:'b7', image:'/smart-search-thumbs/bw-similitud/pexels-te-ta-2614167-7501150.webp', title:'Andén vacío', type:'FOTO', meta:'08/01'},
+    {id:'b7', image:'/smart-search-thumbs/bw-similitud/pexels-te-ta-2614167-7501150.webp', title:'Andén vacío', type:'VIDEO', meta:'08/01'},
     {id:'b8', image:'/smart-search-thumbs/bw-similitud/pexels-yury-gargay-363020498-14386542.webp', title:'Metro subterráneo', type:'FOTO', meta:'30/09'}
   ];
 
@@ -1259,6 +1277,8 @@
     });
   }
 
+  var PLAY_HTML = '<div class="rplay" aria-hidden="true"><svg viewBox="0 0 12 12" fill="none"><path d="M3 1.6 10 6l-7 4.4z" fill="rgba(255,255,255,.92)"/></svg></div>';
+
   function cardHTML(item, opts){
     var selected = opts.selectedId === item.id;
     var showBtn = selected && opts.allowSim;
@@ -1267,6 +1287,7 @@
     return (
       '<div class="rcard' + (selected ? ' is-selected' : '') + '" data-id="' + esc(item.id) + '">' +
         '<div class="scene"><img src="' + src(item.image) + '" alt=""></div>' +
+        (item.type === 'VIDEO' ? PLAY_HTML : '') +
         '<div class="rtop"><span class="rtype">' + esc(item.type) + '</span>' + action + '</div>' +
         '<div class="rbottom"><div class="rtitle">' + esc(item.title) + '</div><div class="rmeta">' + esc(item.meta) + '</div></div>' +
       '</div>'
