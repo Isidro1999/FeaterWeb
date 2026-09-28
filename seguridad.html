@@ -181,25 +181,120 @@
   .section-head-dark .section-lead{color:var(--dtext-soft);}
   .section-head-dark.center{margin-inline:auto;text-align:center;}
 
-  .flow-diagram{display:flex;flex-direction:column;align-items:center;max-width:400px;margin-inline:auto;}
-  .fd-node{font-family:var(--font-label);font-weight:800;font-size:14px;color:var(--dtext);background:var(--bg-elevated-2);border:1px solid var(--dline);border-radius:8px;padding:14px 30px;}
-  .fd-node.main{min-width:180px;text-align:center;}
-  .fd-node.fd-infra{
-    display:flex;flex-direction:column;align-items:center;gap:4px;
-    padding:12px 24px;
+  /* Diagrama de arquitectura. Los conectores se posicionan con calc() sobre el
+     ancho real de cada contenedor, asi que las lineas siguen alineadas al centro
+     de cada caja sin importar el ancho de la ventana. */
+  .arch{
+    --arch-gap:30px;
+    --db-gap:30px;
+    --aline:rgba(255,255,255,.20);
+    --aarrow:rgba(255,255,255,.42);
+    max-width:880px;margin-inline:auto;
   }
-  .fd-node.fd-infra small{
-    display:block;font-style:normal;font-weight:600;font-size:11px;color:var(--dtext-soft);line-height:1.25;
+  .arch-node{
+    display:flex;align-items:center;gap:14px;
+    padding:16px 20px;min-height:96px;
+    border:1px solid var(--dline);border-radius:10px;
+    background:rgba(255,255,255,.025);
   }
-  .fd-line{width:1px;height:30px;background:var(--dline);}
-  .fd-connector{display:flex;flex-direction:column;align-items:center;width:100%;max-width:340px;}
-  .fd-stub{width:1px;height:22px;background:var(--dline);}
-  .fd-bar{position:relative;width:100%;height:1px;background:var(--dline);}
-  .fd-drop{position:absolute;top:0;width:1px;height:22px;background:var(--dline);transform:translateX(-50%);}
-  .fd-leaves{display:flex;justify-content:space-between;width:100%;max-width:340px;margin-top:22px;gap:8px;}
-  .fd-node.leaf{display:flex;align-items:center;gap:7px;font-size:12px;padding:9px 14px;border-color:rgba(245,76,22,.35);white-space:nowrap;}
-  .fd-node.leaf .dot{width:6px;height:6px;border-radius:50%;background:var(--orange);flex:none;}
-  @media (max-width:560px){ .fd-leaves{flex-direction:column;align-items:center;max-width:none;} .fd-connector{display:none;} }
+  .nd-ico{flex:none;display:flex;color:var(--nd,var(--dtext-soft));}
+  .nd-ico svg{width:26px;height:26px;}
+  .nd-t{display:block;font-family:var(--font-display);font-weight:800;font-size:17px;line-height:1.1;color:#fff;}
+  .nd-s{display:block;font-size:12.5px;line-height:1.35;color:var(--dtext-soft);margin-top:4px;}
+  .nd-m{display:block;font-family:var(--font-mono);font-size:10.5px;line-height:1.3;color:var(--dtext-dim);margin-top:4px;}
+  .is-waf{--nd:#FF5A4E;border-color:rgba(255,90,78,.42);max-width:560px;min-height:86px;margin-inline:auto;justify-content:center;}
+  .is-cdn{--nd:#9A7BFF;border-color:rgba(154,123,255,.40);}
+  .is-lb{--nd:var(--orange-bright);border-color:rgba(255,81,0,.44);}
+  .is-s3{--nd:#5CC08C;border-color:rgba(92,192,140,.40);}
+  .is-db{--nd:#4E9BF5;border-color:rgba(78,155,245,.40);}
+
+  .arch-user{
+    width:104px;height:104px;margin-inline:auto;border-radius:50%;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+    border:1px solid var(--dline);background:rgba(255,255,255,.025);color:var(--dtext-soft);
+  }
+  .arch-user svg{width:24px;height:24px;}
+  .arch-user span{font-family:var(--font-label);font-weight:700;font-size:12.5px;color:var(--dtext);}
+
+  .arch-vline{position:relative;width:1px;height:30px;margin-inline:auto;background:var(--aline);}
+  .arch-vline::after{
+    content:"";position:absolute;bottom:0;left:-3px;
+    border-left:3.5px solid transparent;border-right:3.5px solid transparent;border-top:5px solid var(--aarrow);
+  }
+  .arch-fork{--fk:var(--arch-gap);position:relative;height:46px;}
+  .arch-fork i{position:absolute;background:var(--aline);}
+  .fk-stub{left:50%;top:0;width:1px;height:22px;}
+  .fk-bar{top:22px;height:1px;left:calc(25% - var(--fk)/4);right:calc(25% - var(--fk)/4);}
+  .fk-arm{top:22px;width:1px;height:24px;}
+  .fk-arm.l{left:calc(25% - var(--fk)/4);}
+  .fk-arm.r{left:calc(75% + var(--fk)/4);}
+  .fk-arm::after{
+    content:"";position:absolute;bottom:0;left:-3px;
+    border-left:3.5px solid transparent;border-right:3.5px solid transparent;border-top:5px solid var(--aarrow);
+  }
+
+  .arch-branches{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:var(--arch-gap);}
+  .arch-col{display:flex;flex-direction:column;}
+
+  .arch-group{border:1px dashed var(--dline);border-radius:10px;padding:14px;}
+  .grp-title{display:block;font-family:var(--font-label);font-weight:700;font-size:12px;letter-spacing:.05em;color:var(--dtext-soft);margin-bottom:12px;}
+  .grp-items{display:flex;align-items:center;gap:10px;}
+  .grp-item{
+    flex:1;display:flex;flex-direction:column;align-items:center;gap:9px;
+    padding:12px 4px;border:1px solid var(--dline-soft);border-radius:8px;background:rgba(255,255,255,.02);
+  }
+  .grp-item svg{width:22px;height:22px;color:var(--orange);}
+  .grp-item span{font-family:var(--font-label);font-weight:700;font-size:12.5px;color:var(--dtext);}
+  .grp-dots{flex:none;color:var(--dtext-dim);font-size:15px;letter-spacing:1.5px;}
+
+  .arch-db{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;}
+  /* Altura fija: la linea de backups apunta al centro exacto de esta fila. */
+  .arch-db .arch-node{height:96px;padding-inline:16px;overflow:hidden;}
+  .arch-db .nd-s{white-space:nowrap;font-size:12px;}
+  .arch-fork.is-db-fork{--fk:var(--db-gap);}
+  .arch-peer{position:relative;width:var(--db-gap);height:1px;background:var(--aline);}
+  .arch-peer::before,.arch-peer::after{
+    content:"";position:absolute;top:-3.5px;
+    border-top:3.5px solid transparent;border-bottom:3.5px solid transparent;
+  }
+  .arch-peer::before{left:0;border-right:5px solid var(--aarrow);}
+  .arch-peer::after{right:0;border-left:5px solid var(--aarrow);}
+
+  /* Backups: recorrido punteado desde Database hasta S3. */
+  .arch-backup{position:relative;flex:1;min-height:90px;}
+  .bk-up{position:absolute;left:22%;top:0;bottom:48px;border-left:1px dashed var(--aline);}
+  .bk-up::after{
+    content:"";position:absolute;top:0;left:-3px;
+    border-left:3.5px solid transparent;border-right:3.5px solid transparent;border-bottom:5px solid var(--aarrow);
+  }
+  .bk-across{position:absolute;left:22%;bottom:48px;width:calc(78% + var(--arch-gap));border-top:1px dashed var(--aline);}
+  .bk-label{position:absolute;bottom:56px;left:30%;font-family:var(--font-mono);font-size:10.5px;color:var(--dtext-soft);}
+  .arch-note{display:none;}
+
+  /* Por debajo de este ancho las dos ramas no caben lado a lado sin apretar la
+     fila de Database, asi que el diagrama pasa a una sola columna. */
+  @media (max-width:940px){
+    .arch-branches{grid-template-columns:minmax(0,1fr);row-gap:38px;}
+    .arch-fork{height:44px;}
+    .arch-fork .fk-bar,.arch-fork .fk-arm.r{display:none;}
+    .arch-fork .fk-arm.l{left:50%;}
+    .arch-backup{display:none;}
+    .arch-note{
+      display:block;margin-top:24px;text-align:center;
+      border:1px dashed var(--dline);border-radius:8px;padding:11px 14px;
+      font-family:var(--font-mono);font-size:10.5px;color:var(--dtext-soft);
+    }
+  }
+  @media (max-width:560px){
+    .arch-node{flex-direction:column;align-items:flex-start;gap:10px;min-height:0;}
+    .is-waf{align-items:center;}
+    .arch{--db-gap:18px;}
+    .arch-db .arch-node{height:auto;overflow:visible;}
+    .arch-db .nd-s{white-space:normal;}
+    .grp-items{gap:7px;}
+    .grp-item{padding:10px 2px;}
+    .grp-item span{font-size:11.5px;}
+  }
 
   /* ---------- CTA final (naranja) ---------- */
   .cta-strip{background:var(--ink);color:#fff;}
@@ -398,21 +493,116 @@
       <h2>Preparados para que tu contenido siga disponible.</h2>
       <p class="section-lead">Una arquitectura preparada para reducir puntos únicos de falla y preservar el acceso a tus activos.</p>
     </div>
-    <div class="flow-diagram">
-      <div class="fd-node main">Contenido</div>
-      <div class="fd-line"></div>
-      <div class="fd-node main">FEATER</div>
-      <div class="fd-line"></div>
-      <div class="fd-node main fd-infra">Infraestructura<small>100% basada en Amazon</small></div>
-      <div class="fd-connector">
-        <div class="fd-stub"></div>
-        <div class="fd-bar"><span class="fd-drop" style="left:0%;"></span><span class="fd-drop" style="left:50%;"></span><span class="fd-drop" style="left:100%;"></span></div>
+    <div class="arch">
+      <div class="arch-user">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="9" r="3.2"/><path d="M5.6 19.2c1.2-3 3.6-4.5 6.4-4.5s5.2 1.5 6.4 4.5"/>
+        </svg>
+        <span>Visitante</span>
       </div>
-      <div class="fd-leaves">
-        <div class="fd-node leaf"><span class="dot"></span>Copia</div>
-        <div class="fd-node leaf"><span class="dot"></span>Respaldo</div>
-        <div class="fd-node leaf"><span class="dot"></span>Distribución</div>
+      <div class="arch-vline"></div>
+
+      <div class="arch-node is-waf">
+        <span class="nd-ico">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3.2 5.5 5.7v5.1c0 4 2.6 7.6 6.5 9 3.9-1.4 6.5-5 6.5-9V5.7L12 3.2Z"/>
+          </svg>
+        </span>
+        <span><span class="nd-t">WAF</span><span class="nd-s">AWS Firewall</span></span>
       </div>
+
+      <div class="arch-fork"><i class="fk-stub"></i><i class="fk-bar"></i><i class="fk-arm l"></i><i class="fk-arm r"></i></div>
+
+      <div class="arch-branches">
+        <div class="arch-col">
+          <div class="arch-node is-cdn">
+            <span class="nd-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="8.4"/><path d="M3.6 12h16.8"/>
+                <path d="M12 3.6c2.2 2.3 3.4 5.3 3.4 8.4s-1.2 6.1-3.4 8.4c-2.2-2.3-3.4-5.3-3.4-8.4s1.2-6.1 3.4-8.4Z"/>
+              </svg>
+            </span>
+            <span><span class="nd-t">CDN</span><span class="nd-s">Amazon CloudFront</span><span class="nd-m">Cache global de contenido</span></span>
+          </div>
+          <div class="arch-vline"></div>
+          <div class="arch-node is-s3">
+            <span class="nd-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M4.9 7.2h14.2l-1.6 11.4a1.7 1.7 0 0 1-1.7 1.4H8.2a1.7 1.7 0 0 1-1.7-1.4L4.9 7.2Z"/>
+                <ellipse cx="12" cy="6.4" rx="7.1" ry="2.6"/>
+              </svg>
+            </span>
+            <span><span class="nd-t">S3</span><span class="nd-s">Archivos estáticos</span><span class="nd-m">(media, assets, backups)</span></span>
+          </div>
+          <div class="arch-backup">
+            <i class="bk-up"></i><i class="bk-across"></i><span class="bk-label">Backups</span>
+          </div>
+        </div>
+
+        <div class="arch-col">
+          <div class="arch-node is-lb">
+            <span class="nd-ico">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="2.8" width="6" height="5" rx="1.2"/>
+                <rect x="2.6" y="16.2" width="6" height="5" rx="1.2"/>
+                <rect x="15.4" y="16.2" width="6" height="5" rx="1.2"/>
+                <path d="M12 7.8v4.1M5.6 16.2v-4.3h12.8v4.3"/>
+              </svg>
+            </span>
+            <span><span class="nd-t">Load Balancer</span><span class="nd-s">Elastic Load Balancer</span><span class="nd-m">Distribuye y escala automáticamente</span></span>
+          </div>
+          <div class="arch-vline"></div>
+          <div class="arch-group">
+            <span class="grp-title">API Instances</span>
+            <div class="grp-items">
+              <div class="grp-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="5.2" y="3.2" width="13.6" height="17.6" rx="2"/><path d="M8.6 8h6.8M8.6 12h6.8M8.6 16h6.8"/>
+                </svg>
+                <span>API 1</span>
+              </div>
+              <div class="grp-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="5.2" y="3.2" width="13.6" height="17.6" rx="2"/><path d="M8.6 8h6.8M8.6 12h6.8M8.6 16h6.8"/>
+                </svg>
+                <span>API 2</span>
+              </div>
+              <span class="grp-dots" aria-hidden="true">···</span>
+              <div class="grp-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="5.2" y="3.2" width="13.6" height="17.6" rx="2"/><path d="M8.6 8h6.8M8.6 12h6.8M8.6 16h6.8"/>
+                </svg>
+                <span>API n</span>
+              </div>
+            </div>
+          </div>
+          <div class="arch-fork is-db-fork"><i class="fk-stub"></i><i class="fk-bar"></i><i class="fk-arm l"></i><i class="fk-arm r"></i></div>
+          <div class="arch-db">
+            <div class="arch-node is-db">
+              <span class="nd-ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <ellipse cx="12" cy="6.2" rx="6.6" ry="2.6"/>
+                  <path d="M5.4 6.2v11.6c0 1.4 3 2.6 6.6 2.6s6.6-1.2 6.6-2.6V6.2"/>
+                  <path d="M5.4 12c0 1.4 3 2.6 6.6 2.6s6.6-1.2 6.6-2.6"/>
+                </svg>
+              </span>
+              <span><span class="nd-t">Database</span><span class="nd-s">Instancia principal</span><span class="nd-m">(MySQL)</span></span>
+            </div>
+            <span class="arch-peer" aria-hidden="true"></span>
+            <div class="arch-node is-db">
+              <span class="nd-ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <ellipse cx="12" cy="6.2" rx="6.6" ry="2.6"/>
+                  <path d="M5.4 6.2v11.6c0 1.4 3 2.6 6.6 2.6s6.6-1.2 6.6-2.6V6.2"/>
+                  <path d="M5.4 12c0 1.4 3 2.6 6.6 2.6s6.6-1.2 6.6-2.6"/>
+                </svg>
+              </span>
+              <span><span class="nd-t">Replica</span><span class="nd-s">Instancia de réplica</span><span class="nd-m">(MySQL)</span></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="arch-note">Backups automáticos desde Database hacia S3</div>
     </div>
   </div>
 </section>

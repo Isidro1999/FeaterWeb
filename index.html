@@ -199,13 +199,22 @@
   .stat .stat-phrase{font-size:clamp(22px,2.6vw,30px);letter-spacing:-.03em;line-height:1.1;}
 
   /* ---------- Clients ---------- */
+  .clients{background:var(--paper);padding-block:64px;}
   .clients .eyebrow{display:block;text-align:center;margin-bottom:34px;color:var(--ink-soft);}
   .client-row{
-    display:flex;flex-wrap:wrap;gap:14px;justify-content:center;
+    display:grid;grid-template-columns:repeat(3,1fr);gap:44px 30px;
+    place-items:center;max-width:820px;margin-inline:auto;
   }
-  .client-chip{
-    border:1.5px dashed var(--line);border-radius:4px;padding:16px 30px;
-    font-family:var(--font-label);font-weight:700;color:var(--ink-soft);font-size:14px;
+  .client-row img{
+    display:block;width:auto;max-width:100%;opacity:.62;
+    transition:opacity .25s ease;
+  }
+  .client-row img:hover{opacity:.9;}
+  @media (max-width:640px){
+    .client-row{grid-template-columns:repeat(2,1fr);gap:34px 24px;}
+    .client-row img{transform:scale(.88);}
+    /* Con cantidad impar de logos, el ultimo se centra en toda la fila. */
+    .client-row img:last-child{grid-column:1 / -1;}
   }
 
   /* ---------- Contact ---------- */
@@ -1070,12 +1079,29 @@
   </div>
 </section>
 
+<section class="clients">
+  <div class="wrap">
+    <span class="eyebrow">Confían en FEATER</span>
+    <div class="client-row">
+      <img src="/clientes/buenos-aires-ciudad.png" alt="Buenos Aires Ciudad" width="80" height="36" loading="lazy" decoding="async">
+      <img src="/clientes/remax.png" alt="RE/MAX" width="137" height="22" loading="lazy" decoding="async">
+      <img src="/clientes/malba.png" alt="MALBA" width="92" height="15" loading="lazy" decoding="async">
+      <img src="/clientes/boca-juniors.png" alt="Club Atlético Boca Juniors" width="39" height="46" loading="lazy" decoding="async">
+      <img src="/clientes/canal-de-la-ciudad.png" alt="Canal de la Ciudad" width="75" height="34" loading="lazy" decoding="async">
+      <img src="/clientes/el-hilo-de-ariadna.png" alt="El Hilo de Ariadna" width="150" height="22" loading="lazy" decoding="async">
+      <img src="/clientes/estudiantes-la-plata.png" alt="Estudiantes de La Plata" width="29" height="48" loading="lazy" decoding="async">
+      <img src="/clientes/luigi-bosca.png" alt="Luigi Bosca" width="65" height="42" loading="lazy" decoding="async">
+      <img src="/clientes/kolapse.png" alt="Kolapse" width="96" height="23" loading="lazy" decoding="async">
+    </div>
+  </div>
+</section>
+
 <section class="contact" id="contacto">
   <div class="wrap contact-wrap">
     <div>
       <div class="eyebrow" style="color:var(--orange);">CONTACTO</div>
-      <h2 style="margin-top:14px;">Diseñemos tu FEATER.</h2>
-      <p>Contanos sobre tu organización y tu volumen de contenido. Te mostramos cómo Feater puede ordenar tus archivos y ponerlos a trabajar.</p>
+      <h2 style="margin-top:14px;">Tu contenido, mucho más que una carpeta de archivos.</h2>
+      <p>Feater lo transforma en una biblioteca viva, fácil de explorar, compartir y mostrar, con la velocidad, seguridad y flexibilidad que necesita tu equipo de trabajo.</p>
     </div>
     <form id="contact-form" action="https://formspree.io/f/mvkgaron" method="POST">
       <input type="hidden" name="_subject" value="Nuevo contacto desde feater.me">
