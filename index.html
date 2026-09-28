@@ -745,8 +745,25 @@
 </style>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500;600&family=Fraunces:ital,wght@0,600;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1363442122236619');
+fbq('track', 'PageView');
+</script>
+<!-- End Meta Pixel Code -->
 </head>
 <body>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
+/></noscript>
 
 <header>
   <div class="wrap nav">
@@ -1151,9 +1168,12 @@
     var ok = document.getElementById('fmsg1');
     var err = document.getElementById('fmsg-error');
     var btn = form.querySelector('[type="submit"]');
+    var sending = false;
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();
+      if (sending) return;
+      sending = true;
       ok.style.display = 'none';
       err.style.display = 'none';
       btn.disabled = true;
@@ -1166,9 +1186,11 @@
         if (!res.ok) throw new Error('send-failed');
         ok.style.display = 'block';
         form.reset();
+        if (typeof fbq === 'function') fbq('track', 'Lead');
       }).catch(function () {
         err.style.display = 'block';
       }).then(function () {
+        sending = false;
         btn.disabled = false;
       });
     });
