@@ -1,4 +1,16 @@
 {
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/smart-search-ai",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/smart-search-ai.html",
+      "destination": "/",
+      "statusCode": 301
+    }
+  ]
 }

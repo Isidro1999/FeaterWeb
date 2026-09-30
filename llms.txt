@@ -1,0 +1,27 @@
+# FEATER
+
+FEATER es una plataforma para centralizar, organizar, buscar, gestionar y distribuir contenido audiovisual.
+
+La plataforma permite trabajar con grandes bibliotecas de imágenes, video y audio, incorporando herramientas de búsqueda inteligente, búsqueda por similitud visual, búsqueda por personas, procesamiento multimedia, organización mediante metadata y tags, gestión de usuarios y distribución de contenido.
+
+## Páginas principales
+
+- [Inicio](https://feater.me/): descripción general de FEATER y Smart Search AI.
+- [Plataforma](https://feater.me/plataforma): capacidades de gestión, procesamiento, organización y distribución de contenido.
+- [Seguridad](https://feater.me/seguridad): arquitectura, infraestructura, continuidad y seguridad de la plataforma.
+
+## Smart Search AI
+
+FEATER permite buscar contenido mediante:
+- lenguaje natural
+- contexto visual
+- similitud visual
+- imágenes de referencia
+- personas
+- tags y metadata propios
+
+## Contacto
+
+La información de contacto y solicitud de demo está disponible en:
+
+https://feater.me/#contacto
