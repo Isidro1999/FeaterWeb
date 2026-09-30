@@ -166,7 +166,18 @@
 
   /* ---------- Secciones de medios (imagenes / video) ---------- */
   .media-section{background:var(--pf-dark);}
+  .media-section.is-light{background:var(--paper-warm);}
+  .media-section.is-light .ms-copy h1,
+  .media-section.is-light .ms-copy h2{color:var(--ink);}
+  .media-section.is-light .ms-copy p{color:var(--ink-soft);}
+  .media-section.is-light .pf-checks{border-top-color:var(--line);}
+  .media-section.is-light .pf-checks li{color:var(--ink);}
+  .media-section.is-light .pf-arrow{color:var(--ink-soft);}
+  .media-section.is-light .pf-arrow i{background:linear-gradient(90deg, transparent, rgba(23,23,23,.28));}
+  .media-section.is-light .pf-arrow svg{color:var(--orange);}
+  .media-section.is-light .pf-foot{color:var(--ink-soft);}
   .media-section + .media-section{border-top:1px solid var(--pf-dline-soft);}
+  .media-section.is-light + .media-section{border-top:none;}
   .ms-grid{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:44px;align-items:center;}
   .ms-copy{padding-top:6px;}
   .ms-copy .eyebrow{color:var(--orange-bright);}
@@ -384,10 +395,14 @@
   .fx-final .fx-sub{color:#D8CFC7;}
 
   /* ---------- Playlists / colecciones ---------- */
-  .coll-section{background:var(--paper-warm);}
+  .coll-section{background:var(--pf-dark);color:var(--pf-dtext);}
+  .coll-section .coll-copy h2{color:#fff;}
+  .coll-section .coll-copy p{color:var(--pf-dtext-soft);}
+  .coll-section .coll-copy .cc-points li{color:var(--pf-dtext);}
   .coll-grid{display:grid;grid-template-columns:1fr .82fr;gap:56px;align-items:center;}
   @media (max-width:900px){ .coll-grid{grid-template-columns:1fr;gap:36px;} }
-  .coll-panel{background:var(--panel);border:1px solid var(--panel-line);border-radius:14px;box-shadow:0 30px 60px -26px rgba(23,17,10,.22);overflow:hidden;}
+  .coll-panel{background:var(--panel);color:var(--ink);border:1px solid var(--panel-line);border-radius:14px;box-shadow:0 30px 60px -26px rgba(23,17,10,.22);overflow:hidden;}
+  .coll-head h4{color:var(--ink);}
   .coll-head{padding:18px 20px;border-bottom:1px solid var(--panel-line);}
   .coll-head .coll-eyebrow{font-family:var(--font-mono);font-size:10.5px;color:var(--panel-text-dim);letter-spacing:.06em;}
   .coll-head h4{font-family:var(--font-display);font-size:19px;font-weight:900;margin-top:6px;}
@@ -668,7 +683,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
 <div id="top"></div>
 
 <!-- ===== 1. IMÁGENES ===== -->
-<section class="media-section" id="imagenes">
+<section class="media-section is-light" id="imagenes">
   <div class="wrap ms-grid">
     <div class="ms-copy">
       <div class="eyebrow">Imágenes</div>
