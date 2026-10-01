@@ -373,14 +373,6 @@
   .story-source.on .story-conn svg{display:block;width:10px;height:10px;}
 
   .story-mid{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;}
-  .story-wires{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;}
-  .story-wire{fill:none;stroke:rgba(255,255,255,.14);stroke-width:1.25;vector-effect:non-scaling-stroke;}
-  .story-wire-on{
-    fill:none;stroke:#F54C16;stroke-width:1.6;stroke-linecap:round;vector-effect:non-scaling-stroke;
-    stroke-dasharray:var(--len,1000);stroke-dashoffset:var(--len,1000);opacity:0;
-    transition:stroke-dashoffset .85s ease,opacity .3s ease;
-  }
-  .story-wire-on.on{stroke-dashoffset:0;opacity:1;}
   .story-hub{position:relative;width:112px;height:96px;opacity:.4;transition:opacity .55s ease;z-index:1;}
   .story-stage:not([data-stage="1"]) .story-hub{opacity:1;}
   .story-ring{
@@ -411,13 +403,6 @@
   .story-stage[data-stage="3"] .story-pill-name{font-size:12px;letter-spacing:.06em;}
   .story-stage[data-stage="3"] .story-pill-track{height:3px;margin-top:5px;opacity:1;}
   .story-stage[data-stage="3"] .story-pill-sub{display:block;}
-  .story-done{
-    position:absolute;right:-2px;top:-2px;width:18px;height:18px;border-radius:50%;
-    background:var(--orange);color:#fff;display:flex;align-items:center;justify-content:center;
-    opacity:0;transform:scale(.7);transition:opacity .3s ease,transform .3s ease;
-  }
-  .story-done svg{width:11px;height:11px;}
-  .story-stage.s-live .story-done{opacity:1;transform:scale(1);}
   .story-status{
     position:absolute;left:50%;top:calc(50% + 28px);transform:translateX(-50%);
     text-align:center;white-space:nowrap;
@@ -537,16 +522,16 @@
     position:absolute;inset:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
     grid-template-rows:1fr 1fr;gap:8px;
   }
-  .story-grid{opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .42s ease;pointer-events:none;}
+  .story-grid{opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .42s ease,bottom .4s ease;pointer-events:none;}
   .story-stage.s-grid .story-grid{opacity:1;transform:none;pointer-events:auto;}
   .story-stage.searched .story-grid{opacity:0;transform:translateY(-8px);pointer-events:none;}
   .story-stage.sim .story-grid{opacity:0;transform:translateY(-6px);pointer-events:none;}
-  .story-hits{opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .42s ease,transform .45s ease;}
+  .story-hits{opacity:0;transform:translateY(10px);pointer-events:none;transition:opacity .42s ease,transform .45s ease,bottom .4s ease;}
   .story-hits .story-tile{opacity:0;transform:translateY(8px);transition:opacity .32s ease,transform .38s ease;transition-delay:calc(var(--i) * 40ms);}
   .story-stage.searched .story-hits{opacity:1;transform:none;pointer-events:auto;}
   .story-stage.searched .story-hits .story-tile{opacity:1;transform:none;}
   .story-stage.sim .story-hits,.story-stage.bw .story-hits{opacity:0;transform:translateY(-6px);pointer-events:none;}
-  .story-grid2,.story-grid3{opacity:0;pointer-events:none;transition:opacity .4s ease;}
+  .story-grid2,.story-grid3{opacity:0;pointer-events:none;transition:opacity .4s ease,bottom .4s ease;}
   .story-stage.sim .story-grid2{opacity:1;pointer-events:auto;}
   .story-stage.bw .story-grid,.story-stage.bw .story-grid2,.story-stage.bw .story-hits{opacity:0;pointer-events:none;}
   .story-stage.bw .story-grid3{opacity:1;pointer-events:auto;}
@@ -669,7 +654,11 @@
   .story-stage[data-stage="3"] .story-tags span,.story-stage[data-stage="4"] .story-tags span{opacity:1;transform:none;}
   .story-stage[data-stage="4"] .story-tags span{color:#E7E0D8;border-color:rgba(255,255,255,.16);}
 
-  .story-use{opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease;padding-top:18px;background:linear-gradient(to top, #1b1816 70%, rgba(27,24,22,0));}
+  .story-use{opacity:0;transform:translateY(8px);transition:opacity .4s ease,transform .4s ease;padding-top:36px;background:#1b1816;}
+  .story-stage.acts .story-grid,
+  .story-stage.acts .story-hits,
+  .story-stage.acts .story-grid2,
+  .story-stage.acts .story-grid3{bottom:92px;}
   .story-stage.acts .story-use{opacity:1;transform:none;}
   .story-actions{display:flex;align-items:center;gap:6px;}
   .story-selcount{font:500 11px var(--font-mono);color:#E7E0D8;flex:1;white-space:nowrap;}
@@ -691,7 +680,8 @@
   .story-confirm.full .story-cbar b{width:100%;}
 
   .story-caption{
-    position:absolute;left:20px;right:20px;bottom:0;height:58px;margin:0;
+    position:absolute;bottom:0;height:58px;margin:0;
+    left:calc(16px + 216px + 10px + 132px + 10px);right:16px;
     display:flex;align-items:center;justify-content:center;text-align:center;
     font-family:var(--font-label);font-weight:700;font-size:15px;line-height:1.3;color:#D8CFC7;
     transition:opacity .3s ease;
@@ -732,23 +722,23 @@
     .story-copy h2{font-size:clamp(30px,8vw,42px);}
     .story-stage{height:860px;}
     .story-flow{grid-template-columns:1fr;grid-template-rows:auto auto minmax(0,1fr);gap:8px;height:calc(100% - 52px);padding:12px 12px 0;}
-    .story-wires{display:none;}
     .story-sources{gap:6px;}
     .story-source{flex:none;padding:8px 10px;}
     .story-files .story-file:nth-child(n+2){display:none;}
     .story-src-head{margin-bottom:4px;}
     .story-src-foot{padding-top:6px;}
     .story-mid{min-height:72px;}
-    .story-mid::before{
-      content:"";position:absolute;left:50%;top:0;bottom:0;width:1px;background:rgba(255,255,255,.12);
-    }
-    .story-stage:has(.story-source.on) .story-mid::before{background:rgba(245,76,22,.75);}
     .story-hub{height:78px;}
     .story-pointer{display:none;}
     .story-grid,.story-hits,.story-grid2,.story-grid3{grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(3,minmax(0,1fr));}
     .story-tile:nth-child(n+7),.story-simtile:nth-child(n+7){display:none;}
     .story-chips span:nth-child(-n+2){display:none;}
     .story-caption{height:52px;font-size:13px;left:12px;right:12px;}
+    .story-use{padding-top:24px;}
+    .story-stage.acts .story-grid,
+    .story-stage.acts .story-hits,
+    .story-stage.acts .story-grid2,
+    .story-stage.acts .story-grid3{bottom:80px;}
     .story-now{display:flex;}
     .story-step span{display:none;}
     .story-step{align-items:center;padding:0;height:40px;}
@@ -1116,21 +1106,12 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
           </section>
 
           <div class="story-mid">
-            <svg class="story-wires" viewBox="0 0 100 300" preserveAspectRatio="none" aria-hidden="true">
-              <path class="story-wire" d="M0 50 C 58 50 42 150 88 150"/>
-              <path class="story-wire" d="M0 150 L 88 150"/>
-              <path class="story-wire" d="M0 250 C 58 250 42 150 88 150"/>
-              <path class="story-wire-on" data-src="drive" d="M0 50 C 58 50 42 150 88 150"/>
-              <path class="story-wire-on" data-src="dropbox" d="M0 150 L 88 150"/>
-              <path class="story-wire-on" data-src="local" d="M0 250 C 58 250 42 150 88 150"/>
-            </svg>
             <div class="story-hub" id="storyHub" aria-hidden="true">
               <div class="story-ring"></div>
               <div class="story-pill">
                 <span class="story-pill-name">FEATER</span>
                 <span class="story-pill-track"><i id="storyPillBar"></i></span>
                 <span class="story-pill-sub">procesando…</span>
-                <div class="story-done"><svg><use href="#st-check"/></svg></div>
               </div>
               <div class="story-status"><span class="s3">procesando…</span><span class="s4">100.000 activos</span></div>
             </div>
