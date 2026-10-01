@@ -90,6 +90,7 @@
   header{
     position:sticky;top:env(safe-area-inset-top,0px);z-index:50;
     background:var(--cream);border-bottom:1px solid var(--line);
+    transform:translateZ(0);
   }
   .nav{
     display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
@@ -232,11 +233,15 @@
   .clients{background:var(--cream);padding-block:64px;overflow:hidden;}
   .clients .eyebrow{display:block;text-align:center;margin-bottom:34px;color:var(--ink-soft);}
   .clients-marquee{
-    overflow:hidden;
+    overflow:hidden;isolation:isolate;transform:translateZ(0);
     -webkit-mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
     mask-image:linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
   }
-  .clients-track{display:flex;width:max-content;animation:clients-scroll 42s linear infinite;}
+  .clients-track{
+    display:flex;width:max-content;animation:clients-scroll 42s linear infinite;
+    will-change:transform;backface-visibility:hidden;
+  }
+  .clients-marquee.is-offscreen .clients-track{animation-play-state:paused;}
   .clients-set{display:flex;align-items:center;gap:56px;padding-right:56px;}
   .client-logo{flex:none;display:flex;align-items:center;justify-content:center;height:48px;}
   .client-logo img{
@@ -244,8 +249,8 @@
   }
   @keyframes clients-scroll{to{transform:translateX(-50%);}}
   @media (prefers-reduced-motion:reduce){
-    .clients-marquee{-webkit-mask-image:none;mask-image:none;overflow:visible;}
-    .clients-track{animation:none;width:auto;flex-wrap:wrap;justify-content:center;}
+    .clients-marquee{-webkit-mask-image:none;mask-image:none;overflow:visible;transform:none;}
+    .clients-track{animation:none;width:auto;flex-wrap:wrap;justify-content:center;will-change:auto;}
     .clients-set{flex-wrap:wrap;justify-content:center;gap:34px 40px;padding:0 24px;}
     .clients-set[aria-hidden="true"]{display:none;}
   }
@@ -331,7 +336,10 @@
     border-radius:16px;overflow:hidden;
     box-shadow:0 28px 60px -32px rgba(20,18,16,.55);
   }
-  .story-stage{position:relative;height:628px;overflow:hidden;transition:opacity .32s ease;}
+  .story-stage{position:relative;height:628px;overflow:hidden;transition:opacity .32s ease;contain:layout paint;}
+  .story-stage.is-offscreen *,
+  .story-stage.is-offscreen *::before,
+  .story-stage.is-offscreen *::after{animation-play-state:paused;}
   .story-stage.reset{opacity:0;}
   .story-flow{
     display:grid;grid-template-columns:216px 132px minmax(0,1fr);
@@ -816,14 +824,14 @@
   .step p{margin-top:10px;font-size:14.5px;}
   .step-visual{margin-top:24px;}
   .step-connector{display:flex;align-items:center;justify-content:center;padding-top:6px;padding-right:22px;}
-  .connector-line{position:relative;display:block;width:56px;height:1px;background:var(--line);}
+  .connector-line{position:relative;display:block;width:56px;height:1px;background:var(--line);--travel:56px;}
   .connector-dot{
     position:absolute;top:50%;left:0;width:6px;height:6px;margin-top:-3px;
     border-radius:50%;background:var(--orange);
     animation:travelX 2.6s ease-in-out infinite;
   }
   .step-connector.c2 .connector-dot{animation-delay:1.3s;}
-  @keyframes travelX{0%{left:0;opacity:0;}12%{opacity:1;}88%{opacity:1;}100%{left:100%;opacity:0;}}
+  @keyframes travelX{0%{transform:translateX(0);opacity:0;}12%{opacity:1;}88%{opacity:1;}100%{transform:translateX(var(--travel));opacity:0;}}
   @media (prefers-reduced-motion:reduce){ .connector-dot{animation:none;left:50%;opacity:1;} }
   @media (max-width:900px){ .step-connector{display:none;} .step{max-width:none;padding-block:28px;border-top:1px solid var(--line);} .step:first-child{border-top:none;padding-top:0;} }
 
@@ -846,10 +854,14 @@
   .sv-interpret{position:relative;height:150px;}
   .sv-interpret .core{
     position:absolute;top:50%;left:50%;width:14px;height:14px;margin:-7px 0 0 -7px;
-    border-radius:50%;background:var(--orange);animation:pulse 2s ease-in-out infinite;
+    border-radius:50%;background:var(--orange);
   }
-  @media (prefers-reduced-motion:reduce){ .sv-interpret .core{animation:none;} }
-  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(245,76,22,.35);}50%{box-shadow:0 0 0 14px rgba(245,76,22,0);}}
+  .sv-interpret .core::after{
+    content:"";position:absolute;inset:0;border-radius:50%;background:rgba(245,76,22,.35);
+    transform:scale(1);animation:pulse 2s ease-in-out infinite;pointer-events:none;
+  }
+  @media (prefers-reduced-motion:reduce){ .sv-interpret .core::after{animation:none;opacity:0;} }
+  @keyframes pulse{0%,100%{transform:scale(1);opacity:.35;}50%{transform:scale(3);opacity:0;}}
   .sv-interpret .tag{
     position:absolute;font-family:var(--font-mono);font-size:11px;color:var(--ink-soft);
     background:var(--paper);border:1px solid var(--line);border-radius:100px;padding:6px 12px;white-space:nowrap;
@@ -1775,6 +1787,20 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
 </script>
 
 <script>
+(function(){
+  var marquee = document.querySelector('.clients-marquee');
+  if (!marquee || !('IntersectionObserver' in window)) return;
+  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  var io = new IntersectionObserver(function(entries){
+    var e = entries[entries.length - 1];
+    if (!e) return;
+    marquee.classList.toggle('is-offscreen', !e.isIntersecting);
+  });
+  io.observe(marquee);
+})();
+</script>
+
+<script>
 /* Story — archivos muertos → contenido que encontrás.
    Timings en DUR. Imágenes: /smart-search-thumbs/ */
 (function(){
@@ -1836,7 +1862,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
   var IMAGE = '8 resultados · 0,4 s';
   var TOTAL = 100000;
   var cur = 0, timer = null, playing = true, tick = 0, raf = null, typer = null;
-  var booted = false;
+  var booted = false, offscreen = true, stale = false;
 
   function later(ms, fn, myTick){ setTimeout(function(){ if (myTick === tick) fn(); }, ms); }
   function act(name, on){
@@ -2113,7 +2139,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
 
   function schedule(){
     clearTimeout(timer);
-    if (!playing) return;
+    if (!playing || offscreen) return;
     var myTick = tick;
     timer = setTimeout(function(){
       if (myTick !== tick) return;
@@ -2148,7 +2174,10 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
     playBtn.classList.toggle('paused', !playing);
     playBtn.setAttribute('aria-pressed', String(!playing));
     playBtn.setAttribute('aria-label', playing ? 'Pausar animación' : 'Reproducir animación');
-    if (playing) schedule(); else clearTimeout(timer);
+    if (playing){
+      if (!offscreen && stale && cur){ stale = false; apply(cur); }
+      else schedule();
+    } else clearTimeout(timer);
   });
 
   function boot(){
@@ -2157,19 +2186,34 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
     measureWires();
     apply(1);
   }
+  function pauseOffscreen(){
+    if (!booted || offscreen) return;
+    offscreen = true;
+    stale = true;
+    clearTimeout(timer);
+    tick++;
+    if (raf){ cancelAnimationFrame(raf); raf = null; }
+    if (typer){ clearInterval(typer); typer = null; }
+    stage.classList.add('is-offscreen');
+  }
+  function resumeOnscreen(){
+    if (!offscreen && booted) return;
+    offscreen = false;
+    stage.classList.remove('is-offscreen');
+    if (!booted) boot();
+    else if (playing && cur){ stale = false; apply(cur); }
+  }
   window.addEventListener('resize', measureWires);
   if ('IntersectionObserver' in window){
     var io = new IntersectionObserver(function(entries){
-      for (var i = 0; i < entries.length; i++){
-        if (entries[i].isIntersecting && entries[i].intersectionRatio >= 0.28){
-          boot();
-          io.disconnect();
-          break;
-        }
-      }
-    }, { threshold: [0.28, 0.5] });
+      var e = entries[entries.length - 1];
+      if (!e) return;
+      if (e.isIntersecting && e.intersectionRatio >= 0.28) resumeOnscreen();
+      else if (!e.isIntersecting) pauseOffscreen();
+    }, { threshold: [0, 0.28, 0.5] });
     io.observe(stage);
   } else {
+    offscreen = false;
     boot();
   }
 })();
