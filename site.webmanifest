@@ -1,0 +1,17 @@
+{
+  "id": "/",
+  "name": "Feater — Intelligent Content Management",
+  "short_name": "Feater",
+  "description": "Plataforma CMS de gestión audiovisual para transformar fotos, videos y archivos en contenido organizado, accesible y listo para usar.",
+  "lang": "es-AR",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "theme_color": "#e3592f",
+  "background_color": "#ffffff",
+  "icons": [
+    { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}
