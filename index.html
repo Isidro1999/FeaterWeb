@@ -162,7 +162,7 @@
   }
   .hero-rule{border:none;border-top:2px solid rgba(23,23,23,.55);margin:28px 0 34px;}
   .hero h1{
-    color:var(--ink);font-size:clamp(44px,8vw,96px);font-weight:900;
+    color:var(--ink);font-size:clamp(43px,calc(8vw - 1px),95px);font-weight:900;
   }
   .hero-foot{
     display:flex;justify-content:flex-end;margin-top:18px;
@@ -245,10 +245,14 @@
   @media (max-width:760px){ .about .wrap{grid-template-columns:1fr;} }
   .about h2{font-size:clamp(28px,4vw,42px);font-weight:900;color:#fff;}
   .about p{color:#D8CFC7;font-size:17px;margin-top:18px;}
-  .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:26px;}
-  .stat b{display:block;font-family:var(--font-display);font-size:38px;color:var(--orange-bright);}
-  .stat span{font-size:13px;color:#B8ACA3;letter-spacing:.04em;}
-  .stat .stat-phrase{font-size:clamp(22px,2.6vw,30px);letter-spacing:-.03em;line-height:1.1;}
+  .about-stats{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start;}
+  .stat{display:flex;flex-direction:column;}
+  .stat b{
+    display:flex;align-items:flex-end;min-height:42px;margin:0;
+    font-family:var(--font-display);font-size:38px;line-height:1;color:var(--orange-bright);
+  }
+  .stat span{display:block;margin-top:8px;font-size:13px;line-height:1.35;color:#B8ACA3;letter-spacing:.04em;}
+  .stat .stat-phrase{font-size:clamp(22px,2.6vw,30px);letter-spacing:-.03em;line-height:1;}
 
   /* ---------- Clients ---------- */
   .clients{background:var(--cream);padding-block:64px;overflow:hidden;}
@@ -743,6 +747,55 @@
     transition:opacity .3s ease;
   }
   .story-caption.swap{opacity:0;}
+
+  .story-finale{
+    position:absolute;inset:0;z-index:9;display:flex;align-items:center;justify-content:center;
+    background:#141210;opacity:0;visibility:hidden;pointer-events:none;
+  }
+  .story-finale-in{display:flex;flex-direction:column;align-items:center;text-align:center;padding:24px;}
+  .story-finale-logo{
+    display:flex;align-items:center;gap:10px;color:#F3EEE8;
+    opacity:0;transform:translateY(6px);
+    transition:opacity .8s ease,transform .8s ease;
+  }
+  .story-finale-logo svg{width:46px;height:34px;flex:none;}
+  .story-finale-logo span{
+    font-family:'Fraunces',serif;font-weight:600;font-size:34px;line-height:1;letter-spacing:-.02em;
+  }
+  .story-finale-logo em{color:var(--orange);font-style:italic;}
+  .story-finale-line{
+    margin:28px 0 0;max-width:32ch;
+    font-family:var(--font-body);font-weight:400;font-size:17px;line-height:1.45;color:#C9C0B8;
+    opacity:0;transform:translateY(6px);
+    transition:opacity .8s ease .16s,transform .8s ease .16s;
+  }
+  .story-finale-line em{font-style:normal;font-weight:500;color:var(--orange);}
+  .story-stage.is-finale .story-flow,
+  .story-stage.is-finale .story-ghosts,
+  .story-stage.is-finale .story-caption{opacity:0;transition:opacity .8s ease;}
+  .story-stage.is-finale .story-finale{visibility:visible;opacity:1;transition:opacity .8s ease;}
+  .story-stage.is-finale-in .story-finale-logo,
+  .story-stage.is-finale-in .story-finale-line{opacity:1;transform:none;}
+  .story-stage.is-finale.is-finale-leave .story-finale{opacity:0;transition:opacity .7s ease;}
+  @media (max-width:900px){
+    .story-finale-logo{gap:8px;}
+    .story-finale-logo svg{width:34px;height:25px;}
+    .story-finale-logo span{font-size:26px;}
+    .story-finale-line{margin-top:20px;font-size:15px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .story-stage.is-finale .story-flow,
+    .story-stage.is-finale .story-ghosts,
+    .story-stage.is-finale .story-caption,
+    .story-stage.is-finale .story-finale,
+    .story-stage.is-finale.is-finale-leave .story-finale,
+    .story-finale-logo,
+    .story-finale-line{transition:none;}
+    .story-finale-logo,
+    .story-finale-line,
+    .story-stage.is-finale-in .story-finale-logo,
+    .story-stage.is-finale-in .story-finale-line{transform:none;}
+  }
 
   .story-nav{border-top:1px solid rgba(255,255,255,.08);background:#100e0c;padding:8px 10px 10px;}
   .story-now{display:none;height:26px;align-items:center;gap:8px;padding:0 6px;font-family:var(--font-label);font-weight:700;font-size:13px;color:#F3EEE8;}
@@ -1828,6 +1881,19 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
         </div>
         <div class="story-ghosts" id="storyGhosts" aria-hidden="true"></div>
         <p class="story-caption" id="storyCaption" aria-live="polite">100.000 archivos con nombre de cámara. Ninguno te dice qué hay adentro.</p>
+        <div class="story-finale" id="storyFinale" aria-hidden="true">
+          <div class="story-finale-in">
+            <div class="story-finale-logo">
+              <svg viewBox="0 0 60 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                <path d="M0 4 L14 22 L0 40 L8 40 L22 22 L8 4 Z" fill="#F3EEE8"/>
+                <path d="M17 4 L31 22 L17 40 L25 40 L39 22 L25 4 Z" fill="#F3EEE8"/>
+                <path d="M34 4 L48 22 L34 40 L42 40 L56 22 L42 4 Z" fill="var(--orange)"/>
+              </svg>
+              <span>Feat<em>er</em></span>
+            </div>
+            <p class="story-finale-line">El poder de la <em>IA</em> sobre tu contenido.</p>
+          </div>
+        </div>
       </div>
       <nav class="story-nav" aria-label="Pasos de la animación">
         <p class="story-now" id="storyNow"><b>01</b> Archivos muertos</p>
@@ -2227,6 +2293,11 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
   var TOTAL = 100000;
   var cur = 0, timer = null, playing = true, tick = 0, raf = null, typer = null;
   var booted = false, offscreen = true, stale = false;
+  var finale = null, finaleFromAuto = false, finaleLeft = 0, finaleAt = 0;
+  var finaleEl = document.getElementById('storyFinale');
+  var FINALE_MS = reduce
+    ? {dim:160, enter:160, hold:2000, leave:160}
+    : {dim:800, enter:1000, hold:2300, leave:700};
 
   function later(ms, fn, myTick){ setTimeout(function(){ if (myTick === tick) fn(); }, ms); }
   function act(name, on){
@@ -2375,7 +2446,9 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
     if (typer) clearInterval(typer);
     measureWires();
     stage.setAttribute('data-stage', String(n));
-    stage.classList.remove('reset', 'searched', 'pick', 'press', 'sim', 'acts', 'lens', 'lens-press', 'lens-up', 'lens-ready', 'imgmode', 'bw', 'seeking');
+    stage.classList.remove('reset', 'searched', 'pick', 'press', 'sim', 'acts', 'lens', 'lens-press', 'lens-up', 'lens-ready', 'imgmode', 'bw', 'seeking', 'is-finale', 'is-finale-in', 'is-finale-leave');
+    if (finaleEl) finaleEl.setAttribute('aria-hidden', 'true');
+    if (caption) caption.removeAttribute('aria-hidden');
     clearHot();
     if (pointer) pointer.classList.remove('on', 'jump');
     if (pillBar) pillBar.style.width = '0%';
@@ -2501,18 +2574,64 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
     schedule();
   }
 
-  function schedule(){
+  function armFinale(ms){
+    finaleLeft = ms;
+    finaleAt = Date.now();
     clearTimeout(timer);
     if (!playing || offscreen) return;
     var myTick = tick;
     timer = setTimeout(function(){
       if (myTick !== tick) return;
-      go(cur === LAST ? 1 : cur + 1);
+      advanceFinale();
+    }, ms);
+  }
+  function startFinale(){
+    finale = 'dim';
+    finaleFromAuto = false;
+    stage.classList.remove('is-finale-in', 'is-finale-leave');
+    stage.classList.add('is-finale');
+    if (reduce) stage.classList.add('is-finale-in');
+    if (finaleEl) finaleEl.setAttribute('aria-hidden', 'false');
+    if (caption) caption.setAttribute('aria-hidden', 'true');
+    armFinale(FINALE_MS.dim);
+  }
+  function advanceFinale(){
+    if (finale === 'dim'){
+      finale = 'enter';
+      stage.classList.add('is-finale-in');
+      armFinale(FINALE_MS.enter);
+    } else if (finale === 'enter'){
+      finale = 'hold';
+      armFinale(FINALE_MS.hold);
+    } else if (finale === 'hold'){
+      finale = 'leave';
+      stage.classList.add('is-finale-leave');
+      armFinale(FINALE_MS.leave);
+    } else {
+      finale = null;
+      go(1);
+    }
+  }
+  function schedule(){
+    clearTimeout(timer);
+    if (!playing || offscreen) return;
+    if (finale){ armFinale(finaleLeft); return; }
+    var myTick = tick;
+    timer = setTimeout(function(){
+      if (myTick !== tick) return;
+      if (cur === LAST){
+        if (finaleFromAuto) startFinale();
+        else go(1);
+      } else {
+        finaleFromAuto = (cur + 1 === LAST);
+        go(cur + 1);
+      }
     }, DUR[cur]);
   }
 
   function go(n){
     clearTimeout(timer);
+    finale = null;
     if (n === 1 && cur !== 0 && !reduce){
       tick++;
       var myTick = tick;
@@ -2530,6 +2649,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
   steps.forEach(function(b){
     b.addEventListener('click', function(){
       booted = true;
+      finaleFromAuto = false;
       go(parseInt(b.getAttribute('data-step'), 10));
     });
   });
@@ -2541,7 +2661,10 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
     if (playing){
       if (!offscreen && stale && cur){ stale = false; apply(cur); }
       else schedule();
-    } else clearTimeout(timer);
+    } else {
+      if (finale) finaleLeft = Math.max(0, finaleLeft - (Date.now() - finaleAt));
+      clearTimeout(timer);
+    }
   });
 
   function boot(){
@@ -2556,6 +2679,10 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
     stale = true;
     clearTimeout(timer);
     tick++;
+    finale = null;
+    stage.classList.remove('is-finale', 'is-finale-in', 'is-finale-leave');
+    if (finaleEl) finaleEl.setAttribute('aria-hidden', 'true');
+    if (caption) caption.removeAttribute('aria-hidden');
     if (raf){ cancelAnimationFrame(raf); raf = null; }
     if (typer){ clearInterval(typer); typer = null; }
     stage.classList.add('is-offscreen');
