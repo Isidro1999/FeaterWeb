@@ -76,7 +76,25 @@
   .mnav:not([hidden]){display:flex;}
   .mnav a{font-family:var(--font-label);font-weight:700;text-decoration:none;color:var(--ink);}
   @media (max-width:860px){
-    .mnav a.btn-solid{color:var(--paper);background:var(--ink);border-color:var(--ink);}
+    .mnav a.btn-solid{
+      color:var(--paper);background:var(--ink);border-color:var(--ink);
+      display:block;width:100%;text-align:center;box-sizing:border-box;
+    }
+    .mnav a:not(.btn){display:flex;align-items:center;min-height:48px;}
+    .menu-toggle{
+      width:44px;height:44px;padding:0;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+    }
+    .menu-toggle span{margin:0;transition:transform .2s ease,opacity .2s ease;}
+    .menu-toggle.is-open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .menu-toggle.is-open span:nth-child(2){opacity:0;}
+    .menu-toggle.is-open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    .mnav:not([hidden]){max-height:calc(100dvh - 72px);overflow-y:auto;}
+    .menu-toggle:focus-visible,
+    .mnav a:focus-visible{outline:2px solid var(--orange);outline-offset:3px;}
+  }
+  @media (max-width:860px) and (prefers-reduced-motion:reduce){
+    .menu-toggle span{transition:none;}
   }
 
   /* ---------- Hero ---------- */
@@ -569,6 +587,25 @@
     .grp-dots{transform:none;align-self:center;height:14px;line-height:14px;letter-spacing:1px;font-size:12px;}
     .arch-group{padding:10px;}
   }
+
+  /* P2: foco, hover táctil y labels técnicos en tablet. El índice ya tiene su scroll-margin. */
+  a:focus-visible,
+  button:focus-visible{
+    outline:2px solid var(--orange);
+    outline-offset:3px;
+  }
+  @media (hover:none){
+    .orbit-node:hover .node-label{color:var(--dtext-soft);}
+    .orbit-node:hover .node-label em{display:none;}
+    .perm-row:not(.perm-head):hover{background:transparent;}
+  }
+  @media (min-width:641px) and (max-width:768px){
+    .capa-chip span{font-size:12px;}
+  }
+  @media (max-width:768px){
+    .perm-user em{font-size:11px;}
+    .perm-row.perm-head span{font-size:11px;}
+  }
 </style>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500;600&family=Fraunces:ital,wght@0,600;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap">
@@ -609,7 +646,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
     <div class="navcta">
       <a class="btn btn-solid" href="/#contacto">Contactanos</a>
     </div>
-    <button class="menu-toggle" aria-label="Abrir menú" onclick="document.getElementById('mnav').hidden = !document.getElementById('mnav').hidden">
+    <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mnav">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -619,6 +656,27 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
     <a class="btn btn-solid" style="text-align:center;" href="/#contacto">Contactanos</a>
   </div>
 </header>
+<script>
+(function(){
+  var btn = document.querySelector('.menu-toggle');
+  var nav = document.getElementById('mnav');
+  if (!btn || !nav) return;
+  function setOpen(open){
+    nav.hidden = !open;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.classList.toggle('is-open', open);
+    btn.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  }
+  btn.addEventListener('click', function(){ setOpen(nav.hidden); });
+  var header = btn.closest('header');
+  if (header) header.addEventListener('click', function(e){
+    if (e.target.closest('a')) setOpen(false);
+  });
+  window.addEventListener('pageshow', function(){ setOpen(false); });
+  var wide = window.matchMedia('(min-width:861px)');
+  if (wide.addEventListener) wide.addEventListener('change', function(){ if (wide.matches) setOpen(false); });
+})();
+</script>
 
 <div id="top"></div>
 

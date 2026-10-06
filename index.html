@@ -144,6 +144,12 @@
     .menu-toggle.is-open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
     .menu-toggle.is-open span:nth-child(2){opacity:0;}
     .menu-toggle.is-open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    .mnav:not([hidden]){max-height:calc(100dvh - 72px);overflow-y:auto;}
+    .menu-toggle:focus-visible,
+    .mnav a:focus-visible{outline:2px solid var(--orange);outline-offset:3px;}
+  }
+  @media (max-width:860px) and (prefers-reduced-motion:reduce){
+    .menu-toggle span{transition:none;}
   }
 
   /* ---------- Hero ---------- */
@@ -287,10 +293,10 @@
     font-family:var(--font-body);font-size:15px;padding:13px 14px;
     border:1.5px solid var(--line);border-radius:2px;background:var(--paper);color:var(--ink);
   }
-  @media (max-width:768px){
+  @media (max-width:1024px){
     .contact input,.contact textarea,.contact select{font-size:16px;}
   }
-  input:focus,textarea:focus{outline:2px solid var(--orange);outline-offset:1px;}
+  input:focus-visible,textarea:focus-visible{outline:2px solid var(--orange);outline-offset:1px;}
   textarea{resize:vertical;min-height:90px;}
   .submit-btn{
     margin-top:6px;background:var(--ink);color:#fff;border:none;border-radius:2px;
@@ -298,7 +304,7 @@
   }
   .submit-btn:hover{background:var(--orange);}
   .submit-btn:disabled{opacity:.6;cursor:not-allowed;}
-  .form-msg{font-size:13px;color:var(--orange);display:none;font-weight:700;}
+  .form-msg{font-size:13px;color:var(--orange);display:none;font-weight:700;scroll-margin-top:96px;}
   .form-msg.error{color:#B42318;}
 
   /* ---------- Footer ---------- */
@@ -1155,7 +1161,9 @@
     .section-head h2,
     .about h2,
     .story-copy h2,
-    .search-types h2{line-height:1.08;}
+    .search-types h2,
+    .contact h2,
+    .cta-strip h2{line-height:1.08;}
     .step h3,
     .type-card h3,
     .usecase-card h3{line-height:1.15;}
@@ -1164,7 +1172,9 @@
     .section-head h2,
     .about h2,
     .story-copy h2,
-    .search-types h2{font-size:31px;}
+    .search-types h2,
+    .contact h2,
+    .cta-strip h2{font-size:31px;}
     .step h3{font-size:20px;}
     .type-card h3{font-size:20px;}
     .usecase-card h3{font-size:18px;}
@@ -1173,7 +1183,9 @@
     .section-head h2,
     .about h2,
     .story-copy h2,
-    .search-types h2{font-size:39px;}
+    .search-types h2,
+    .contact h2,
+    .cta-strip h2{font-size:39px;}
     .step h3,
     .type-card h3{font-size:24px;}
   }
@@ -1315,6 +1327,24 @@
     .client-logo{width:86px;height:52px;}
     .client-logo img{width:80px;height:42px;max-width:none;max-height:none;object-fit:contain;}
   }
+
+  /* P2: foco de teclado, hover táctil y motion decorativo. No cambia el reposo. */
+  a:focus-visible,
+  button:focus-visible,
+  .submit-btn:focus-visible{
+    outline:2px solid var(--orange);
+    outline-offset:3px;
+  }
+  @media (hover:none){
+    .story-source:hover{border-color:rgba(255,255,255,.08);}
+    .type-card:hover .tv-scene.extra{opacity:0;transform:scale(.85);}
+    .type-card:hover .tv-chip.extra{opacity:0;transform:translateY(4px);}
+    .type-card:hover .tv-filters .tv-chip.seq{
+      border-color:var(--panel-line);
+      color:var(--panel-text-soft);
+      transition-delay:0ms;
+    }
+  }
 </style>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500;600&family=Fraunces:ital,wght@0,600;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap">
@@ -1377,9 +1407,13 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
     btn.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
   }
   btn.addEventListener('click', function(){ setOpen(nav.hidden); });
-  nav.addEventListener('click', function(e){
+  var header = btn.closest('header');
+  if (header) header.addEventListener('click', function(e){
     if (e.target.closest('a')) setOpen(false);
   });
+  window.addEventListener('pageshow', function(){ setOpen(false); });
+  var wide = window.matchMedia('(min-width:861px)');
+  if (wide.addEventListener) wide.addEventListener('change', function(){ if (wide.matches) setOpen(false); });
 })();
 </script>
 
@@ -2109,6 +2143,8 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
       }).then(function () {
         sending = false;
         btn.disabled = false;
+        var shown = ok.style.display === 'block' ? ok : (err.style.display === 'block' ? err : null);
+        if (shown && shown.scrollIntoView) shown.scrollIntoView({block:'nearest'});
       });
     });
   })();
