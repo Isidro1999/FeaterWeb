@@ -75,6 +75,9 @@
   .mnav{display:none;flex-direction:column;gap:14px;padding:14px 24px 20px;border-top:1px solid var(--line);}
   .mnav:not([hidden]){display:flex;}
   .mnav a{font-family:var(--font-label);font-weight:700;text-decoration:none;color:var(--ink);}
+  @media (max-width:860px){
+    .mnav a.btn-solid{color:var(--paper);background:var(--ink);border-color:var(--ink);}
+  }
 
   /* ---------- Hero ---------- */
   .hero{background:var(--bg);color:var(--dtext);padding-block:56px 84px;}
@@ -95,6 +98,10 @@
   /* Diagrama de capas concéntricas */
   .orbit{position:relative;width:100%;max-width:420px;aspect-ratio:1;overflow:visible;}
   .orbit-sweep{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 0deg, rgba(245,76,22,.22), transparent 26%);animation:sweep 16s linear infinite;}
+  @media (max-width:768px){
+    .hero-diagram{max-width:100%;overflow:hidden;}
+    .orbit{overflow:hidden;}
+  }
   @keyframes sweep{to{transform:rotate(360deg);}}
   @media (prefers-reduced-motion:reduce){ .orbit-sweep{animation:none;opacity:.5;} }
   .orbit-rings{position:absolute;inset:0;width:100%;height:100%;}

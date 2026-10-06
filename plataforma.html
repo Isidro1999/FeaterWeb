@@ -122,6 +122,9 @@
   .mnav{display:none;flex-direction:column;gap:14px;padding:14px 24px 20px;border-top:1px solid var(--line);}
   .mnav:not([hidden]){display:flex;}
   .mnav a{font-family:var(--font-label);font-weight:700;text-decoration:none;color:var(--ink);}
+  @media (max-width:860px){
+    .mnav a.btn-solid{color:var(--paper);background:var(--ink);border-color:var(--ink);}
+  }
 
   /* ---------- App chrome (mockup del CMS, reutilizado en toda la página) ---------- */
   .app-window{

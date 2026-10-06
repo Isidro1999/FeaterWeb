@@ -130,6 +130,21 @@
   .mnav{display:none;flex-direction:column;gap:14px;padding:14px 24px 20px;border-top:1px solid var(--line);}
   .mnav:not([hidden]){display:flex;}
   .mnav a{font-family:var(--font-label);font-weight:700;text-decoration:none;color:var(--ink);}
+  @media (max-width:860px){
+    .mnav a.btn-solid{
+      color:var(--paper);background:var(--ink);border-color:var(--ink);
+      display:block;width:100%;text-align:center;box-sizing:border-box;
+    }
+    .mnav a:not(.btn){display:flex;align-items:center;min-height:48px;}
+    .menu-toggle{
+      width:44px;height:44px;padding:0;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+    }
+    .menu-toggle span{margin:0;transition:transform .2s ease,opacity .2s ease;}
+    .menu-toggle.is-open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .menu-toggle.is-open span:nth-child(2){opacity:0;}
+    .menu-toggle.is-open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+  }
 
   /* ---------- Hero ---------- */
   .hero{
@@ -271,6 +286,9 @@
   input,textarea{
     font-family:var(--font-body);font-size:15px;padding:13px 14px;
     border:1.5px solid var(--line);border-radius:2px;background:var(--paper);color:var(--ink);
+  }
+  @media (max-width:768px){
+    .contact input,.contact textarea,.contact select{font-size:16px;}
   }
   input:focus,textarea:focus{outline:2px solid var(--orange);outline-offset:1px;}
   textarea{resize:vertical;min-height:90px;}
@@ -785,6 +803,116 @@
     .story-q{font-size:12px;}
     .story-title{font-size:10.5px;}
   }
+  /* P0 mobile/tablet: composición compacta del stage. El layout desktop arranca arriba de 900px. */
+  @media (max-width:900px){
+    .story-stage{height:548px;}
+    .story-flow{
+      grid-template-rows:auto auto minmax(0,1fr);
+      gap:8px;
+      padding:10px 10px 0;
+    }
+    .story-sources{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:6px;
+      flex:none;
+    }
+    .story-source{
+      height:56px;
+      min-height:0;
+      min-width:0;
+      padding:6px 8px;
+      justify-content:center;
+      overflow:hidden;
+    }
+    .story-files,
+    .story-more,
+    .story-src-count{display:none;}
+    .story-src-head{margin-bottom:4px;gap:5px;min-width:0;}
+    .story-src-head svg{width:14px;height:14px;}
+    .story-src-name{
+      font-size:0;
+      min-width:0;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .story-source[data-src="drive"] .story-src-name::after{content:"Drive";}
+    .story-source[data-src="dropbox"] .story-src-name::after{content:"Dropbox";}
+    .story-source[data-src="local"] .story-src-name::after{content:"Disco";}
+    .story-src-name::after{font-size:11px;line-height:1.1;font-weight:800;}
+    .story-src-foot{margin-top:0;padding-top:0;min-width:0;}
+    .story-conn{max-width:100%;height:18px;padding:0 5px;font-size:10px;gap:3px;overflow:hidden;}
+    .story-mid{height:56px;min-height:0;}
+    .story-hub{height:52px;width:112px;}
+    .story-ring{width:108px;height:44px;}
+
+    .story-stage.s-live .story-flow{gap:4px;}
+    .story-stage.s-live .story-sources{gap:4px;}
+    .story-stage.s-live .story-source{
+      height:28px;
+      flex-direction:row;
+      align-items:center;
+      padding:0 8px;
+      border-radius:999px;
+    }
+    .story-stage.s-live .story-src-head{margin:0;width:100%;}
+    .story-stage.s-live .story-src-foot{display:none;}
+    .story-stage.s-live .story-source[data-src="local"] .story-src-name::after{content:"Local";}
+    .story-stage.s-live .story-mid{height:34px;}
+    .story-stage.s-live .story-hub{width:100%;height:34px;}
+    .story-stage.s-live .story-ring{width:92px;height:30px;border-radius:10px;}
+    .story-stage.s-live .story-pill{width:84px;height:28px;font-size:12px;letter-spacing:.06em;}
+    .story-stage.s-live .story-status{
+      top:50%;
+      left:calc(50% + 50px);
+      transform:translateY(-50%);
+      font-size:10px;
+    }
+
+    .story-search{
+      height:66px;
+      flex-wrap:wrap;
+      align-items:center;
+      align-content:center;
+      row-gap:1px;
+      padding:6px 8px;
+      overflow:hidden;
+    }
+    .story-search > svg{flex:none;}
+    .story-q,
+    .story-simq,
+    .story-imgq{
+      flex:1 1 0;
+      min-width:0;
+      white-space:normal;
+      overflow:hidden;
+      text-overflow:clip;
+      line-height:1.35;
+    }
+    .story-q{max-height:2.7em;}
+    .story-simq,
+    .story-imgq{align-items:center;}
+    .story-imgq > span,
+    .story-simq > span{
+      min-width:0;
+      flex:1 1 auto;
+      white-space:normal;
+      line-height:1.35;
+      overflow:hidden;
+    }
+    .story-mini{flex:none;}
+    .story-count{
+      flex:0 0 100%;
+      min-height:13px;
+      line-height:13px;
+      text-align:right;
+    }
+  }
+  @media (min-width:520px) and (max-width:900px){
+    .story-stage:not(.s-live) .story-src-name{font-size:12px;}
+    .story-stage:not(.s-live) .story-src-name::after{content:none;}
+  }
   @media (prefers-reduced-motion:reduce){
     .story-stage *,.story-stage *::before{transition-duration:.01ms !important;transition-delay:0ms !important;animation-duration:.01ms !important;animation-iteration-count:1 !important;}
     .story-ghost{display:none;}
@@ -1014,6 +1142,179 @@
 
   /* Propuesta: preservar el Hero de Home si hay reglas .hero-ctas de SSAI */
   .hero .hero-ctas{margin-top:34px;}
+
+  /* P1: anclas bajo el header sticky. No cambia el alto ni el layout. */
+  html{scroll-padding-top:80px;}
+  @media (max-width:860px){ html{scroll-padding-top:88px;} }
+  @media (max-width:600px){
+    .desktop-br{display:none;}
+  }
+
+  /* P1: escala de títulos solo por debajo del layout desktop. */
+  @media (max-width:900px){
+    .section-head h2,
+    .about h2,
+    .story-copy h2,
+    .search-types h2{line-height:1.08;}
+    .step h3,
+    .type-card h3,
+    .usecase-card h3{line-height:1.15;}
+  }
+  @media (max-width:600px){
+    .section-head h2,
+    .about h2,
+    .story-copy h2,
+    .search-types h2{font-size:31px;}
+    .step h3{font-size:20px;}
+    .type-card h3{font-size:20px;}
+    .usecase-card h3{font-size:18px;}
+  }
+  @media (min-width:601px) and (max-width:900px){
+    .section-head h2,
+    .about h2,
+    .story-copy h2,
+    .search-types h2{font-size:39px;}
+    .step h3,
+    .type-card h3{font-size:24px;}
+  }
+
+  /* P1: animación, rail, cards, secuencia y logos. Desktop queda fuera. */
+  @media (max-width:900px){
+    .story-caption{font-size:15px;line-height:1.42;height:68px;}
+    .story-flow{height:calc(100% - 68px);}
+    .story-conn{font-size:11px;}
+    .story-stage.s-live .story-status{font-size:11px;}
+    .story-chips span,
+    .story-tags span,
+    .story-simbtn{font-size:11px;}
+    .story-badge{font-size:10px;}
+    .story-title,
+    .story-ptext,
+    .story-brand,
+    .story-count,
+    .story-selcount{font-size:12px;}
+    .story-pill-sub{font-size:10px;}
+    .story-confirm{font-size:13px;color:#F7F4EF;}
+    .story-stage[data-stage="3"] .story-grid,
+    .story-stage[data-stage="4"] .story-grid{bottom:88px;}
+    .story-progress{
+      left:8px;right:8px;padding:8px 8px 6px;
+      background:#1b1816;
+    }
+    .story-prow{flex-direction:column;align-items:center;gap:6px;margin-top:6px;}
+    .story-ptext{text-align:center;white-space:normal;}
+    .story-tags{justify-content:center;width:100%;gap:6px;}
+    .story-tags span{padding:3px 8px;}
+    .story-act{position:relative;}
+    .story-act.hot span{display:inline;}
+    .story-actions{flex-wrap:wrap;row-gap:6px;}
+    .story-stage.acts .story-grid,
+    .story-stage.acts .story-hits,
+    .story-stage.acts .story-grid2,
+    .story-stage.acts .story-grid3{bottom:92px;}
+    .story-step{height:44px;color:#B7AFA6;}
+    .story-step b{color:#A09890;}
+    .story-play{width:44px;height:44px;}
+    .story-nav-row{grid-template-columns:repeat(8,minmax(0,1fr)) 44px;}
+    .story-hits .story-tile.is-hot .story-thumb::after,
+    .story-simtile.sel .story-thumb::after,
+    .story-act.hot::after,
+    .story-hits .story-tile.is-onbtn .story-simbtn::after{
+      content:"";position:absolute;left:50%;top:50%;width:34px;height:34px;border-radius:50%;
+      background:rgba(255,255,255,.28);border:2px solid rgba(255,255,255,.92);
+      pointer-events:none;z-index:6;animation:story-tap .5s ease forwards;
+    }
+    .story-hits .story-tile.is-onbtn .story-simbtn::after,
+    .story-act.hot::after{width:26px;height:26px;}
+    .step{
+      position:relative;border-top:none;max-width:none;
+      padding:0 0 32px 34px;
+    }
+    .step:first-child{padding-top:0;}
+    .step::before{
+      content:"";position:absolute;left:0;top:2px;width:8px;height:8px;border-radius:50%;
+      background:var(--orange);
+    }
+    .step::after{
+      content:"";position:absolute;left:3px;top:16px;bottom:4px;width:1px;background:var(--line);
+    }
+    .step:last-child::after{display:none;}
+    .sv-interpret{
+      height:auto;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;
+      gap:8px;max-width:320px;margin-inline:auto;padding-top:4px;
+    }
+    .sv-interpret .core{
+      position:relative;top:auto;left:auto;right:auto;bottom:auto;order:-1;
+      flex:0 0 100%;width:100%;max-width:none;height:14px;margin:0 0 16px;
+      background:transparent;border-radius:0;
+    }
+    .sv-interpret .core::before{
+      content:"";position:absolute;left:50%;top:0;width:14px;height:14px;margin-left:-7px;
+      border-radius:50%;background:var(--orange);
+    }
+    .sv-interpret .core::after{
+      inset:auto;left:50%;top:0;width:14px;height:14px;margin-left:-7px;
+    }
+    .sv-interpret .tag{position:static;}
+  }
+  @keyframes story-tap{
+    0%{transform:translate(-50%,-50%) scale(.35);opacity:.95;}
+    100%{transform:translate(-50%,-50%) scale(1.25);opacity:0;}
+  }
+  @media (max-width:900px) and (prefers-reduced-motion:reduce){
+    .story-hits .story-tile.is-hot .story-thumb::after,
+    .story-simtile.sel .story-thumb::after,
+    .story-act.hot::after,
+    .story-hits .story-tile.is-onbtn .story-simbtn::after{
+      animation:none;opacity:.85;transform:translate(-50%,-50%) scale(1);
+    }
+  }
+  @media (min-width:700px) and (max-width:900px){
+    .story-stage:not(.s-live) .story-source{height:74px;padding:10px 14px;}
+    .story-stage:not(.s-live) .story-src-name{font-size:14px;}
+    .story-stage:not(.s-live) .story-conn{height:22px;font-size:12px;padding:0 8px;}
+    .story-stage.s-live .story-source{height:36px;padding:0 14px;}
+    .story-stage.s-live .story-src-name::after{font-size:13px;}
+    .story-stage.s-live .story-mid{height:40px;}
+  }
+  @media (max-width:600px){
+    .sv-type{align-items:flex-start;}
+    #flowQueryText{font-size:14px;line-height:1.4;white-space:normal;}
+  }
+  @media (max-width:760px){
+    .search-types{padding-block:40px;}
+    .type-card{padding:20px;}
+    .tv-people,
+    .tv-context{width:100%;flex-wrap:nowrap;}
+    .tv-people-hits,
+    .tv-context-hits{flex:1;min-width:0;}
+    .tv-people-hit{flex:1;width:auto;height:56px;}
+    .tv-context-ref{width:58px;height:68px;}
+    .tv-context-hit{flex:1;width:auto;height:68px;}
+    .about-stats{align-items:stretch;}
+    .stat b{min-height:46px;display:flex;align-items:flex-end;}
+  }
+  @media (max-width:640px){
+    .flow-nodes{flex-direction:column;align-items:flex-start;gap:0;}
+    .flow-node{
+      width:auto;border:none;border-radius:0;background:transparent;
+      padding:2px 0;text-align:left;font-size:16px;
+    }
+    .flow-sep{display:flex;align-items:center;width:auto;height:auto;margin:2px 0 2px 2px;background:none;}
+    .flow-sep::after{display:none;}
+    .flow-sep::before{content:"↓";font-size:14px;line-height:1;color:var(--ink-soft);}
+    .flow-nodes.fast .flow-node{border:none;background:transparent;color:var(--ink);}
+    .flow-nodes.fast .flow-node.final{background:transparent;color:var(--orange);border:none;}
+    .flow-nodes.fast .flow-sep{background:none;}
+    .flow-nodes.fast .flow-sep::before{color:var(--orange);}
+  }
+  @media (max-width:560px){
+    .usecase-card h3{min-height:0;}
+  }
+  @media (max-width:768px){
+    .client-logo{width:86px;height:52px;}
+    .client-logo img{width:80px;height:42px;max-width:none;max-height:none;object-fit:contain;}
+  }
 </style>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500;600&family=Fraunces:ital,wght@0,600;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap">
@@ -1054,7 +1355,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
     <div class="navcta">
       <a class="btn btn-solid" href="/#contacto">Contactanos</a>
     </div>
-    <button class="menu-toggle" aria-label="Abrir menú" onclick="document.getElementById('mnav').hidden = !document.getElementById('mnav').hidden">
+    <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="mnav">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -1064,13 +1365,30 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
     <a class="btn btn-solid" style="text-align:center;" href="/#contacto">Contactanos</a>
   </div>
 </header>
+<script>
+(function(){
+  var btn = document.querySelector('.menu-toggle');
+  var nav = document.getElementById('mnav');
+  if (!btn || !nav) return;
+  function setOpen(open){
+    nav.hidden = !open;
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+    btn.classList.toggle('is-open', open);
+    btn.setAttribute('aria-label', open ? 'Cerrar menú' : 'Abrir menú');
+  }
+  btn.addEventListener('click', function(){ setOpen(nav.hidden); });
+  nav.addEventListener('click', function(e){
+    if (e.target.closest('a')) setOpen(false);
+  });
+})();
+</script>
 
 <div id="top"></div>
 <section class="hero" id="producto">
   <div class="wrap">
     <div class="tag">LESS NOISE. MORE TIME</div>
     <hr class="hero-rule">
-    <h1>Gestión de contenido<br>audiovisual con IA</h1>
+    <h1>Gestión de contenido<br class="desktop-br"> audiovisual con IA</h1>
     <div class="hero-desc">
       <p>Una plataforma CMS de gestión audiovisual para transformar fotos, videos y archivos en contenido organizado, accesible y listo para usar.</p>
     </div>
@@ -1085,7 +1403,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
   <div class="wrap">
     <div class="story-copy">
       <div class="eyebrow">Búsqueda con AI</div>
-      <h2>De archivos muertos<br>a contenido que encontrás.</h2>
+      <h2>De archivos muertos<br class="desktop-br"> a contenido que encontrás.</h2>
       <p class="lede">FEATER mira tus imágenes y videos, entiende qué hay dentro y los convierte en activos que podés encontrar describiendo lo que necesitás.</p>
     </div>
 
@@ -1594,7 +1912,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
       </div>
       <div class="type-card">
         <svg class="ticon" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M7 12h10M10 18h4" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <h3>Búsqueda combinada con tags</h3>
+        <h3>Búsqueda combinada con&nbsp;tags</h3>
         <p>Combiná la búsqueda con tags propios para afinar resultados según tu forma de organizar el contenido.</p>
         <div class="type-visual tv-filters">
           <span class="tv-chip seq">Espacio: abierto</span><span class="tv-chip seq">Tipo de lugar: Evento</span><span class="tv-chip seq">Material: Seleccionado</span>
@@ -1609,7 +1927,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow" style="color:var(--orange);">El impacto</div>
-      <h2>Menos tiempo buscando.<br>Más tiempo creando.</h2>
+      <h2>Menos tiempo buscando.<br class="desktop-br"> Más tiempo creando.</h2>
     </div>
     <div class="benefit-grid">
       <div class="flow-compare">
@@ -1676,7 +1994,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
   <div class="wrap">
     <div>
       <div class="eyebrow" style="color:var(--orange-bright);">SOBRE FEATER</div>
-      <h2 style="margin-top:14px;">Cada operación es distinta.<br>FEATER también.</h2>
+      <h2 style="margin-top:14px;">Cada operación es distinta.<br class="desktop-br"> FEATER también.</h2>
       <p>Adaptamos la plataforma, la organización y los flujos a las necesidades de cada equipo.</p>
     </div>
     <div class="about-stats">
@@ -1740,9 +2058,9 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
     <form id="contact-form" action="https://formspree.io/f/mvkgaron" method="POST">
       <input type="hidden" name="_subject" value="Nuevo contacto desde feater.me">
       <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;height:0;width:0;opacity:0;">
-      <div class="field"><label for="f1-name">Nombre</label><input id="f1-name" name="name" required></div>
-      <div class="field"><label for="f1-company">Empresa</label><input id="f1-company" name="company"></div>
-      <div class="field"><label for="f1-email">Email</label><input id="f1-email" name="email" type="email" required></div>
+      <div class="field"><label for="f1-name">Nombre</label><input id="f1-name" name="name" autocomplete="name" required></div>
+      <div class="field"><label for="f1-company">Empresa</label><input id="f1-company" name="company" autocomplete="organization"></div>
+      <div class="field"><label for="f1-email">Email</label><input id="f1-email" name="email" type="email" autocomplete="email" required></div>
       <div class="field"><label for="f1-msg">Mensaje</label><textarea id="f1-msg" name="message"></textarea></div>
       <button class="submit-btn" type="submit">Enviar formulario</button>
       <span class="form-msg" id="fmsg1">¡Gracias! Te contactamos a la brevedad.</span>
