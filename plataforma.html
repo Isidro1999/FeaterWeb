@@ -638,6 +638,151 @@
     display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px;
     padding-block:20px;font-size:13px;color:#8A8078;
   }
+
+  /* P1-B: responsive de Plataforma. Desktop queda fuera de estas queries. */
+  @media (max-width:600px){
+    .desktop-br{display:none;}
+  }
+  @media (max-width:900px){
+    .ms-copy h1,
+    .ms-copy h2,
+    .section-head h2,
+    .eco .section-head h2,
+    .cta-strip h2,
+    .coll-copy h2,
+    .team-copy h2{line-height:1.08;}
+    h3,.coll-head h4{line-height:1.15;}
+  }
+  @media (max-width:600px){
+    .ms-copy h1,
+    .ms-copy h2,
+    .section-head h2,
+    .eco .section-head h2,
+    .cta-strip h2,
+    .coll-copy h2,
+    .team-copy h2{font-size:31px;}
+  }
+  @media (min-width:601px) and (max-width:900px){
+    .ms-copy h1,
+    .ms-copy h2,
+    .section-head h2,
+    .eco .section-head h2,
+    .cta-strip h2,
+    .coll-copy h2,
+    .team-copy h2{font-size:39px;}
+  }
+
+  @media (max-width:860px){
+    .ms-grid{gap:28px;}
+    .pf-card{padding:12px 12px 10px;gap:8px;}
+    .pf-label{font-size:11px;}
+    .pf-note{font-size:10px;}
+    .pf-chip{font-size:10px;}
+    .fmt{font-size:11px;padding:6px 4px;}
+    .fmt svg{width:12px;height:12px;}
+    .pf-core-logo svg{width:64px;}
+    .pf-core-pills span{font-size:11px;padding:4px 8px;}
+    .pf-card.is-core .pf-note{font-size:10px;}
+    .pf-size{gap:10px;}
+    .pf-size em{margin-left:0;font-size:11px;}
+    .pf-foot{font-size:11px;letter-spacing:.06em;}
+    .pf-arrow{
+      transform:none;flex-direction:column;align-items:center;justify-content:center;
+      height:32px;padding:0;gap:0;
+    }
+    .pf-arrow i,
+    .media-section.is-light .pf-arrow i{
+      display:block;width:1px;height:16px;background:currentColor;opacity:.55;
+    }
+    .pf-arrow svg{display:none;}
+    .pf-arrow::after{
+      content:"";width:7px;height:7px;margin-top:-5px;
+      border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;
+      transform:rotate(45deg);
+    }
+    .pf-play{opacity:.42;cursor:default;pointer-events:none;width:16px;height:16px;}
+    .pf-play svg{width:6px;height:6px;}
+    .pf-features{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:16px;}
+    .pf-feature{padding:12px 10px;}
+    .pf-fico{width:34px;height:34px;}
+    .pf-feature b{margin-top:8px;font-size:13px;}
+    .pf-feature b + span{font-size:12px;margin-top:4px;}
+  }
+  @media (min-width:700px) and (max-width:860px){
+    .pf-flow{
+      grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+      max-width:none;gap:16px 18px;
+    }
+    .pf-arrow{display:none;}
+  }
+  @media (min-width:700px) and (max-width:1040px){
+    .ms-copy p{max-width:60ch;}
+  }
+
+  @media (max-width:900px){
+    .fx-card .fx-label,
+    .fx-card .fx-sub,
+    .fx-tags span{font-size:11px;}
+    .coll-panel{order:2;}
+    .coll-copy{order:1;}
+    .coll-copy p{color:#D2C8BE;}
+    .coll-row .cr-thumb{box-shadow:inset 0 0 0 1px rgba(255,255,255,.28);border:1px solid rgba(23,23,23,.18);}
+    .coll-row .cr-meta{font-size:11px;}
+    .coll-head .coll-eyebrow,
+    .coll-head .coll-count{font-size:11px;}
+  }
+  @media (max-width:820px){
+    .team-user em{font-size:11px;}
+    .team-badge{font-size:11px;}
+    .team-row{gap:10px;}
+    .team-user{min-width:0;}
+    .team-user em{overflow-wrap:anywhere;}
+  }
+
+  @media (max-width:900px){
+    .int-diagram{grid-template-columns:1fr 1fr;}
+    .int-node{order:1;min-width:0;}
+    .int-core{
+      position:relative;top:auto;left:auto;transform:none;
+      order:2;grid-column:1 / -1;margin:22px auto 0;
+      cursor:default;
+      box-shadow:none;
+    }
+    .int-core::before{
+      content:"";position:absolute;left:50%;top:-20px;width:1px;height:12px;
+      background:rgba(255,255,255,.4);
+    }
+    .int-core::after{
+      content:"";position:absolute;left:50%;top:-12px;width:7px;height:7px;margin-left:-4px;
+      border-right:1.5px solid rgba(255,81,0,.9);border-bottom:1.5px solid rgba(255,81,0,.9);
+      transform:rotate(45deg);
+    }
+    .int-diagram.is-live .in-orb,
+    .int-diagram.is-live .in-copy{opacity:1;}
+    .in-copy small{font-size:11px;letter-spacing:.04em;}
+    .in-copy{min-width:0;}
+  }
+
+  @media (max-width:960px){
+    .eco-map{display:flex;flex-direction:column;}
+    .eco-chips{
+      order:1;
+      display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));
+      gap:8px;justify-content:stretch;
+    }
+    .eco-chip{width:100%;}
+    .eco-chip-in{width:100%;border-radius:12px;justify-content:flex-start;}
+    .eco-chip:hover .eco-chip-in{transform:none;box-shadow:0 10px 24px -16px rgba(23,17,10,.42);}
+    .eco-hub{order:2;margin:28px auto 0;}
+    .eco-hub::before{
+      content:"";position:absolute;left:50%;top:-22px;width:1px;height:12px;background:var(--line);
+    }
+    .eco-hub::after{
+      content:"";position:absolute;left:50%;top:-14px;width:7px;height:7px;margin-left:-4px;
+      border-right:1.5px solid var(--orange);border-bottom:1.5px solid var(--orange);
+      transform:rotate(45deg);
+    }
+  }
 </style>
 
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@700;800;900&family=Public+Sans:wght@400;500;600&family=Fraunces:ital,wght@0,600;1,600&family=JetBrains+Mono:wght@400;500;600&display=swap">
@@ -696,7 +841,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
   <div class="wrap ms-grid">
     <div class="ms-copy">
       <div class="eyebrow">Imágenes</div>
-      <h1>Subí el original.<br>FEATER se ocupa del resto.</h1>
+      <h1>Subí el original.<br class="desktop-br"> FEATER se ocupa del resto.</h1>
       <p>Soportamos los formatos más usados —JPG, PNG, TIFF y más— y los procesamos automáticamente para generar versiones optimizadas en múltiples tamaños y resoluciones.</p>
       <p>Cada imagen queda lista para ser utilizada según el contexto, sin que el equipo tenga que preparar variantes manualmente.</p>
       <ul class="pf-checks">
@@ -781,7 +926,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
   <div class="wrap ms-grid">
     <div class="ms-copy">
       <div class="eyebrow">Video</div>
-      <h2>Un video.<br>La mejor reproducción para cada usuario.</h2>
+      <h2>Un video.<br class="desktop-br"> La mejor reproducción para cada usuario.</h2>
       <p>Recibimos videos en distintos formatos, resoluciones y codecs, y los procesamos automáticamente para generar versiones optimizadas listas para streaming.</p>
       <p>Creamos múltiples resoluciones para reproducción adaptable y una experiencia fluida según el dispositivo y la conexión del usuario.</p>
       <p>Además, soportamos subtítulos, cast y reproducción segura para una experiencia más completa.</p>
@@ -896,7 +1041,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
   <div class="wrap">
     <div class="section-head">
       <div class="eyebrow" style="color:var(--orange);">De archivo a contenido</div>
-      <h2>No guardes archivos.<br>Construí una biblioteca.</h2>
+      <h2>No guardes archivos.<br class="desktop-br"> Construí una biblioteca.</h2>
       <p>Sumá contexto, organización y estructura para que cada contenido sea más fácil de encontrar y reutilizar.</p>
     </div>
 
@@ -1039,7 +1184,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
   <div class="wrap">
     <div class="section-head center" style="margin-inline:auto;text-align:center;">
       <div class="eyebrow" style="color:var(--orange);">Un solo entorno</div>
-      <h2>Muchas tecnologías.<br><span class="eco-accent">Una sola experiencia.</span></h2>
+      <h2>Muchas tecnologías.<br class="desktop-br"> <span class="eco-accent">Una sola experiencia.</span></h2>
       <p class="eco-lead">Integramos infraestructura cloud, inteligencia artificial y procesamiento multimedia para que tu contenido esté organizado, protegido y listo para usar.</p>
     </div>
 
@@ -1096,7 +1241,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
 <section class="cta-strip">
   <div class="wrap">
     <div class="eyebrow">¿HABLAMOS?</div>
-    <h2 style="margin-top:14px;">Tu contenido ya existe.<br>Ahora hacelo trabajar mejor.</h2>
+    <h2 style="margin-top:14px;">Tu contenido ya existe.<br class="desktop-br"> Ahora hacelo trabajar&nbsp;mejor.</h2>
     <p>Descubrí cómo FEATER puede transformar la forma en que tu organización gestiona y utiliza su contenido audiovisual.</p>
     <div class="hero-ctas">
       <a class="btn btn-solid" href="/#contacto">Hablar con nuestro equipo</a>
