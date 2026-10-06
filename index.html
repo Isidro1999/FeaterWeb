@@ -2649,8 +2649,9 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
   steps.forEach(function(b){
     b.addEventListener('click', function(){
       booted = true;
-      finaleFromAuto = false;
-      go(parseInt(b.getAttribute('data-step'), 10));
+      var n = parseInt(b.getAttribute('data-step'), 10);
+      finaleFromAuto = (n === LAST);
+      go(n);
     });
   });
   playBtn.addEventListener('click', function(){
