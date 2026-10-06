@@ -123,11 +123,16 @@
   .mnav:not([hidden]){display:flex;}
   .mnav a{font-family:var(--font-label);font-weight:700;text-decoration:none;color:var(--ink);}
   @media (max-width:860px){
+    .mnav a,
+    .mnav a.btn,
     .mnav a.btn-solid{
-      color:var(--paper);background:var(--ink);border-color:var(--ink);
-      display:block;width:100%;text-align:center;box-sizing:border-box;
+      display:flex;align-items:center;justify-content:flex-start;
+      min-height:48px;width:auto;margin:0;padding:0;
+      border:none;border-radius:0;background:transparent;
+      color:var(--ink);font-weight:700;font-size:inherit;letter-spacing:0;
+      text-align:left;box-sizing:border-box;
     }
-    .mnav a:not(.btn){display:flex;align-items:center;min-height:48px;}
+    .mnav a.btn-solid:hover{background:transparent;border-color:transparent;color:var(--ink);}
     .menu-toggle{
       width:44px;height:44px;padding:0;
       display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
@@ -481,7 +486,8 @@
   .int-diagram:has(.int-node[data-i="twins"]:hover) .int-svg line[data-i="twins"],
   .int-diagram:has(.int-node[data-i="analytics"]:hover) .int-svg line[data-i="analytics"],
   .int-diagram:has(.int-node[data-i="typeform"]:hover) .int-svg line[data-i="typeform"],
-  .int-diagram:has(.int-node[data-i="files"]:hover) .int-svg line[data-i="files"]{opacity:1;stroke-width:1.8;}
+  .int-diagram:has(.int-node[data-i="files"]:hover) .int-svg line[data-i="files"],
+  .int-diagram:has(.int-node[data-i="embeds"]:hover) .int-svg line[data-i="embeds"]{opacity:1;stroke-width:1.8;}
   .int-core{
     position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;
     font-family:var(--font-label);font-weight:900;font-size:18px;letter-spacing:.06em;color:#fff;
@@ -497,6 +503,7 @@
     transition:transform .25s ease,box-shadow .25s ease,background .25s ease,opacity .45s ease;
   }
   .in-orb svg{width:24px;height:24px;}
+  .int-node[data-i="embeds"] .in-orb svg{width:30px;height:14px;}
   .in-copy{
     position:absolute;top:40px;left:50%;transform:translateX(-50%);
     display:flex;flex-direction:column;align-items:center;gap:2px;
@@ -533,12 +540,13 @@
     }
     .in-orb{position:relative;left:auto;top:auto;width:46px;height:46px;flex:none;box-shadow:none;}
     .in-orb svg{width:20px;height:20px;}
+    .int-node[data-i="embeds"] .in-orb svg{width:26px;height:12px;}
     .in-copy{position:static;transform:none;align-items:flex-start;text-align:left;width:auto;max-width:none;background:none;padding:0;}
     .in-copy b{font-size:14px;}
     .int-node:hover .in-orb{transform:none;}
   }
   @media (max-width:520px){
-    .int-diagram{grid-template-columns:1fr;}
+    .int-diagram{grid-template-columns:1fr 1fr;}
   }
 
   /* ---------- Ecosistema tecnológico ---------- */
@@ -760,25 +768,24 @@
   @media (max-width:900px){
     .int-diagram{grid-template-columns:1fr 1fr;}
     .int-node{order:1;min-width:0;}
-    .int-core{
-      position:relative;top:auto;left:auto;transform:none;
-      order:2;grid-column:1 / -1;margin:22px auto 0;
-      cursor:default;
-      box-shadow:none;
-    }
-    .int-core::before{
-      content:"";position:absolute;left:50%;top:-20px;width:1px;height:12px;
-      background:rgba(255,255,255,.4);
-    }
-    .int-core::after{
-      content:"";position:absolute;left:50%;top:-12px;width:7px;height:7px;margin-left:-4px;
-      border-right:1.5px solid rgba(255,81,0,.9);border-bottom:1.5px solid rgba(255,81,0,.9);
-      transform:rotate(45deg);
-    }
+    .int-node[data-i="yt"]{order:1;}
+    .int-node[data-i="vimeo"]{order:2;}
+    .int-node[data-i="spotify"]{order:3;}
+    .int-node[data-i="twins"]{order:4;}
+    .int-node[data-i="analytics"]{order:5;}
+    .int-node[data-i="typeform"]{order:6;}
+    .int-node[data-i="files"]{order:7;}
+    .int-node[data-i="embeds"]{order:8;}
+    .int-core{display:none;}
     .int-diagram.is-live .in-orb,
     .int-diagram.is-live .in-copy{opacity:1;}
     .in-copy small{font-size:11px;letter-spacing:.04em;}
     .in-copy{min-width:0;}
+  }
+  @media (max-width:400px){
+    .int-node{gap:8px;padding:10px 8px;}
+    .in-orb{width:42px;height:42px;}
+    .in-copy b{font-size:13px;}
   }
 
   @media (max-width:960px){
@@ -869,7 +876,7 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
   <div id="mnav" class="mnav" hidden>
     <a href="/plataforma" class="active">Plataforma</a>
     <a href="/seguridad">Seguridad</a>
-    <a class="btn btn-solid" style="text-align:center;" href="/#contacto">Contactanos</a>
+    <a class="btn btn-solid" href="/#contacto">Contactanos</a>
   </div>
 </header>
 <script>
@@ -891,6 +898,12 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
   window.addEventListener('pageshow', function(){ setOpen(false); });
   var wide = window.matchMedia('(min-width:861px)');
   if (wide.addEventListener) wide.addEventListener('change', function(){ if (wide.matches) setOpen(false); });
+  var lastY = window.scrollY;
+  window.addEventListener('scroll', function(){
+    var y = window.scrollY;
+    if (!nav.hidden && Math.abs(y - lastY) >= 8) setOpen(false);
+    lastY = y;
+  }, {passive:true});
 })();
 </script>
 
@@ -1197,43 +1210,48 @@ src="https://www.facebook.com/tr?id=1363442122236619&ev=PageView&noscript=1"
 
     <div class="int-diagram" id="intDiagram">
       <svg class="int-svg" viewBox="0 0 1000 1000" aria-hidden="true">
-        <line data-i="yt" x1="500" y1="500" x2="500" y2="160" style="--c:#FF3B30"/>
-        <line data-i="vimeo" x1="500" y1="500" x2="766" y2="288" style="--c:#1AB7EA"/>
-        <line data-i="spotify" x1="500" y1="500" x2="832" y2="576" style="--c:#1DB954"/>
-        <line data-i="analytics" x1="500" y1="500" x2="648" y2="806" style="--c:#E6A423"/>
-        <line data-i="twins" x1="500" y1="500" x2="352" y2="806" style="--c:#8B6CFF"/>
-        <line data-i="files" x1="500" y1="500" x2="169" y2="576" style="--c:#4C8DFF"/>
-        <line data-i="typeform" x1="500" y1="500" x2="234" y2="288" style="--c:#E7E1D8"/>
+        <line data-i="yt" x1="500" y1="500" x2="500" y2="180" style="--c:#FF3B30"/>
+        <line data-i="vimeo" x1="500" y1="500" x2="726" y2="274" style="--c:#1AB7EA"/>
+        <line data-i="spotify" x1="500" y1="500" x2="820" y2="500" style="--c:#1DB954"/>
+        <line data-i="analytics" x1="500" y1="500" x2="726" y2="726" style="--c:#E6A423"/>
+        <line data-i="embeds" x1="500" y1="500" x2="500" y2="820" style="--c:#E1306C"/>
+        <line data-i="twins" x1="500" y1="500" x2="274" y2="726" style="--c:#8B6CFF"/>
+        <line data-i="files" x1="500" y1="500" x2="180" y2="500" style="--c:#4C8DFF"/>
+        <line data-i="typeform" x1="500" y1="500" x2="274" y2="274" style="--c:#E7E1D8"/>
       </svg>
       <div class="int-core">TU FEATER</div>
 
-      <div class="int-node" data-i="yt" style="--x:50%;--y:16%;--c:#FF3B30">
+      <div class="int-node" data-i="yt" style="--x:50%;--y:18%;--c:#FF3B30">
         <span class="in-orb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8.2 6.6v10.8L18 12 8.2 6.6z" fill="currentColor"/></svg></span>
         <span class="in-copy"><b>Tus videos</b><small>YouTube</small></span>
       </div>
-      <div class="int-node" data-i="vimeo" style="--x:76.6%;--y:28.8%;--c:#1AB7EA">
+      <div class="int-node" data-i="vimeo" style="--x:72.6%;--y:27.4%;--c:#1AB7EA">
         <span class="in-orb"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3.5" y="5.5" width="17" height="13" rx="2.2" stroke="currentColor" stroke-width="1.6"/><path d="M10 9.2v5.6l5-2.8-5-2.8z" fill="currentColor"/></svg></span>
         <span class="in-copy"><b>Tus producciones</b><small>Vimeo</small></span>
       </div>
-      <div class="int-node" data-i="spotify" style="--x:83.2%;--y:57.6%;--c:#1DB954">
+      <div class="int-node" data-i="spotify" style="--x:82%;--y:50%;--c:#1DB954">
         <span class="in-orb"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 17.2V7.4l8-1.6v9.2" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="7.2" cy="17.2" r="1.8" fill="currentColor"/><circle cx="15.2" cy="15" r="1.8" fill="currentColor"/></svg></span>
         <span class="in-copy"><b>Tus playlists</b><small>Spotify</small></span>
       </div>
-      <div class="int-node" data-i="analytics" style="--x:64.8%;--y:80.6%;--c:#E6A423">
+      <div class="int-node" data-i="analytics" style="--x:72.6%;--y:72.6%;--c:#E6A423">
         <span class="in-orb"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 18.5V12M12 18.5V6.5M19 18.5v-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></span>
         <span class="in-copy"><b>Tus métricas</b><small>Google Analytics</small></span>
       </div>
-      <div class="int-node" data-i="twins" style="--x:35.2%;--y:80.6%;--c:#8B6CFF">
+      <div class="int-node" data-i="twins" style="--x:27.4%;--y:72.6%;--c:#8B6CFF">
         <span class="in-orb"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M8 16.5V8.2l5.2-1.1v8.1M13.2 15.2V6.4L18 5.2v8.6" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="6.4" cy="16.6" r="1.55" fill="currentColor"/><circle cx="11.6" cy="15.3" r="1.55" fill="currentColor"/></svg></span>
         <span class="in-copy"><b>Tu música</b><small>Twins Music</small></span>
       </div>
-      <div class="int-node" data-i="files" style="--x:16.9%;--y:57.6%;--c:#4C8DFF">
+      <div class="int-node" data-i="files" style="--x:18%;--y:50%;--c:#4C8DFF">
         <span class="in-orb"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 8.2h5.2l1.6-2h9.2v11.2H4V8.2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
         <span class="in-copy"><b>Tus archivos</b><small>Google Drive · Dropbox</small></span>
       </div>
-      <div class="int-node" data-i="typeform" style="--x:23.4%;--y:28.8%;--c:#E7E1D8">
+      <div class="int-node" data-i="typeform" style="--x:27.4%;--y:27.4%;--c:#E7E1D8">
         <span class="in-orb"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="3.8" width="14" height="16.4" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8.2 8.4h7.6M8.2 12h7.6M8.2 15.6h4.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
         <span class="in-copy"><b>Tus formularios</b><small>Typeform</small></span>
+      </div>
+      <div class="int-node" data-i="embeds" style="--x:50%;--y:82%;--c:#E1306C">
+        <span class="in-orb"><svg viewBox="0 0 34 16" fill="none" aria-hidden="true"><path d="M7 14.2s4.2-3.6 4.2-7A4.2 4.2 0 0 0 2.8 7.2C2.8 10.6 7 14.2 7 14.2z" stroke="currentColor" stroke-width="1.35"/><circle cx="7" cy="7.1" r="1.35" fill="currentColor"/><rect x="18.2" y="2.2" width="11.6" height="11.6" rx="3.2" stroke="currentColor" stroke-width="1.35"/><circle cx="24" cy="8" r="2.15" stroke="currentColor" stroke-width="1.35"/><circle cx="27.3" cy="4.7" r=".75" fill="currentColor"/></svg></span>
+        <span class="in-copy"><b>Tus embeds</b><small>Maps · Instagram</small></span>
       </div>
     </div>
   </div>
